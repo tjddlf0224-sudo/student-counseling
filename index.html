@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="상담일지">
+<title>상담일지 관리</title>
+<link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700&family=Gowun+Dodum&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #1a1a2e;
+  --ink-soft: #4a4a6a;
+  --ink-mute: #9494b0;
+  --line: #e8e8f0;
+  --line-soft: #f2f2f8;
+  --bg: #f7f7fc;
+  --surface: #ffffff;
+  --accent: #5b6af0;
+  --accent-soft: #eef0ff;
+  --accent-hover: #4555e8;
+  --green: #22c55e;
+  --green-bg: #f0fdf4;
+  --green-soft: #dcfce7;
+  --orange: #f97316;
+  --orange-bg: #fff7ed;
+  --orange-soft: #ffedd5;
+  --rose: #f43f5e;
+  --rose-bg: #fff1f2;
+  --rose-soft: #ffe4e6;
+  --sky: #0ea5e9;
+  --sky-bg: #f0f9ff;
+  --sky-soft: #e0f2fe;
+  --purple: #a855f7;
+  --purple-bg: #faf5ff;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --radius: 14px;
+  --radius-sm: 8px;
+  --shadow: 0 2px 12px rgba(26,26,46,0.07);
+  --shadow-md: 0 4px 24px rgba(26,26,46,0.1);
+}
+
+- { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+html, body {
+min-height: 100vh;
+background: var(–bg);
+font-family: ‘Pretendard’, ‘Gowun Dodum’, sans-serif;
+color: var(–ink);
+}
+body { display: flex; justify-content: center; }
+
+#app {
+width: 100%;
+max-width: 430px;
+background: var(–bg);
+min-height: 100vh;
+position: relative;
+}
+
+/* ── HEADER ── */
+.header {
+background: var(–surface);
+padding: 0 20px;
+padding-top: calc(16px + var(–safe-top));
+padding-bottom: 0;
+border-bottom: 1px solid var(–line);
+position: sticky;
+top: 0;
+z-index: 100;
+}
+
+.header-top {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding-bottom: 14px;
+}
+
+.title {
+font-size: 1.25rem;
+font-weight: 700;
+color: var(–ink);
+letter-spacing: -0.3px;
+display: flex;
+align-items: center;
+gap: 8px;
+}
+
+.title-dot {
+width: 8px; height: 8px;
+background: var(–accent);
+border-radius: 50%;
+display: inline-block;
+}
+
+.gear-btn {
+background: var(–line-soft);
+border: none;
+width: 34px; height: 34px;
+border-radius: 10px;
+cursor: pointer;
+display: flex; align-items: center; justify-content: center;
+font-size: 0.95rem;
+transition: background 0.2s;
+color: var(–ink-soft);
+}
+.gear-btn:hover { background: var(–line); }
+
+/* ── TABS ── */
+.tab-bar {
+display: flex;
+gap: 0;
+background: transparent;
+}
+
+.tab-btn {
+flex: 1;
+padding: 12px 4px 10px;
+background: transparent;
+border: none;
+border-bottom: 2.5px solid transparent;
+font-family: inherit;
+font-size: 0.75rem;
+font-weight: 500;
+color: var(–ink-mute);
+cursor: pointer;
+transition: all 0.2s;
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 3px;
+}
+
+.tab-btn .tab-icon { font-size: 1.1rem; }
+.tab-btn.active { color: var(–accent); border-bottom-color: var(–accent); font-weight: 600; }
+.tab-btn:hover:not(.active) { color: var(–ink-soft); }
+
+/* ── SECTIONS ── */
+.container { padding: 16px; }
+
+/* ── FORM ELEMENTS ── */
+label {
+font-size: 0.78rem;
+font-weight: 600;
+color: var(–ink-soft);
+display: block;
+margin-top: 12px;
+margin-bottom: 5px;
+letter-spacing: 0.2px;
+}
+
+select, input[type=“date”], textarea {
+width: 100%;
+padding: 11px 14px;
+border: 1.5px solid var(–line);
+border-radius: var(–radius-sm);
+font-family: inherit;
+font-size: 0.92rem;
+color: var(–ink);
+background: var(–surface);
+outline: none;
+transition: border-color 0.15s, box-shadow 0.15s;
+-webkit-appearance: none;
+appearance: none;
+}
+select { cursor: pointer; background-image: url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘12’ height=‘8’ viewBox=‘0 0 12 8’%3E%3Cpath d=‘M1 1l5 5 5-5’ stroke=’%239494b0’ stroke-width=‘1.5’ fill=‘none’ stroke-linecap=‘round’/%3E%3C/svg%3E”); background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px; }
+
+select:focus, input:focus, textarea:focus {
+border-color: var(–accent);
+box-shadow: 0 0 0 3px rgba(91,106,240,0.1);
+}
+textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
+
+/* ── BUTTONS ── */
+.btn {
+display: block; width: 100%;
+padding: 13px 20px;
+background: var(–accent);
+color: white;
+border: none;
+font-family: inherit;
+font-size: 0.95rem;
+font-weight: 600;
+cursor: pointer;
+border-radius: var(–radius-sm);
+transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+letter-spacing: -0.2px;
+margin-top: 8px;
+}
+.btn:hover { background: var(–accent-hover); box-shadow: 0 4px 16px rgba(91,106,240,0.3); }
+.btn:active { transform: scale(0.98); }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.btn-outline {
+background: transparent;
+border: 1.5px solid var(–line);
+color: var(–ink-soft);
+}
+.btn-outline:hover { background: var(–line-soft); box-shadow: none; border-color: var(–ink-mute); }
+
+.btn-sm { display: inline-block; width: auto; padding: 7px 14px; font-size: 0.8rem; margin: 0; }
+.btn-danger { background: var(–rose); }
+.btn-danger:hover { background: #e11d48; box-shadow: 0 4px 16px rgba(244,63,94,0.25); }
+
+/* ── DATE NAV ── */
+.date-nav {
+display: flex;
+align-items: center;
+gap: 8px;
+padding: 12px 16px;
+background: var(–surface);
+border-bottom: 1px solid var(–line);
+}
+
+.dnav-btn {
+background: var(–line-soft);
+border: none;
+width: 36px; height: 36px;
+border-radius: var(–radius-sm);
+cursor: pointer;
+font-size: 1.1rem;
+color: var(–ink-soft);
+display: flex; align-items: center; justify-content: center;
+flex-shrink: 0;
+transition: background 0.15s;
+}
+.dnav-btn:hover { background: var(–accent-soft); color: var(–accent); }
+
+#dateInput { margin: 0; flex: 1; }
+
+.today-btn {
+background: var(–accent);
+color: white;
+border: none;
+padding: 8px 14px;
+border-radius: var(–radius-sm);
+cursor: pointer;
+font-family: inherit;
+font-size: 0.78rem;
+font-weight: 600;
+flex-shrink: 0;
+transition: background 0.2s;
+}
+.today-btn:hover { background: var(–accent-hover); }
+
+/* ── BADGES ── */
+.type-badge {
+display: inline-flex;
+align-items: center;
+font-size: 0.7rem;
+font-weight: 600;
+padding: 3px 9px;
+border-radius: 20px;
+letter-spacing: 0.1px;
+}
+.type-학업 { background: var(–sky-soft); color: var(–sky); }
+.type-생활 { background: var(–green-soft); color: #16a34a; }
+.type-진로 { background: var(–orange-soft); color: var(–orange); }
+.type-심리 { background: var(–rose-soft); color: var(–rose); }
+.type-기타 { background: var(–line-soft); color: var(–ink-mute); }
+
+/* ── COUNSEL CARDS ── */
+.counsel-card {
+background: var(–surface);
+border: 1px solid var(–line);
+border-radius: var(–radius);
+padding: 15px 16px;
+margin-bottom: 10px;
+box-shadow: var(–shadow);
+transition: box-shadow 0.2s;
+}
+.counsel-card:hover { box-shadow: var(–shadow-md); }
+
+.counsel-head {
+display: flex;
+align-items: center;
+gap: 7px;
+margin-bottom: 10px;
+flex-wrap: wrap;
+}
+
+.counsel-name {
+font-size: 0.95rem;
+font-weight: 700;
+color: var(–ink);
+}
+
+.counsel-num {
+font-size: 0.73rem;
+color: var(–ink-mute);
+background: var(–line-soft);
+padding: 2px 7px;
+border-radius: 5px;
+}
+
+.counsel-content {
+font-size: 0.875rem;
+line-height: 1.72;
+color: var(–ink-soft);
+white-space: pre-wrap;
+font-family: ‘Gowun Dodum’, sans-serif;
+}
+
+.counsel-memo {
+font-size: 0.78rem;
+color: var(–ink-mute);
+margin-top: 10px;
+padding-top: 10px;
+border-top: 1px dashed var(–line);
+display: flex;
+gap: 6px;
+align-items: flex-start;
+}
+
+.counsel-actions {
+display: flex;
+gap: 6px;
+margin-top: 12px;
+justify-content: flex-end;
+}
+
+.icon-btn {
+background: none;
+border: 1px solid var(–line);
+padding: 5px 12px;
+border-radius: 6px;
+cursor: pointer;
+font-size: 0.76rem;
+font-weight: 500;
+color: var(–ink-mute);
+transition: all 0.15s;
+font-family: inherit;
+}
+.icon-btn:hover { border-color: var(–accent); color: var(–accent); background: var(–accent-soft); }
+.icon-btn.del:hover { border-color: var(–rose); color: var(–rose); background: var(–rose-bg); }
+
+/* ── EMPTY STATE ── */
+.empty {
+text-align: center;
+color: var(–ink-mute);
+padding: 60px 20px;
+font-size: 0.88rem;
+line-height: 2;
+}
+.empty-icon { font-size: 2.2rem; margin-bottom: 12px; display: block; opacity: 0.5; }
+
+/* ── STUDENT LIST ── */
+.student-item {
+display: flex;
+align-items: center;
+gap: 12px;
+padding: 12px 14px;
+border-radius: var(–radius);
+border: 1px solid transparent;
+cursor: pointer;
+transition: all 0.15s;
+margin-bottom: 6px;
+background: var(–surface);
+border-color: var(–line);
+}
+.student-item:hover { border-color: var(–accent); background: var(–accent-soft); }
+
+.s-avatar {
+width: 38px; height: 38px;
+border-radius: 12px;
+background: var(–accent-soft);
+display: flex; align-items: center; justify-content: center;
+font-weight: 700;
+font-size: 0.9rem;
+color: var(–accent);
+flex-shrink: 0;
+}
+
+.s-info { flex: 1; }
+.s-name { font-size: 0.9rem; font-weight: 600; color: var(–ink); }
+.s-num  { font-size: 0.72rem; color: var(–ink-mute); margin-top: 1px; }
+
+.s-count {
+background: var(–accent-soft);
+color: var(–accent);
+font-size: 0.7rem;
+font-weight: 700;
+padding: 3px 9px;
+border-radius: 20px;
+}
+
+.s-arrow { color: var(–ink-mute); font-size: 0.85rem; }
+
+/* ── CALENDAR ── */
+.cal-head {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 10px 0 14px;
+}
+
+.cal-head-btn {
+background: var(–line-soft);
+border: none;
+cursor: pointer;
+font-size: 1rem;
+color: var(–ink-soft);
+width: 32px; height: 32px;
+border-radius: 8px;
+display: flex; align-items: center; justify-content: center;
+transition: all 0.15s;
+}
+.cal-head-btn:hover { background: var(–accent-soft); color: var(–accent); }
+
+.cal-month {
+font-weight: 700;
+font-size: 1rem;
+color: var(–ink);
+letter-spacing: -0.3px;
+}
+
+.cal-grid {
+display: grid;
+grid-template-columns: repeat(7,1fr);
+gap: 3px;
+}
+
+.cal-dow {
+text-align: center;
+font-size: 0.68rem;
+font-weight: 600;
+color: var(–ink-mute);
+padding: 6px 0;
+}
+
+.cal-day {
+aspect-ratio: 1;
+display: flex;
+align-items: center;
+justify-content: center;
+border-radius: 8px;
+font-size: 0.82rem;
+color: var(–ink-soft);
+position: relative;
+}
+.cal-day.has-rec {
+background: var(–accent);
+color: white;
+font-weight: 700;
+cursor: pointer;
+box-shadow: 0 2px 8px rgba(91,106,240,0.3);
+}
+.cal-day.has-rec:hover { background: var(–accent-hover); transform: scale(1.05); }
+.cal-day.today {
+outline: 2px solid var(–accent);
+outline-offset: -2px;
+color: var(–accent);
+font-weight: 700;
+}
+.cal-day.today.has-rec { outline: 2px solid white; color: white; }
+.cal-day.empty { visibility: hidden; }
+.cal-day.sun { color: var(–rose); }
+.cal-day.sat { color: var(–sky); }
+.cal-day.has-rec.sun, .cal-day.has-rec.sat { color: white; }
+
+.cal-legend {
+font-size: 0.72rem;
+color: var(–ink-mute);
+margin-top: 12px;
+display: flex;
+gap: 14px;
+}
+.cal-legend-dot {
+width: 8px; height: 8px;
+border-radius: 50%;
+background: var(–accent);
+display: inline-block;
+margin-right: 4px;
+}
+.cal-legend-ring {
+width: 8px; height: 8px;
+border-radius: 50%;
+border: 2px solid var(–accent);
+display: inline-block;
+margin-right: 4px;
+}
+
+.cal-detail {
+margin-top: 14px;
+background: var(–surface);
+border-radius: var(–radius);
+padding: 14px;
+border: 1px solid var(–line);
+box-shadow: var(–shadow);
+}
+.cal-detail-date {
+font-weight: 700;
+color: var(–ink);
+margin-bottom: 10px;
+font-size: 0.88rem;
+display: flex;
+align-items: center;
+justify-content: space-between;
+}
+
+.cal-item {
+padding: 10px 12px;
+background: var(–line-soft);
+border-radius: 8px;
+margin-bottom: 7px;
+font-size: 0.83rem;
+line-height: 1.6;
+color: var(–ink-soft);
+}
+
+/* ── EDIT BANNER ── */
+.edit-banner {
+background: #fff8e1;
+border: 1px solid #ffd54f;
+border-radius: var(–radius-sm);
+padding: 10px 14px;
+margin-bottom: 12px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+font-size: 0.84rem;
+color: #7b5800;
+}
+
+/* ── MODAL ── */
+.modal-overlay {
+position: fixed; inset: 0;
+background: rgba(26,26,46,0.45);
+backdrop-filter: blur(4px);
+display: flex; align-items: center; justify-content: center;
+z-index: 9990; padding: 20px;
+}
+.modal-box {
+background: var(–surface);
+border-radius: 18px;
+padding: 26px;
+width: 100%;
+max-width: 380px;
+box-shadow: 0 20px 60px rgba(26,26,46,0.2);
+}
+.modal-box h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 10px; }
+.modal-box p  { font-size: 0.82rem; color: var(–ink-mute); line-height: 1.7; margin-bottom: 14px; }
+.modal-btns { display: flex; gap: 8px; margin-top: 14px; }
+.modal-btns button { flex: 1; }
+
+/* ── TOAST ── */
+#toast {
+position: fixed;
+bottom: calc(24px + var(–safe-bottom));
+left: 50%;
+transform: translateX(-50%) translateY(8px);
+background: var(–ink);
+color: white;
+padding: 11px 22px;
+border-radius: 30px;
+font-size: 0.85rem;
+font-weight: 500;
+z-index: 9999;
+opacity: 0;
+transition: opacity 0.25s, transform 0.25s;
+pointer-events: none;
+white-space: nowrap;
+font-family: inherit;
+box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+}
+#toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ── BG STATUS ── */
+#bg-status {
+position: fixed;
+top: calc(var(–safe-top) + 12px);
+right: 12px;
+font-size: 0.72rem;
+font-weight: 600;
+padding: 5px 12px;
+border-radius: 20px;
+z-index: 999;
+opacity: 0;
+transition: opacity 0.3s;
+pointer-events: none;
+}
+#bg-status.saving { background: #fff8e1; color: #7b5800; opacity: 1; }
+#bg-status.saved  { background: var(–green-soft); color: #16a34a; opacity: 1; }
+#bg-status.error  { background: var(–rose-soft); color: var(–rose); opacity: 1; }
+#bg-status.hide   { opacity: 0; }
+
+/* ── LOADING ── */
+#loading {
+position: fixed; inset: 0;
+background: rgba(26,26,46,0.3);
+backdrop-filter: blur(2px);
+display: flex; align-items: center; justify-content: center;
+z-index: 9998;
+font-size: 1rem;
+color: white;
+font-family: inherit;
+font-weight: 600;
+}
+.loading-inner {
+background: white;
+color: var(–ink);
+padding: 18px 32px;
+border-radius: 14px;
+box-shadow: var(–shadow-md);
+display: flex;
+align-items: center;
+gap: 12px;
+font-size: 0.9rem;
+}
+.spinner {
+width: 18px; height: 18px;
+border: 2.5px solid var(–line);
+border-top-color: var(–accent);
+border-radius: 50%;
+animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.hidden { display: none !important; }
+section.hidden { display: none !important; }
+
+/* ── SECTION HEADER ── */
+.section-header {
+display: flex;
+align-items: center;
+justify-content: space-between;
+margin-bottom: 14px;
+}
+.section-title {
+font-size: 0.8rem;
+font-weight: 600;
+color: var(–ink-mute);
+text-transform: uppercase;
+letter-spacing: 0.5px;
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-thumb { background: var(–line); border-radius: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+
+/* ── DIVIDER ── */
+.divider { height: 1px; background: var(–line); margin: 12px 0; }
+
+/* ── HINT TEXT ── */
+.hint { font-size: 0.75rem; color: var(–ink-mute); font-style: italic; }
+
+/* ── CARD DATE CHIP ── */
+.date-chip {
+font-size: 0.7rem;
+color: var(–ink-mute);
+background: var(–line-soft);
+padding: 2px 8px;
+border-radius: 5px;
+margin-left: auto;
+}
+
+/* animate in */
+@keyframes fadeUp {
+from { opacity: 0; transform: translateY(8px); }
+to   { opacity: 1; transform: translateY(0); }
+}
+.counsel-card, .student-item {
+animation: fadeUp 0.25s ease both;
+}
+</style>
+
+</head>
+<body>
+<div id="loading" class="hidden">
+  <div class="loading-inner">
+    <div class="spinner"></div>
+    불러오는 중…
+  </div>
+</div>
+<div id="toast"></div>
+<div id="bg-status"></div>
+
+<div id="app">
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-top">
+      <div class="title">
+        <span class="title-dot"></span>
+        학생 상담일지
+      </div>
+      <button class="gear-btn" onclick="openGasModal()" title="GAS 설정">⚙️</button>
+    </div>
+
+```
+<div class="tab-bar">
+  <button class="tab-btn active" id="tab-daily" onclick="switchTab('daily')">
+    <span class="tab-icon">📅</span>일별
+  </button>
+  <button class="tab-btn" id="tab-cal" onclick="switchTab('cal')">
+    <span class="tab-icon">🗓</span>달력
+  </button>
+  <button class="tab-btn" id="tab-write" onclick="switchTab('write')">
+    <span class="tab-icon">✏️</span>입력
+  </button>
+  <button class="tab-btn" id="tab-students" onclick="switchTab('students')">
+    <span class="tab-icon">👥</span>학생
+  </button>
+</div>
+```
+
+  </div>
+
+  <!-- TAB 1: 일별 조회 -->
+
+  <section id="sec-daily">
+    <div class="date-nav">
+      <button class="dnav-btn" onclick="shiftDate(-1)">‹</button>
+      <input type="date" id="dateInput" onchange="loadCounselsByDate()">
+      <button class="dnav-btn" onclick="shiftDate(1)">›</button>
+      <button class="today-btn" onclick="goToday()">오늘</button>
+    </div>
+    <div class="container" id="counselArea">
+      <div class="empty">
+        <span class="empty-icon">📋</span>
+        날짜를 선택하고<br>상담 기록을 확인하세요
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 2: 학생별 달력 -->
+
+  <section id="sec-cal" class="hidden">
+    <div class="container">
+      <label>학생 선택</label>
+      <select id="calStudentSelect" onchange="loadCalendar()">
+        <option value="">— 학생을 선택하세요 —</option>
+      </select>
+      <div id="calArea"></div>
+    </div>
+  </section>
+
+  <!-- TAB 3: 상담 입력 -->
+
+  <section id="sec-write" class="hidden">
+    <div class="container">
+      <div id="edit-banner" class="edit-banner hidden">
+        <span>✏️ 수정 모드</span>
+        <button onclick="cancelEdit()" class="btn btn-outline btn-sm">취소</button>
+      </div>
+
+```
+  <label>학생</label>
+  <select id="studentSelect"><option value="">학생을 선택하세요</option></select>
+
+  <label>상담 날짜</label>
+  <input type="date" id="writeDateInput">
+
+  <label>유형</label>
+  <select id="typeSelect">
+    <option value="학업">학업</option>
+    <option value="생활">생활</option>
+    <option value="진로">진로</option>
+    <option value="심리">심리</option>
+    <option value="기타">기타</option>
+  </select>
+
+  <label>상담 내용</label>
+  <textarea id="contentInput" placeholder="상담 내용을 입력하세요…" rows="5"></textarea>
+
+  <label>비고 / 메모 <span class="hint">선택</span></label>
+  <textarea id="memoInput" placeholder="추가 메모…" rows="3"></textarea>
+
+  <button class="btn" id="submitBtn" onclick="submitCounsel()">저장하기</button>
+</div>
+```
+
+  </section>
+
+  <!-- TAB 4: 학생 명단 -->
+
+  <section id="sec-students" class="hidden">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-title">구글 시트 기준</span>
+        <button onclick="forceReloadStudents()" class="btn btn-outline btn-sm">↺ 새로고침</button>
+      </div>
+      <div id="studentList">
+        <div class="empty">
+          <span class="empty-icon">🔗</span>
+          GAS 설정 후 새로고침 해주세요
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- GAS 모달 -->
+
+<div id="gasModal" class="modal-overlay hidden" onclick="closeGasOutside(event)">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <h3>⚙️ GAS 설정</h3>
+    <p>Google Apps Script 배포 URL을 입력하세요.<br>
+    시트: <strong>학생명단</strong>(A:학번, B:이름) · <strong>상담일지</strong>(A:ID, B:학번, C:이름, D:날짜, E:유형, F:내용, G:비고)</p>
+    <label>GAS URL</label>
+    <input type="text" id="gasUrlInput" placeholder="https://script.google.com/macros/s/.../exec" style="font-size:0.8rem; font-family:monospace;">
+    <div class="modal-btns">
+      <button class="btn btn-outline" onclick="document.getElementById('gasModal').classList.add('hidden')">취소</button>
+      <button class="btn" onclick="saveGasUrl()">저장 &amp; 연결</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let GAS_URL = localStorage.getItem('counsel_gas_url') || '';
+let students  = [];
+let counsels  = [];
+let editingId = null;
+let calYear   = new Date().getFullYear();
+let calMonth  = new Date().getMonth();
+let calData   = [];
+
+window.addEventListener('DOMContentLoaded', () => {
+  const today = fmt(new Date());
+  document.getElementById('dateInput').value      = today;
+  document.getElementById('writeDateInput').value = today;
+  if (GAS_URL) { loadStudents(); loadCounselsByDate(); }
+});
+
+function fmt(d) { return d.toISOString().slice(0,10); }
+
+function switchTab(tab) {
+  ['daily','cal','write','students'].forEach(t => {
+    document.getElementById('sec-' + t).classList.toggle('hidden', t !== tab);
+    document.getElementById('tab-' + t).classList.toggle('active', t === tab);
+  });
+}
+
+/* API */
+async function callApi(action, params={}) {
+  if (!GAS_URL) { showToast('GAS URL을 먼저 설정해주세요'); return null; }
+  document.getElementById('loading').classList.remove('hidden');
+  try {
+    const r = await fetch(GAS_URL, { method:'POST', mode:'cors', body: JSON.stringify({action,...params}) });
+    const j = await r.json();
+    if (j.status === 'error') throw new Error(j.message);
+    return j.data;
+  } catch(e) { showToast('오류: ' + e.message); return null; }
+  finally { document.getElementById('loading').classList.add('hidden'); }
+}
+
+async function callApiBg(action, params={}, label='저장') {
+  setBg('saving', `저장 중…`);
+  try {
+    const r = await fetch(GAS_URL, { method:'POST', mode:'cors', body: JSON.stringify({action,...params}) });
+    const j = await r.json();
+    if (j.status === 'error') throw new Error(j.message);
+    setBg('saved', `✓ ${label} 완료`);
+    return j.data;
+  } catch(e) { setBg('error', `✕ ${label} 실패`); showToast(`${label} 실패: ${e.message}`); throw e; }
+}
+
+function setBg(state, text) {
+  const el = document.getElementById('bg-status');
+  el.className = state; el.textContent = text;
+  if (state==='saved'||state==='error') setTimeout(()=>{ el.className='hide'; }, 2500);
+}
+
+/* 학생 명단 */
+async function loadStudents() {
+  const d = await callApi('getStudents');
+  if (!d) return;
+  students = d.students || [];
+  renderStudentList(); renderSelects();
+}
+
+async function forceReloadStudents() {
+  const d = await callApi('getStudents', { noCache: true });
+  if (!d) return;
+  students = d.students || [];
+  renderStudentList(); renderSelects();
+  showToast('학생 명단을 새로 불러왔습니다');
+}
+
+function renderStudentList() {
+  const el = document.getElementById('studentList');
+  if (!students.length) { el.innerHTML = '<div class="empty"><span class="empty-icon">👤</span>학생 없음</div>'; return; }
+  el.innerHTML = students.map((s, i) => `
+    <div class="student-item" style="animation-delay:${i*0.04}s" onclick="goStudentCal('${s.num}','${s.name}')">
+      <div class="s-avatar">${s.name[0]}</div>
+      <div class="s-info">
+        <div class="s-name">${s.name}</div>
+        <div class="s-num">${s.num}</div>
+      </div>
+      ${s.totalCount > 0 ? `<span class="s-count">${s.totalCount}건</span>` : ''}
+      <span class="s-arrow">›</span>
+    </div>
+  `).join('');
+}
+
+function renderSelects() {
+  const o = '<option value="">학생을 선택하세요</option>' + students.map(s=>`<option value="${s.num}">${s.num} ${s.name}</option>`).join('');
+  document.getElementById('studentSelect').innerHTML = o;
+  const o2 = '<option value="">— 학생을 선택하세요 —</option>' + students.map(s=>`<option value="${s.num}">${s.num} ${s.name}</option>`).join('');
+  document.getElementById('calStudentSelect').innerHTML = o2;
+}
+
+function goStudentCal(num) {
+  document.getElementById('calStudentSelect').value = num;
+  calYear = new Date().getFullYear(); calMonth = new Date().getMonth(); calData = [];
+  switchTab('cal'); loadCalendar();
+}
+
+/* 탭1: 일별 조회 */
+function shiftDate(d) {
+  const inp = document.getElementById('dateInput');
+  const dt = new Date(inp.value); dt.setDate(dt.getDate()+d);
+  inp.value = fmt(dt); loadCounselsByDate();
+}
+function goToday() { document.getElementById('dateInput').value = fmt(new Date()); loadCounselsByDate(); }
+
+async function loadCounselsByDate() {
+  const date = document.getElementById('dateInput').value;
+  if (!date) return;
+  const area = document.getElementById('counselArea');
+  area.innerHTML = '<div class="empty"><div class="spinner" style="margin:0 auto 12px;"></div>불러오는 중…</div>';
+  const d = await callApi('getCounselsByDate', { date });
+  if (!d) { area.innerHTML = '<div class="empty"><span class="empty-icon">⚠️</span>불러오기 실패</div>'; return; }
+  counsels = d.counsels || [];
+  if (!counsels.length) {
+    area.innerHTML = '<div class="empty"><span class="empty-icon">📋</span>해당 날짜의 상담 기록이 없습니다</div>';
+    return;
+  }
+  area.innerHTML = counsels.map((c, i) => `
+    <div class="counsel-card" id="card-${c.id}" style="animation-delay:${i*0.05}s">
+      <div class="counsel-head">
+        <span class="counsel-name">${c.name||''}</span>
+        <span class="counsel-num">${c.num||''}</span>
+        <span class="type-badge type-${c.type||'기타'}">${c.type||'기타'}</span>
+      </div>
+      <div class="counsel-content">${esc(c.content||'')}</div>
+      ${c.memo ? `<div class="counsel-memo">📝 ${esc(c.memo)}</div>` : ''}
+      <div class="counsel-actions">
+        <button class="icon-btn" onclick="startEdit('${c.id}','${c.num}','${c.type}',\`${(c.content||'').replace(/`/g,"'")}\`,\`${(c.memo||'').replace(/`/g,"'")}\`,'${c.date}')">수정</button>
+        <button class="icon-btn del" onclick="deleteCounsel('${c.id}')">삭제</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+/* 탭3: 상담 입력 */
+async function submitCounsel() {
+  const num     = document.getElementById('studentSelect').value;
+  const date    = document.getElementById('writeDateInput').value;
+  const type    = document.getElementById('typeSelect').value;
+  const content = document.getElementById('contentInput').value.trim();
+  const memo    = document.getElementById('memoInput').value.trim();
+  if (!num)     { showToast('학생을 선택하세요'); return; }
+  if (!date)    { showToast('날짜를 선택하세요'); return; }
+  if (!content) { showToast('상담 내용을 입력하세요'); return; }
+  const student = students.find(s=>s.num===num)||{num,name:''};
+  const isEdit  = editingId !== null;
+  const savedId = editingId;
+  cancelEdit();
+  document.getElementById('dateInput').value = date;
+  switchTab('daily');
+  try {
+    await callApiBg(isEdit?'updateCounsel':'saveCounsel',
+      {id:savedId,num:student.num,name:student.name,date,type,content,memo},
+      isEdit?'수정':'저장');
+    if (!isEdit) refreshCount(student.num, +1);
+    await loadCounselsByDate();
+  } catch(e) {}
+}
+
+function startEdit(id,num,type,content,memo,date) {
+  editingId=id;
+  document.getElementById('studentSelect').value  =num;
+  document.getElementById('writeDateInput').value =date;
+  document.getElementById('typeSelect').value     =type;
+  document.getElementById('contentInput').value   =content;
+  document.getElementById('memoInput').value      =memo;
+  document.getElementById('edit-banner').classList.remove('hidden');
+  document.getElementById('submitBtn').textContent='수정 저장';
+  switchTab('write');
+}
+
+function cancelEdit() {
+  editingId=null;
+  document.getElementById('studentSelect').value  ='';
+  document.getElementById('writeDateInput').value =fmt(new Date());
+  document.getElementById('typeSelect').value     ='학업';
+  document.getElementById('contentInput').value   ='';
+  document.getElementById('memoInput').value      ='';
+  document.getElementById('edit-banner').classList.add('hidden');
+  document.getElementById('submitBtn').textContent='저장하기';
+}
+
+async function deleteCounsel(id) {
+  if (!confirm('이 상담 기록을 삭제할까요?')) return;
+  const c=counsels.find(x=>x.id===id);
+  const card=document.getElementById('card-'+id);
+  if (card) { card.style.opacity='.35'; card.style.pointerEvents='none'; }
+  try {
+    await callApiBg('deleteCounsel',{id},'삭제');
+    if (c) refreshCount(c.num,-1);
+    await loadCounselsByDate();
+  } catch(e) { if(card){card.style.opacity='';card.style.pointerEvents='';} }
+}
+
+function refreshCount(num,delta) {
+  const s=students.find(s=>s.num===String(num));
+  if(!s) return;
+  s.totalCount=Math.max(0,(s.totalCount||0)+delta);
+  renderStudentList();
+}
+
+/* 탭2: 학생별 달력 */
+async function loadCalendar() {
+  const num=document.getElementById('calStudentSelect').value;
+  if (!num) { document.getElementById('calArea').innerHTML=''; return; }
+  calData=[];
+  const d=await callApi('getCounselHistory',{num});
+  if (d&&d.history) calData=d.history;
+  renderCalendar();
+}
+
+function shiftCalMonth(d) {
+  calMonth+=d;
+  if(calMonth>11){calMonth=0;calYear++;} if(calMonth<0){calMonth=11;calYear--;}
+  renderCalendar();
+}
+
+function renderCalendar() {
+  const area=document.getElementById('calArea');
+  const prefix=`${calYear}-${String(calMonth+1).padStart(2,'0')}`;
+  const dmap={};
+  calData.filter(d=>d.date.startsWith(prefix)).forEach(d=>{dmap[d.date]=d.counsels;});
+  const first=new Date(calYear,calMonth,1).getDay();
+  const days=new Date(calYear,calMonth+1,0).getDate();
+  const todayStr=fmt(new Date());
+  const dows=['일','월','화','수','목','금','토'];
+
+  let html=`<div class="cal-head">
+    <button class="cal-head-btn" onclick="shiftCalMonth(-1)">‹</button>
+    <span class="cal-month">${calYear}년 ${calMonth+1}월</span>
+    <button class="cal-head-btn" onclick="shiftCalMonth(1)">›</button>
+  </div>
+  <div class="cal-grid">
+    ${dows.map((d,i)=>`<div class="cal-dow" style="${i===0?'color:var(--rose)':i===6?'color:var(--sky)':''}">${d}</div>`).join('')}
+  `;
+  for(let i=0;i<first;i++) html+=`<div class="cal-day empty"></div>`;
+  for(let d=1;d<=days;d++) {
+    const ds=`${prefix}-${String(d).padStart(2,'0')}`;
+    const dow=(first+d-1)%7;
+    const cls=['cal-day', dmap[ds]?'has-rec':'', ds===todayStr?'today':'',
+      !dmap[ds]&&dow===0?'sun':'', !dmap[ds]&&dow===6?'sat':''].filter(Boolean).join(' ');
+    const clk=dmap[ds]?`onclick="onCalClick('${ds}')"`:'' ;
+    html+=`<div class="${cls}" ${clk}>${d}</div>`;
+  }
+  html+=`</div>
+  <div class="cal-legend">
+    <span><span class="cal-legend-dot"></span>상담 기록</span>
+    <span><span class="cal-legend-ring"></span>오늘</span>
+  </div>
+  <div id="calDetail" style="margin-top:10px;"></div>`;
+  area.innerHTML=html;
+}
+
+function onCalClick(dateStr) {
+  const entry=calData.find(d=>d.date===dateStr);
+  const el=document.getElementById('calDetail');
+  if (!entry) { el.innerHTML=''; return; }
+  el.innerHTML=`<div class="cal-detail">
+    <div class="cal-detail-date">
+      <span>📅 ${dateStr} · ${entry.counsels.length}건</span>
+      <button onclick="jumpToDate('${dateStr}')" style="background:none;border:1px solid var(--line);padding:4px 12px;border-radius:6px;cursor:pointer;font-size:0.74rem;font-family:inherit;color:var(--ink-soft);transition:all 0.15s;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--line)';this.style.color='var(--ink-soft)'">이 날 보기</button>
+    </div>
+    ${entry.counsels.map(c=>`<div class="cal-item">
+      <span class="type-badge type-${c.type||'기타'}">${c.type||'기타'}</span>
+      <div style="margin-top:6px;">${esc(c.content||'')}</div>
+      ${c.memo?`<div style="font-size:0.76rem;color:var(--ink-mute);margin-top:5px;">📝 ${esc(c.memo)}</div>`:''}
+    </div>`).join('')}
+  </div>`;
+}
+
+function jumpToDate(dateStr) {
+  document.getElementById('dateInput').value=dateStr;
+  switchTab('daily'); loadCounselsByDate();
+}
+
+/* GAS 설정 */
+function openGasModal() {
+  document.getElementById('gasUrlInput').value=GAS_URL;
+  document.getElementById('gasModal').classList.remove('hidden');
+}
+function closeGasOutside(e) {
+  if(e.target===document.getElementById('gasModal'))
+    document.getElementById('gasModal').classList.add('hidden');
+}
+function saveGasUrl() {
+  const url=document.getElementById('gasUrlInput').value.trim();
+  if(!url){showToast('URL을 입력하세요');return;}
+  GAS_URL=url; localStorage.setItem('counsel_gas_url',url);
+  document.getElementById('gasModal').classList.add('hidden');
+  showToast('저장됨. 연결 중…'); loadStudents(); loadCounselsByDate();
+}
+
+/* 유틸 */
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+let _tt;
+function showToast(msg){
+  clearTimeout(_tt);
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  _tt=setTimeout(()=>t.classList.remove('show'),2500);
+}
+</script>
+
+</body>
+</html>
