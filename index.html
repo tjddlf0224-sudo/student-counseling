@@ -559,7 +559,7 @@ animation: spin .6s linear infinite; display: inline-block;
 </div>
 
 <!-- 입력 패널 -->
-<div class="input-panel" id="inputPanel">
+<div class="input-panel" id="inputPanel" style="visibility:hidden;">
   <div class="input-panel-head">
     <span id="editingLabel">새 상담 입력</span>&nbsp;
     <span id="selectedDateLabel" style="color:var(--text3)"></span>
@@ -675,6 +675,11 @@ let calDates = []; // [{date, counsels:[{id,type,content,memo}]}] 형태로 상�
 window.addEventListener('DOMContentLoaded', () => {
   document.getElementById('dateInput').value = formatDate(new Date());
   updateDateLabel();
+  // 입력 패널 초기 상태: 반드시 닫힘
+  const _p = document.getElementById('inputPanel');
+  _p.classList.remove('panel-open');
+  // 렌더링 후 visibility 복원 (깜빡임 방지)
+  requestAnimationFrame(() => { _p.style.visibility = ''; });
   if (GAS_URL) { loadStudents(); loadCounselsByDate(); }
 });
 
