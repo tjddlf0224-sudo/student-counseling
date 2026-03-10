@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="상담일지">
 <title>상담일지 관리</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Gowun+Dodum&display=swap" rel="stylesheet">
@@ -14,25 +14,25 @@
    CSS 변수 & 리셋
 ══════════════════════════════════════════ */
 :root {
-  --bg: #0f1117;
-  --surface: #1a1d27;
-  --surface2: #22263a;
-  --border: #2e3350;
-  --accent: #5b8dee;
-  --accent2: #7c6af7;
-  --accent-soft: rgba(91,141,238,0.13);
-  --green: #3ecf8e;
-  --green-soft: rgba(62,207,142,0.12);
-  --orange: #f59e42;
-  --orange-soft: rgba(245,158,66,0.12);
-  --pink: #f472b6;
-  --pink-soft: rgba(244,114,182,0.12);
-  --text: #e8eaf0;
-  --text2: #8b90a8;
-  --text3: #555b78;
+  --bg: #F5F5DC;
+  --surface: #FFFDF5;
+  --surface2: #F0EDE4;
+  --border: #D7CCC8;
+  --accent: #5D4037;
+  --accent2: #8D6E63;
+  --accent-soft: rgba(93,64,55,0.10);
+  --green: #2E7D32;
+  --green-soft: rgba(46,125,50,0.10);
+  --orange: #E65100;
+  --orange-soft: rgba(230,81,0,0.10);
+  --pink: #AD1457;
+  --pink-soft: rgba(173,20,87,0.10);
+  --text: #3E2723;
+  --text2: #795548;
+  --text3: #A1887F;
   --radius: 12px;
   --radius-sm: 8px;
-  --shadow: 0 4px 24px rgba(0,0,0,0.45);
+  --shadow: 0 4px 24px rgba(0,0,0,0.12);
   --header-h: 56px;
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
@@ -84,9 +84,9 @@ position: fixed; top: calc(var(–safe-top) + 10px); right: 12px;
 font-size: 0.72rem; padding: 4px 10px; border-radius: 12px;
 z-index: 998; opacity: 0; transition: opacity .3s; pointer-events: none;
 }
-#bg-status.saving { background: rgba(91,141,238,.2); color: var(–accent); opacity: 1; }
-#bg-status.saved  { background: rgba(62,207,142,.18); color: var(–green); opacity: 1; }
-#bg-status.error  { background: rgba(229,85,85,.18); color: #e55; opacity: 1; }
+#bg-status.saving { background: rgba(93,64,55,.12); color: var(–accent); opacity: 1; }
+#bg-status.saved  { background: rgba(46,125,50,.12); color: var(–green); opacity: 1; }
+#bg-status.error  { background: rgba(198,40,40,.12); color: #C62828; opacity: 1; }
 #bg-status.hide   { opacity: 0; }
 
 /* ══════════════════════════════════════════
