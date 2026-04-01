@@ -2,22 +2,14 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-
 <title>상담일지 관리</title>
-
 <link rel="manifest" href="manifest.json">
-
-<!-- iOS 홈화면 앱 설정 -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="상담일지">
 <link rel="apple-touch-icon" href="icon.png">
-
-<!-- 폰트 -->
 <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700&family=Gowun+Dodum&display=swap" rel="stylesheet">
-
 <style>
 :root {
   --ink: #1a1a2e;
@@ -81,14 +73,12 @@ body { display: flex; justify-content: center; }
   top: 0;
   z-index: 100;
 }
-
 .header-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding-bottom: 14px;
 }
-
 .title {
   font-size: 1.25rem;
   font-weight: 700;
@@ -98,14 +88,12 @@ body { display: flex; justify-content: center; }
   align-items: center;
   gap: 8px;
 }
-
 .title-dot {
   width: 8px; height: 8px;
   background: var(--accent);
   border-radius: 50%;
   display: inline-block;
 }
-
 .gear-btn {
   background: var(--line-soft);
   border: none;
@@ -125,7 +113,6 @@ body { display: flex; justify-content: center; }
   gap: 0;
   background: transparent;
 }
-
 .tab-btn {
   flex: 1;
   padding: 12px 4px 10px;
@@ -143,7 +130,6 @@ body { display: flex; justify-content: center; }
   align-items: center;
   gap: 3px;
 }
-
 .tab-btn .tab-icon { font-size: 1.1rem; }
 .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
 .tab-btn:hover:not(.active) { color: var(--ink-soft); }
@@ -161,7 +147,6 @@ label {
   margin-bottom: 5px;
   letter-spacing: 0.2px;
 }
-
 select, input[type="date"], textarea {
   width: 100%;
   padding: 11px 14px;
@@ -177,7 +162,6 @@ select, input[type="date"], textarea {
   appearance: none;
 }
 select { cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239494b0' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px; }
-
 select:focus, input:focus, textarea:focus {
   border-color: var(--accent);
   box-shadow: 0 0 0 3px rgba(91,106,240,0.1);
@@ -203,14 +187,12 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
 .btn:hover { background: var(--accent-hover); box-shadow: 0 4px 16px rgba(91,106,240,0.3); }
 .btn:active { transform: scale(0.98); }
 .btn:disabled { opacity: 0.45; cursor: not-allowed; }
-
 .btn-outline {
   background: transparent;
   border: 1.5px solid var(--line);
   color: var(--ink-soft);
 }
 .btn-outline:hover { background: var(--line-soft); box-shadow: none; border-color: var(--ink-mute); }
-
 .btn-sm { display: inline-block; width: auto; padding: 7px 14px; font-size: 0.8rem; margin: 0; }
 .btn-danger { background: var(--rose); }
 .btn-danger:hover { background: #e11d48; box-shadow: 0 4px 16px rgba(244,63,94,0.25); }
@@ -224,7 +206,6 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
   background: var(--surface);
   border-bottom: 1px solid var(--line);
 }
-
 .dnav-btn {
   background: var(--line-soft);
   border: none;
@@ -238,9 +219,7 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
   transition: background 0.15s;
 }
 .dnav-btn:hover { background: var(--accent-soft); color: var(--accent); }
-
 #dateInput { margin: 0; flex: 1; }
-
 .today-btn {
   background: var(--accent);
   color: white;
@@ -255,6 +234,35 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
   transition: background 0.2s;
 }
 .today-btn:hover { background: var(--accent-hover); }
+
+/* ── SEARCH ── */
+.search-wrap {
+  padding: 10px 16px 8px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+}
+.search-input {
+  width: 100%;
+  padding: 9px 14px 9px 36px;
+  border: 1.5px solid var(--line);
+  border-radius: 20px;
+  font-family: inherit;
+  font-size: 0.88rem;
+  color: var(--ink);
+  background: var(--line-soft);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%239494b0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: 12px center;
+}
+.search-input:focus {
+  border-color: var(--accent);
+  background-color: var(--surface);
+  box-shadow: 0 0 0 3px rgba(91,106,240,0.1);
+}
 
 /* ── BADGES ── */
 .type-badge {
@@ -283,7 +291,6 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
   transition: box-shadow 0.2s;
 }
 .counsel-card:hover { box-shadow: var(--shadow-md); }
-
 .counsel-head {
   display: flex;
   align-items: center;
@@ -291,13 +298,11 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
   margin-bottom: 10px;
   flex-wrap: wrap;
 }
-
 .counsel-name {
   font-size: 0.95rem;
   font-weight: 700;
   color: var(--ink);
 }
-
 .counsel-num {
   font-size: 0.73rem;
   color: var(--ink-mute);
@@ -305,15 +310,15 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
   padding: 2px 7px;
   border-radius: 5px;
 }
-
+/* 줄바꿈 보존 */
 .counsel-content {
   font-size: 0.875rem;
   line-height: 1.72;
   color: var(--ink-soft);
   white-space: pre-wrap;
+  word-break: break-word;
   font-family: 'Gowun Dodum', sans-serif;
 }
-
 .counsel-memo {
   font-size: 0.78rem;
   color: var(--ink-mute);
@@ -323,15 +328,15 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
   display: flex;
   gap: 6px;
   align-items: flex-start;
+  white-space: pre-wrap;
+  word-break: break-word;
 }
-
 .counsel-actions {
   display: flex;
   gap: 6px;
   margin-top: 12px;
   justify-content: flex-end;
 }
-
 .icon-btn {
   background: none;
   border: 1px solid var(--line);
@@ -372,7 +377,6 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
   border-color: var(--line);
 }
 .student-item:hover { border-color: var(--accent); background: var(--accent-soft); }
-
 .s-avatar {
   width: 38px; height: 38px;
   border-radius: 12px;
@@ -383,11 +387,9 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
   color: var(--accent);
   flex-shrink: 0;
 }
-
 .s-info { flex: 1; }
 .s-name { font-size: 0.9rem; font-weight: 600; color: var(--ink); }
 .s-num  { font-size: 0.72rem; color: var(--ink-mute); margin-top: 1px; }
-
 .s-count {
   background: var(--accent-soft);
   color: var(--accent);
@@ -396,7 +398,6 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
   padding: 3px 9px;
   border-radius: 20px;
 }
-
 .s-arrow { color: var(--ink-mute); font-size: 0.85rem; }
 
 /* ── CALENDAR ── */
@@ -406,7 +407,6 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
   justify-content: space-between;
   padding: 10px 0 14px;
 }
-
 .cal-head-btn {
   background: var(--line-soft);
   border: none;
@@ -419,21 +419,18 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
   transition: all 0.15s;
 }
 .cal-head-btn:hover { background: var(--accent-soft); color: var(--accent); }
-
 .cal-month {
   font-weight: 700;
   font-size: 1rem;
   color: var(--ink);
   letter-spacing: -0.3px;
 }
-
 .cal-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  grid-auto-rows: 36px;  /* ← 이 줄 추가 */
+  grid-auto-rows: 36px;
   gap: 3px;
 }
-
 .cal-dow {
   text-align: center;
   font-size: 0.68rem;
@@ -441,8 +438,9 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
   color: var(--ink-mute);
   padding: 6px 0;
 }
-
 .cal-day {
+  height: 36px;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -470,7 +468,6 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
 .cal-day.sun { color: var(--rose); }
 .cal-day.sat { color: var(--sky); }
 .cal-day.has-rec.sun, .cal-day.has-rec.sat { color: white; }
-
 .cal-legend {
   font-size: 0.72rem;
   color: var(--ink-mute);
@@ -492,7 +489,6 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
   display: inline-block;
   margin-right: 4px;
 }
-
 .cal-detail {
   margin-top: 14px;
   background: var(--surface);
@@ -510,7 +506,6 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
   align-items: center;
   justify-content: space-between;
 }
-
 .cal-item {
   padding: 10px 12px;
   background: var(--line-soft);
@@ -519,6 +514,12 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
   font-size: 0.83rem;
   line-height: 1.6;
   color: var(--ink-soft);
+}
+/* 달력 팝업에도 줄바꿈 보존 */
+.cal-item-content {
+  margin-top: 6px;
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 
 /* ── EDIT BANNER ── */
@@ -698,7 +699,6 @@ section.hidden { display: none !important; }
       </div>
       <button class="gear-btn" onclick="openGasModal()" title="GAS 설정">⚙️</button>
     </div>
-
     <div class="tab-bar">
       <button class="tab-btn active" id="tab-daily" onclick="switchTab('daily')">
         <span class="tab-icon">📅</span>일별
@@ -722,6 +722,9 @@ section.hidden { display: none !important; }
       <input type="date" id="dateInput" onchange="loadCounselsByDate()">
       <button class="dnav-btn" onclick="shiftDate(1)">›</button>
       <button class="today-btn" onclick="goToday()">오늘</button>
+    </div>
+    <div class="search-wrap">
+      <input type="search" class="search-input" id="searchInput" placeholder="이름 또는 내용으로 검색…" oninput="filterCounsels()">
     </div>
     <div class="container" id="counselArea">
       <div class="empty">
@@ -749,13 +752,10 @@ section.hidden { display: none !important; }
         <span>✏️ 수정 모드</span>
         <button onclick="cancelEdit()" class="btn btn-outline btn-sm">취소</button>
       </div>
-
       <label>학생</label>
       <select id="studentSelect"><option value="">학생을 선택하세요</option></select>
-
       <label>상담 날짜</label>
       <input type="date" id="writeDateInput">
-
       <label>유형</label>
       <select id="typeSelect">
         <option value="학업">학업</option>
@@ -764,13 +764,10 @@ section.hidden { display: none !important; }
         <option value="심리">심리</option>
         <option value="기타">기타</option>
       </select>
-
       <label>상담 내용</label>
       <textarea id="contentInput" placeholder="상담 내용을 입력하세요…" rows="5"></textarea>
-
       <label>비고 / 메모 <span class="hint">선택</span></label>
       <textarea id="memoInput" placeholder="추가 메모…" rows="3"></textarea>
-
       <button class="btn" id="submitBtn" onclick="submitCounsel()">저장하기</button>
     </div>
   </section>
@@ -808,13 +805,16 @@ section.hidden { display: none !important; }
 </div>
 
 <script>
-let GAS_URL = localStorage.getItem('counsel_gas_url') || '';
-let students  = [];
-let counsels  = [];
+let GAS_URL  = localStorage.getItem('counsel_gas_url') || '';
+let students = [];
+let counsels = [];
 let editingId = null;
-let calYear   = new Date().getFullYear();
-let calMonth  = new Date().getMonth();
-let calData   = [];
+let calYear  = new Date().getFullYear();
+let calMonth = new Date().getMonth();
+let calData  = [];
+
+// 날짜별 캐시
+const counselCache = {};
 
 window.addEventListener('DOMContentLoaded', () => {
   const today = fmt(new Date());
@@ -825,14 +825,19 @@ window.addEventListener('DOMContentLoaded', () => {
 
 function fmt(d) { return d.toISOString().slice(0,10); }
 
+/* ── 탭 전환 (수정 중 이탈 경고) ── */
 function switchTab(tab) {
+  if (editingId !== null && tab !== 'write') {
+    if (!confirm('수정 중인 내용이 있습니다. 탭을 이동하면 취소됩니다. 계속할까요?')) return;
+    cancelEdit();
+  }
   ['daily','cal','write','students'].forEach(t => {
     document.getElementById('sec-' + t).classList.toggle('hidden', t !== tab);
     document.getElementById('tab-' + t).classList.toggle('active', t === tab);
   });
 }
 
-/* API */
+/* ── API ── */
 async function callApi(action, params={}) {
   if (!GAS_URL) { showToast('GAS URL을 먼저 설정해주세요'); return null; }
   document.getElementById('loading').classList.remove('hidden');
@@ -846,14 +851,14 @@ async function callApi(action, params={}) {
 }
 
 async function callApiBg(action, params={}, label='저장') {
-  setBg('saving', `저장 중…`);
+  setBg('saving', '저장 중…');
   try {
     const r = await fetch(GAS_URL, { method:'POST', mode:'cors', body: JSON.stringify({action,...params}) });
     const j = await r.json();
     if (j.status === 'error') throw new Error(j.message);
-    setBg('saved', `✓ ${label} 완료`);
+    setBg('saved', '✓ ' + label + ' 완료');
     return j.data;
-  } catch(e) { setBg('error', `✕ ${label} 실패`); showToast(`${label} 실패: ${e.message}`); throw e; }
+  } catch(e) { setBg('error', '✕ ' + label + ' 실패'); showToast(label + ' 실패: ' + e.message); throw e; }
 }
 
 function setBg(state, text) {
@@ -862,7 +867,7 @@ function setBg(state, text) {
   if (state==='saved'||state==='error') setTimeout(()=>{ el.className='hide'; }, 2500);
 }
 
-/* 학생 명단 */
+/* ── 학생 명단 ── */
 async function loadStudents() {
   const d = await callApi('getStudents');
   if (!d) return;
@@ -882,11 +887,11 @@ function renderStudentList() {
   const el = document.getElementById('studentList');
   if (!students.length) { el.innerHTML = '<div class="empty"><span class="empty-icon">👤</span>학생 없음</div>'; return; }
   el.innerHTML = students.map((s, i) => `
-    <div class="student-item" style="animation-delay:${i*0.04}s" onclick="goStudentCal('${s.num}','${s.name}')">
-      <div class="s-avatar">${s.name[0]}</div>
+    <div class="student-item" style="animation-delay:${i*0.04}s" onclick="goStudentCal('${esc(s.num)}')">
+      <div class="s-avatar">${esc(s.name[0])}</div>
       <div class="s-info">
-        <div class="s-name">${s.name}</div>
-        <div class="s-num">${s.num}</div>
+        <div class="s-name">${esc(s.name)}</div>
+        <div class="s-num">${esc(s.num)}</div>
       </div>
       ${s.totalCount > 0 ? `<span class="s-count">${s.totalCount}건</span>` : ''}
       <span class="s-arrow">›</span>
@@ -895,9 +900,11 @@ function renderStudentList() {
 }
 
 function renderSelects() {
-  const o = '<option value="">학생을 선택하세요</option>' + students.map(s=>`<option value="${s.num}">${s.num} ${s.name}</option>`).join('');
+  const o = '<option value="">학생을 선택하세요</option>' +
+    students.map(s=>`<option value="${esc(s.num)}">${esc(s.num)} ${esc(s.name)}</option>`).join('');
   document.getElementById('studentSelect').innerHTML = o;
-  const o2 = '<option value="">— 학생을 선택하세요 —</option>' + students.map(s=>`<option value="${s.num}">${s.num} ${s.name}</option>`).join('');
+  const o2 = '<option value="">— 학생을 선택하세요 —</option>' +
+    students.map(s=>`<option value="${esc(s.num)}">${esc(s.num)} ${esc(s.name)}</option>`).join('');
   document.getElementById('calStudentSelect').innerHTML = o2;
 }
 
@@ -907,44 +914,96 @@ function goStudentCal(num) {
   switchTab('cal'); loadCalendar();
 }
 
-/* 탭1: 일별 조회 */
+/* ── 탭1: 일별 조회 ── */
 function shiftDate(d) {
   const inp = document.getElementById('dateInput');
   const dt = new Date(inp.value); dt.setDate(dt.getDate()+d);
   inp.value = fmt(dt); loadCounselsByDate();
 }
-function goToday() { document.getElementById('dateInput').value = fmt(new Date()); loadCounselsByDate(); }
+function goToday() {
+  document.getElementById('dateInput').value = fmt(new Date());
+  loadCounselsByDate();
+}
 
 async function loadCounselsByDate() {
   const date = document.getElementById('dateInput').value;
   if (!date) return;
+
+  // 검색어 초기화
+  document.getElementById('searchInput').value = '';
+
+  // 캐시 확인
+  if (counselCache[date]) {
+    counsels = counselCache[date];
+    renderCounsels(counsels);
+    return;
+  }
+
   const area = document.getElementById('counselArea');
   area.innerHTML = '<div class="empty"><div class="spinner" style="margin:0 auto 12px;"></div>불러오는 중…</div>';
   const d = await callApi('getCounselsByDate', { date });
   if (!d) { area.innerHTML = '<div class="empty"><span class="empty-icon">⚠️</span>불러오기 실패</div>'; return; }
   counsels = d.counsels || [];
-  if (!counsels.length) {
+  counselCache[date] = counsels; // 캐시 저장
+  renderCounsels(counsels);
+}
+
+function renderCounsels(list) {
+  const area = document.getElementById('counselArea');
+  if (!list.length) {
     area.innerHTML = '<div class="empty"><span class="empty-icon">📋</span>해당 날짜의 상담 기록이 없습니다</div>';
     return;
   }
-  area.innerHTML = counsels.map((c, i) => `
-    <div class="counsel-card" id="card-${c.id}" style="animation-delay:${i*0.05}s">
+  area.innerHTML = list.map((c, i) => buildCard(c, i)).join('');
+}
+
+/* XSS 안전: 카드 DOM을 innerHTML 대신 data-id로 참조 */
+function buildCard(c, i) {
+  return `
+    <div class="counsel-card" id="card-${esc(c.id)}" style="animation-delay:${i*0.05}s">
       <div class="counsel-head">
-        <span class="counsel-name">${c.name||''}</span>
-        <span class="counsel-num">${c.num||''}</span>
-        <span class="type-badge type-${c.type||'기타'}">${c.type||'기타'}</span>
+        <span class="counsel-name">${esc(c.name||'')}</span>
+        <span class="counsel-num">${esc(c.num||'')}</span>
+        <span class="type-badge type-${esc(c.type||'기타')}">${esc(c.type||'기타')}</span>
       </div>
       <div class="counsel-content">${esc(c.content||'')}</div>
       ${c.memo ? `<div class="counsel-memo">📝 ${esc(c.memo)}</div>` : ''}
       <div class="counsel-actions">
-        <button class="icon-btn" onclick="startEdit('${c.id}','${c.num}','${c.type}',\`${(c.content||'').replace(/`/g,"'")}\`,\`${(c.memo||'').replace(/`/g,"'")}\`,'${c.date}')">수정</button>
-        <button class="icon-btn del" onclick="deleteCounsel('${c.id}')">삭제</button>
+        <button class="icon-btn" data-action="edit" data-id="${esc(c.id)}">수정</button>
+        <button class="icon-btn del" data-action="delete" data-id="${esc(c.id)}">삭제</button>
       </div>
     </div>
-  `).join('');
+  `;
 }
 
-/* 탭3: 상담 입력 */
+/* 이벤트 위임으로 수정/삭제 처리 — onclick 인라인 XSS 제거 */
+document.addEventListener('click', function(e) {
+  const btn = e.target.closest('[data-action]');
+  if (!btn) return;
+  const action = btn.dataset.action;
+  const id = btn.dataset.id;
+  if (action === 'edit') {
+    const c = counsels.find(x => x.id === id);
+    if (c) startEdit(c);
+  } else if (action === 'delete') {
+    deleteCounsel(id);
+  }
+});
+
+/* ── 검색 필터 ── */
+function filterCounsels() {
+  const q = document.getElementById('searchInput').value.trim().toLowerCase();
+  if (!q) { renderCounsels(counsels); return; }
+  const filtered = counsels.filter(c =>
+    (c.name||'').toLowerCase().includes(q) ||
+    (c.num||'').toLowerCase().includes(q) ||
+    (c.content||'').toLowerCase().includes(q) ||
+    (c.memo||'').toLowerCase().includes(q)
+  );
+  renderCounsels(filtered);
+}
+
+/* ── 탭3: 상담 입력 ── */
 async function submitCounsel() {
   const num     = document.getElementById('studentSelect').value;
   const date    = document.getElementById('writeDateInput').value;
@@ -959,85 +1018,93 @@ async function submitCounsel() {
   const savedId = editingId;
   cancelEdit();
   document.getElementById('dateInput').value = date;
+  // 해당 날짜 캐시 무효화
+  delete counselCache[date];
   switchTab('daily');
   try {
-    await callApiBg(isEdit?'updateCounsel':'saveCounsel',
-      {id:savedId,num:student.num,name:student.name,date,type,content,memo},
-      isEdit?'수정':'저장');
+    await callApiBg(
+      isEdit ? 'updateCounsel' : 'saveCounsel',
+      {id:savedId, num:student.num, name:student.name, date, type, content, memo},
+      isEdit ? '수정' : '저장'
+    );
     if (!isEdit) refreshCount(student.num, +1);
     await loadCounselsByDate();
   } catch(e) {}
 }
 
-function startEdit(id,num,type,content,memo,date) {
-  editingId=id;
-  document.getElementById('studentSelect').value  =num;
-  document.getElementById('writeDateInput').value =date;
-  document.getElementById('typeSelect').value     =type;
-  document.getElementById('contentInput').value   =content;
-  document.getElementById('memoInput').value      =memo;
+/* XSS 안전: counsels 배열에서 직접 데이터 참조 */
+function startEdit(c) {
+  editingId = c.id;
+  document.getElementById('studentSelect').value  = c.num  || '';
+  document.getElementById('writeDateInput').value = c.date || fmt(new Date());
+  document.getElementById('typeSelect').value     = c.type || '학업';
+  document.getElementById('contentInput').value   = c.content || '';
+  document.getElementById('memoInput').value      = c.memo    || '';
   document.getElementById('edit-banner').classList.remove('hidden');
-  document.getElementById('submitBtn').textContent='수정 저장';
+  document.getElementById('submitBtn').textContent = '수정 저장';
   switchTab('write');
 }
 
 function cancelEdit() {
-  editingId=null;
-  document.getElementById('studentSelect').value  ='';
-  document.getElementById('writeDateInput').value =fmt(new Date());
-  document.getElementById('typeSelect').value     ='학업';
-  document.getElementById('contentInput').value   ='';
-  document.getElementById('memoInput').value      ='';
+  editingId = null;
+  document.getElementById('studentSelect').value  = '';
+  document.getElementById('writeDateInput').value = fmt(new Date());
+  document.getElementById('typeSelect').value     = '학업';
+  document.getElementById('contentInput').value   = '';
+  document.getElementById('memoInput').value      = '';
   document.getElementById('edit-banner').classList.add('hidden');
-  document.getElementById('submitBtn').textContent='저장하기';
+  document.getElementById('submitBtn').textContent = '저장하기';
 }
 
 async function deleteCounsel(id) {
   if (!confirm('이 상담 기록을 삭제할까요?')) return;
-  const c=counsels.find(x=>x.id===id);
-  const card=document.getElementById('card-'+id);
+  const c = counsels.find(x=>x.id===id);
+  const card = document.getElementById('card-'+id);
   if (card) { card.style.opacity='.35'; card.style.pointerEvents='none'; }
   try {
-    await callApiBg('deleteCounsel',{id},'삭제');
-    if (c) refreshCount(c.num,-1);
+    await callApiBg('deleteCounsel', {id}, '삭제');
+    // 캐시 무효화
+    const date = document.getElementById('dateInput').value;
+    delete counselCache[date];
+    if (c) refreshCount(c.num, -1);
     await loadCounselsByDate();
-  } catch(e) { if(card){card.style.opacity='';card.style.pointerEvents='';} }
+  } catch(e) { if(card){ card.style.opacity=''; card.style.pointerEvents=''; } }
 }
 
-function refreshCount(num,delta) {
-  const s=students.find(s=>s.num===String(num));
-  if(!s) return;
-  s.totalCount=Math.max(0,(s.totalCount||0)+delta);
+function refreshCount(num, delta) {
+  const s = students.find(s=>s.num===String(num));
+  if (!s) return;
+  s.totalCount = Math.max(0, (s.totalCount||0) + delta);
   renderStudentList();
 }
 
-/* 탭2: 학생별 달력 */
+/* ── 탭2: 학생별 달력 ── */
 async function loadCalendar() {
-  const num=document.getElementById('calStudentSelect').value;
+  const num = document.getElementById('calStudentSelect').value;
   if (!num) { document.getElementById('calArea').innerHTML=''; return; }
-  calData=[];
-  const d=await callApi('getCounselHistory',{num});
-  if (d&&d.history) calData=d.history;
+  calData = [];
+  const d = await callApi('getCounselHistory', {num});
+  if (d && d.history) calData = d.history;
   renderCalendar();
 }
 
 function shiftCalMonth(d) {
-  calMonth+=d;
-  if(calMonth>11){calMonth=0;calYear++;} if(calMonth<0){calMonth=11;calYear--;}
+  calMonth += d;
+  if (calMonth>11){calMonth=0; calYear++;} if (calMonth<0){calMonth=11; calYear--;}
   renderCalendar();
 }
 
 function renderCalendar() {
-  const area=document.getElementById('calArea');
-  const prefix=`${calYear}-${String(calMonth+1).padStart(2,'0')}`;
-  const dmap={};
+  const area = document.getElementById('calArea');
+  const prefix = `${calYear}-${String(calMonth+1).padStart(2,'0')}`;
+  const dmap = {};
   calData.filter(d=>d.date.startsWith(prefix)).forEach(d=>{dmap[d.date]=d.counsels;});
-  const first=new Date(calYear,calMonth,1).getDay();
-  const days=new Date(calYear,calMonth+1,0).getDate();
-  const todayStr=fmt(new Date());
-  const dows=['일','월','화','수','목','금','토'];
+  const first = new Date(calYear,calMonth,1).getDay();
+  const days  = new Date(calYear,calMonth+1,0).getDate();
+  const todayStr = fmt(new Date());
+  const dows = ['일','월','화','수','목','금','토'];
 
-  let html=`<div class="cal-head">
+  let html = `<div class="cal-head">
     <button class="cal-head-btn" onclick="shiftCalMonth(-1)">‹</button>
     <span class="cal-month">${calYear}년 ${calMonth+1}월</span>
     <button class="cal-head-btn" onclick="shiftCalMonth(1)">›</button>
@@ -1045,71 +1112,87 @@ function renderCalendar() {
   <div class="cal-grid">
     ${dows.map((d,i)=>`<div class="cal-dow" style="${i===0?'color:var(--rose)':i===6?'color:var(--sky)':''}">${d}</div>`).join('')}
   `;
-  for(let i=0;i<first;i++) html+=`<div class="cal-day empty"></div>`;
-  for(let d=1;d<=days;d++) {
-    const ds=`${prefix}-${String(d).padStart(2,'0')}`;
-    const dow=(first+d-1)%7;
-    const cls=['cal-day', dmap[ds]?'has-rec':'', ds===todayStr?'today':'',
+  for (let i=0; i<first; i++) html += `<div class="cal-day empty"></div>`;
+  for (let d=1; d<=days; d++) {
+    const ds  = `${prefix}-${String(d).padStart(2,'0')}`;
+    const dow = (first+d-1)%7;
+    const cls = ['cal-day', dmap[ds]?'has-rec':'', ds===todayStr?'today':'',
       !dmap[ds]&&dow===0?'sun':'', !dmap[ds]&&dow===6?'sat':''].filter(Boolean).join(' ');
-    const clk=dmap[ds]?`onclick="onCalClick('${ds}')"`:'' ;
-    html+=`<div class="${cls}" ${clk}>${d}</div>`;
+    const clk = dmap[ds] ? `data-caldate="${ds}"` : '';
+    html += `<div class="${cls}" ${clk}>${d}</div>`;
   }
-  html+=`</div>
+  html += `</div>
   <div class="cal-legend">
     <span><span class="cal-legend-dot"></span>상담 기록</span>
     <span><span class="cal-legend-ring"></span>오늘</span>
   </div>
   <div id="calDetail" style="margin-top:10px;"></div>`;
-  area.innerHTML=html;
+  area.innerHTML = html;
+
+  // 달력 날짜 클릭 이벤트 위임
+  area.querySelectorAll('[data-caldate]').forEach(el => {
+    el.addEventListener('click', () => onCalClick(el.dataset.caldate));
+  });
 }
 
 function onCalClick(dateStr) {
-  const entry=calData.find(d=>d.date===dateStr);
-  const el=document.getElementById('calDetail');
+  const entry = calData.find(d=>d.date===dateStr);
+  const el = document.getElementById('calDetail');
   if (!entry) { el.innerHTML=''; return; }
-  el.innerHTML=`<div class="cal-detail">
+  el.innerHTML = `<div class="cal-detail">
     <div class="cal-detail-date">
-      <span>📅 ${dateStr} · ${entry.counsels.length}건</span>
-      <button onclick="jumpToDate('${dateStr}')" style="background:none;border:1px solid var(--line);padding:4px 12px;border-radius:6px;cursor:pointer;font-size:0.74rem;font-family:inherit;color:var(--ink-soft);transition:all 0.15s;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--line)';this.style.color='var(--ink-soft)'">이 날 보기</button>
+      <span>📅 ${esc(dateStr)} · ${entry.counsels.length}건</span>
+      <button data-jumpdate="${esc(dateStr)}" style="background:none;border:1px solid var(--line);padding:4px 12px;border-radius:6px;cursor:pointer;font-size:0.74rem;font-family:inherit;color:var(--ink-soft);transition:all 0.15s;">이 날 보기</button>
     </div>
     ${entry.counsels.map(c=>`<div class="cal-item">
-      <span class="type-badge type-${c.type||'기타'}">${c.type||'기타'}</span>
-      <div style="margin-top:6px;">${esc(c.content||'')}</div>
-      ${c.memo?`<div style="font-size:0.76rem;color:var(--ink-mute);margin-top:5px;">📝 ${esc(c.memo)}</div>`:''}
+      <span class="type-badge type-${esc(c.type||'기타')}">${esc(c.type||'기타')}</span>
+      <div class="cal-item-content">${esc(c.content||'')}</div>
+      ${c.memo?`<div style="font-size:0.76rem;color:var(--ink-mute);margin-top:5px;white-space:pre-wrap;word-break:break-word;">📝 ${esc(c.memo)}</div>`:''}
     </div>`).join('')}
   </div>`;
+  el.querySelector('[data-jumpdate]')?.addEventListener('click', e => {
+    jumpToDate(e.currentTarget.dataset.jumpdate);
+  });
 }
 
 function jumpToDate(dateStr) {
-  document.getElementById('dateInput').value=dateStr;
+  document.getElementById('dateInput').value = dateStr;
   switchTab('daily'); loadCounselsByDate();
 }
 
-/* GAS 설정 */
+/* ── GAS 설정 ── */
 function openGasModal() {
-  document.getElementById('gasUrlInput').value=GAS_URL;
+  document.getElementById('gasUrlInput').value = GAS_URL;
   document.getElementById('gasModal').classList.remove('hidden');
 }
 function closeGasOutside(e) {
-  if(e.target===document.getElementById('gasModal'))
+  if (e.target === document.getElementById('gasModal'))
     document.getElementById('gasModal').classList.add('hidden');
 }
 function saveGasUrl() {
-  const url=document.getElementById('gasUrlInput').value.trim();
-  if(!url){showToast('URL을 입력하세요');return;}
-  GAS_URL=url; localStorage.setItem('counsel_gas_url',url);
+  const url = document.getElementById('gasUrlInput').value.trim();
+  if (!url) { showToast('URL을 입력하세요'); return; }
+  GAS_URL = url; localStorage.setItem('counsel_gas_url', url);
   document.getElementById('gasModal').classList.add('hidden');
   showToast('저장됨. 연결 중…'); loadStudents(); loadCounselsByDate();
 }
 
-/* 유틸 */
-function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+/* ── 유틸 ── */
+function esc(s) {
+  return String(s)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#39;');
+}
+
 let _tt;
-function showToast(msg){
+function showToast(msg) {
   clearTimeout(_tt);
-  const t=document.getElementById('toast');
-  t.textContent=msg; t.classList.add('show');
-  _tt=setTimeout(()=>t.classList.remove('show'),2500);
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  _tt = setTimeout(()=>t.classList.remove('show'), 2500);
 }
 </script>
 </body>
