@@ -12,710 +12,205 @@
 <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700&family=Gowun+Dodum&display=swap" rel="stylesheet">
 <style>
 :root {
-  --ink: #1a1a2e;
-  --ink-soft: #4a4a6a;
-  --ink-mute: #9494b0;
-  --line: #e8e8f0;
-  --line-soft: #f2f2f8;
-  --bg: #f7f7fc;
-  --surface: #ffffff;
-  --accent: #5b6af0;
-  --accent-soft: #eef0ff;
-  --accent-hover: #4555e8;
-  --green: #22c55e;
-  --green-bg: #f0fdf4;
-  --green-soft: #dcfce7;
-  --orange: #f97316;
-  --orange-bg: #fff7ed;
-  --orange-soft: #ffedd5;
-  --rose: #f43f5e;
-  --rose-bg: #fff1f2;
-  --rose-soft: #ffe4e6;
-  --sky: #0ea5e9;
-  --sky-bg: #f0f9ff;
-  --sky-soft: #e0f2fe;
-  --purple: #a855f7;
-  --purple-bg: #faf5ff;
-  --safe-top: env(safe-area-inset-top, 0px);
-  --safe-bottom: env(safe-area-inset-bottom, 0px);
-  --radius: 14px;
-  --radius-sm: 8px;
-  --shadow: 0 2px 12px rgba(26,26,46,0.07);
-  --shadow-md: 0 4px 24px rgba(26,26,46,0.1);
+  --ink: #1a1a2e; --ink-soft: #4a4a6a; --ink-mute: #9494b0;
+  --line: #e8e8f0; --line-soft: #f2f2f8; --bg: #f7f7fc; --surface: #ffffff;
+  --accent: #5b6af0; --accent-soft: #eef0ff; --accent-hover: #4555e8;
+  --green: #22c55e; --green-soft: #dcfce7;
+  --orange: #f97316; --orange-soft: #ffedd5;
+  --rose: #f43f5e; --rose-bg: #fff1f2; --rose-soft: #ffe4e6;
+  --sky: #0ea5e9; --sky-soft: #e0f2fe;
+  --safe-top: env(safe-area-inset-top, 0px); --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --radius: 14px; --radius-sm: 8px;
+  --shadow: 0 2px 12px rgba(26,26,46,0.07); --shadow-md: 0 4px 24px rgba(26,26,46,0.1);
 }
-
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-
-html, body {
-  min-height: 100vh;
-  background: var(--bg);
-  font-family: 'Pretendard', 'Gowun Dodum', sans-serif;
-  color: var(--ink);
-}
+html, body { min-height: 100vh; background: var(--bg); font-family: 'Pretendard', 'Gowun Dodum', sans-serif; color: var(--ink); }
 body { display: flex; justify-content: center; }
+#app { width: 100%; max-width: 430px; background: var(--bg); min-height: 100vh; position: relative; }
 
-#app {
-  width: 100%;
-  max-width: 430px;
-  background: var(--bg);
-  min-height: 100vh;
-  position: relative;
-}
-
-/* ── HEADER ── */
-.header {
-  background: var(--surface);
-  padding: 0 20px;
-  padding-top: calc(16px + var(--safe-top));
-  padding-bottom: 0;
-  border-bottom: 1px solid var(--line);
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-.header-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-bottom: 14px;
-}
-.title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--ink);
-  letter-spacing: -0.3px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.title-dot {
-  width: 8px; height: 8px;
-  background: var(--accent);
-  border-radius: 50%;
-  display: inline-block;
-}
-.gear-btn {
-  background: var(--line-soft);
-  border: none;
-  width: 34px; height: 34px;
-  border-radius: 10px;
-  cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 0.95rem;
-  transition: background 0.2s;
-  color: var(--ink-soft);
-}
+.header { background: var(--surface); padding: 0 20px; padding-top: calc(16px + var(--safe-top)); padding-bottom: 0; border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 100; }
+.header-top { display: flex; align-items: center; justify-content: space-between; padding-bottom: 14px; }
+.title { font-size: 1.25rem; font-weight: 700; color: var(--ink); letter-spacing: -0.3px; display: flex; align-items: center; gap: 8px; }
+.title-dot { width: 8px; height: 8px; background: var(--accent); border-radius: 50%; display: inline-block; }
+.gear-btn { background: var(--line-soft); border: none; width: 34px; height: 34px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.95rem; transition: background 0.2s; color: var(--ink-soft); }
 .gear-btn:hover { background: var(--line); }
 
-/* ── TABS ── */
-.tab-bar {
-  display: flex;
-  gap: 0;
-  background: transparent;
-}
-.tab-btn {
-  flex: 1;
-  padding: 12px 4px 10px;
-  background: transparent;
-  border: none;
-  border-bottom: 2.5px solid transparent;
-  font-family: inherit;
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: var(--ink-mute);
-  cursor: pointer;
-  transition: all 0.2s;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-}
-.tab-btn .tab-icon { font-size: 1.1rem; }
+.tab-bar { display: flex; gap: 0; }
+.tab-btn { flex: 1; padding: 12px 2px 10px; background: transparent; border: none; border-bottom: 2.5px solid transparent; font-family: inherit; font-size: 0.7rem; font-weight: 500; color: var(--ink-mute); cursor: pointer; transition: all 0.2s; display: flex; flex-direction: column; align-items: center; gap: 3px; }
+.tab-btn .tab-icon { font-size: 1rem; }
 .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
 .tab-btn:hover:not(.active) { color: var(--ink-soft); }
 
-/* ── SECTIONS ── */
 .container { padding: 16px; }
 
-/* ── FORM ELEMENTS ── */
-label {
-  font-size: 0.78rem;
-  font-weight: 600;
-  color: var(--ink-soft);
-  display: block;
-  margin-top: 12px;
-  margin-bottom: 5px;
-  letter-spacing: 0.2px;
-}
-select, input[type="date"], textarea {
-  width: 100%;
-  padding: 11px 14px;
-  border: 1.5px solid var(--line);
-  border-radius: var(--radius-sm);
-  font-family: inherit;
-  font-size: 0.92rem;
-  color: var(--ink);
-  background: var(--surface);
-  outline: none;
-  transition: border-color 0.15s, box-shadow 0.15s;
-  -webkit-appearance: none;
-  appearance: none;
-}
+label { font-size: 0.78rem; font-weight: 600; color: var(--ink-soft); display: block; margin-top: 12px; margin-bottom: 5px; letter-spacing: 0.2px; }
+select, input[type="date"], textarea { width: 100%; padding: 11px 14px; border: 1.5px solid var(--line); border-radius: var(--radius-sm); font-family: inherit; font-size: 0.92rem; color: var(--ink); background: var(--surface); outline: none; transition: border-color 0.15s, box-shadow 0.15s; -webkit-appearance: none; appearance: none; }
 select { cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239494b0' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px; }
-select:focus, input:focus, textarea:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(91,106,240,0.1);
-}
+select:focus, input:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(91,106,240,0.1); }
 textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
 
-/* ── BUTTONS ── */
-.btn {
-  display: block; width: 100%;
-  padding: 13px 20px;
-  background: var(--accent);
-  color: white;
-  border: none;
-  font-family: inherit;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  border-radius: var(--radius-sm);
-  transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
-  letter-spacing: -0.2px;
-  margin-top: 8px;
-}
+.btn { display: block; width: 100%; padding: 13px 20px; background: var(--accent); color: white; border: none; font-family: inherit; font-size: 0.95rem; font-weight: 600; cursor: pointer; border-radius: var(--radius-sm); transition: background 0.2s, transform 0.1s, box-shadow 0.2s; letter-spacing: -0.2px; margin-top: 8px; }
 .btn:hover { background: var(--accent-hover); box-shadow: 0 4px 16px rgba(91,106,240,0.3); }
 .btn:active { transform: scale(0.98); }
 .btn:disabled { opacity: 0.45; cursor: not-allowed; }
-.btn-outline {
-  background: transparent;
-  border: 1.5px solid var(--line);
-  color: var(--ink-soft);
-}
+.btn-outline { background: transparent; border: 1.5px solid var(--line); color: var(--ink-soft); }
 .btn-outline:hover { background: var(--line-soft); box-shadow: none; border-color: var(--ink-mute); }
 .btn-sm { display: inline-block; width: auto; padding: 7px 14px; font-size: 0.8rem; margin: 0; }
-.btn-danger { background: var(--rose); }
-.btn-danger:hover { background: #e11d48; box-shadow: 0 4px 16px rgba(244,63,94,0.25); }
 
-/* ── DATE NAV ── */
-.date-nav {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px 16px;
-  background: var(--surface);
-  border-bottom: 1px solid var(--line);
-}
-.dnav-btn {
-  background: var(--line-soft);
-  border: none;
-  width: 36px; height: 36px;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  font-size: 1.1rem;
-  color: var(--ink-soft);
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-  transition: background 0.15s;
-}
+.date-nav { display: flex; align-items: center; gap: 8px; padding: 12px 16px; background: var(--surface); border-bottom: 1px solid var(--line); }
+.dnav-btn { background: var(--line-soft); border: none; width: 36px; height: 36px; border-radius: var(--radius-sm); cursor: pointer; font-size: 1.1rem; color: var(--ink-soft); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background 0.15s; }
 .dnav-btn:hover { background: var(--accent-soft); color: var(--accent); }
 #dateInput { margin: 0; flex: 1; }
-.today-btn {
-  background: var(--accent);
-  color: white;
-  border: none;
-  padding: 8px 14px;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  font-family: inherit;
-  font-size: 0.78rem;
-  font-weight: 600;
-  flex-shrink: 0;
-  transition: background 0.2s;
-}
+.today-btn { background: var(--accent); color: white; border: none; padding: 8px 14px; border-radius: var(--radius-sm); cursor: pointer; font-family: inherit; font-size: 0.78rem; font-weight: 600; flex-shrink: 0; transition: background 0.2s; }
 .today-btn:hover { background: var(--accent-hover); }
 
-/* ── SEARCH ── */
-.search-wrap {
-  padding: 10px 16px 8px;
-  background: var(--surface);
-  border-bottom: 1px solid var(--line);
-}
-.search-input {
-  width: 100%;
-  padding: 9px 14px 9px 36px;
-  border: 1.5px solid var(--line);
-  border-radius: 20px;
-  font-family: inherit;
-  font-size: 0.88rem;
-  color: var(--ink);
-  background: var(--line-soft);
-  outline: none;
-  transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
-  -webkit-appearance: none;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%239494b0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: 12px center;
-}
-.search-input:focus {
-  border-color: var(--accent);
-  background-color: var(--surface);
-  box-shadow: 0 0 0 3px rgba(91,106,240,0.1);
-}
+.search-wrap { padding: 10px 16px 8px; background: var(--surface); border-bottom: 1px solid var(--line); }
+.search-input { width: 100%; padding: 9px 14px 9px 36px; border: 1.5px solid var(--line); border-radius: 20px; font-family: inherit; font-size: 0.88rem; color: var(--ink); background: var(--line-soft); outline: none; transition: all 0.15s; -webkit-appearance: none; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%239494b0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: 12px center; }
+.search-input:focus { border-color: var(--accent); background-color: var(--surface); box-shadow: 0 0 0 3px rgba(91,106,240,0.1); }
 
-/* ── BADGES ── */
-.type-badge {
-  display: inline-flex;
-  align-items: center;
-  font-size: 0.7rem;
-  font-weight: 600;
-  padding: 3px 9px;
-  border-radius: 20px;
-  letter-spacing: 0.1px;
-}
+.type-badge { display: inline-flex; align-items: center; font-size: 0.7rem; font-weight: 600; padding: 3px 9px; border-radius: 20px; }
 .type-학업 { background: var(--sky-soft); color: var(--sky); }
 .type-생활 { background: var(--green-soft); color: #16a34a; }
 .type-진로 { background: var(--orange-soft); color: var(--orange); }
 .type-심리 { background: var(--rose-soft); color: var(--rose); }
 .type-기타 { background: var(--line-soft); color: var(--ink-mute); }
 
-/* ── COUNSEL CARDS ── */
-.counsel-card {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 15px 16px;
-  margin-bottom: 10px;
-  box-shadow: var(--shadow);
-  transition: box-shadow 0.2s;
-}
+.counsel-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 15px 16px; margin-bottom: 10px; box-shadow: var(--shadow); transition: box-shadow 0.2s; }
 .counsel-card:hover { box-shadow: var(--shadow-md); }
-.counsel-head {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  margin-bottom: 10px;
-  flex-wrap: wrap;
-}
-.counsel-name {
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: var(--ink);
-}
-.counsel-num {
-  font-size: 0.73rem;
-  color: var(--ink-mute);
-  background: var(--line-soft);
-  padding: 2px 7px;
-  border-radius: 5px;
-}
-/* 줄바꿈 보존 */
-.counsel-content {
-  font-size: 0.875rem;
-  line-height: 1.72;
-  color: var(--ink-soft);
-  white-space: pre-wrap;
-  word-break: break-word;
-  font-family: 'Gowun Dodum', sans-serif;
-}
-.counsel-memo {
-  font-size: 0.78rem;
-  color: var(--ink-mute);
-  margin-top: 10px;
-  padding-top: 10px;
-  border-top: 1px dashed var(--line);
-  display: flex;
-  gap: 6px;
-  align-items: flex-start;
-  white-space: pre-wrap;
-  word-break: break-word;
-}
-.counsel-actions {
-  display: flex;
-  gap: 6px;
-  margin-top: 12px;
-  justify-content: flex-end;
-}
-.icon-btn {
-  background: none;
-  border: 1px solid var(--line);
-  padding: 5px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.76rem;
-  font-weight: 500;
-  color: var(--ink-mute);
-  transition: all 0.15s;
-  font-family: inherit;
-}
+.counsel-head { display: flex; align-items: center; gap: 7px; margin-bottom: 10px; flex-wrap: wrap; }
+.counsel-name { font-size: 0.95rem; font-weight: 700; color: var(--ink); }
+.counsel-num { font-size: 0.73rem; color: var(--ink-mute); background: var(--line-soft); padding: 2px 7px; border-radius: 5px; }
+.counsel-content { font-size: 0.875rem; line-height: 1.72; color: var(--ink-soft); white-space: pre-wrap; word-break: break-word; font-family: 'Gowun Dodum', sans-serif; }
+.counsel-memo { font-size: 0.78rem; color: var(--ink-mute); margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--line); display: flex; gap: 6px; align-items: flex-start; white-space: pre-wrap; word-break: break-word; }
+.counsel-actions { display: flex; gap: 6px; margin-top: 12px; justify-content: flex-end; }
+.icon-btn { background: none; border: 1px solid var(--line); padding: 5px 12px; border-radius: 6px; cursor: pointer; font-size: 0.76rem; font-weight: 500; color: var(--ink-mute); transition: all 0.15s; font-family: inherit; }
 .icon-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
 .icon-btn.del:hover { border-color: var(--rose); color: var(--rose); background: var(--rose-bg); }
 
-/* ── EMPTY STATE ── */
-.empty {
-  text-align: center;
-  color: var(--ink-mute);
-  padding: 60px 20px;
-  font-size: 0.88rem;
-  line-height: 2;
-}
+.empty { text-align: center; color: var(--ink-mute); padding: 60px 20px; font-size: 0.88rem; line-height: 2; }
 .empty-icon { font-size: 2.2rem; margin-bottom: 12px; display: block; opacity: 0.5; }
 
-/* ── STUDENT LIST ── */
-.student-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 14px;
-  border-radius: var(--radius);
-  border: 1px solid transparent;
-  cursor: pointer;
-  transition: all 0.15s;
-  margin-bottom: 6px;
-  background: var(--surface);
-  border-color: var(--line);
-}
+.student-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: var(--radius); border: 1px solid var(--line); cursor: pointer; transition: all 0.15s; margin-bottom: 6px; background: var(--surface); }
 .student-item:hover { border-color: var(--accent); background: var(--accent-soft); }
-.s-avatar {
-  width: 38px; height: 38px;
-  border-radius: 12px;
-  background: var(--accent-soft);
-  display: flex; align-items: center; justify-content: center;
-  font-weight: 700;
-  font-size: 0.9rem;
-  color: var(--accent);
-  flex-shrink: 0;
-}
+.s-avatar { width: 38px; height: 38px; border-radius: 12px; background: var(--accent-soft); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; color: var(--accent); flex-shrink: 0; }
 .s-info { flex: 1; }
 .s-name { font-size: 0.9rem; font-weight: 600; color: var(--ink); }
 .s-num  { font-size: 0.72rem; color: var(--ink-mute); margin-top: 1px; }
-.s-count {
-  background: var(--accent-soft);
-  color: var(--accent);
-  font-size: 0.7rem;
-  font-weight: 700;
-  padding: 3px 9px;
-  border-radius: 20px;
-}
+.s-count { background: var(--accent-soft); color: var(--accent); font-size: 0.7rem; font-weight: 700; padding: 3px 9px; border-radius: 20px; }
 .s-arrow { color: var(--ink-mute); font-size: 0.85rem; }
 
-/* ── CALENDAR ── */
-.cal-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 0 14px;
-}
-.cal-head-btn {
-  background: var(--line-soft);
-  border: none;
-  cursor: pointer;
-  font-size: 1rem;
-  color: var(--ink-soft);
-  width: 32px; height: 32px;
-  border-radius: 8px;
-  display: flex; align-items: center; justify-content: center;
-  transition: all 0.15s;
-}
+.cal-head { display: flex; align-items: center; justify-content: space-between; padding: 10px 0 14px; }
+.cal-head-btn { background: var(--line-soft); border: none; cursor: pointer; font-size: 1rem; color: var(--ink-soft); width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
 .cal-head-btn:hover { background: var(--accent-soft); color: var(--accent); }
-.cal-month {
-  font-weight: 700;
-  font-size: 1rem;
-  color: var(--ink);
-  letter-spacing: -0.3px;
-}
-.cal-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  grid-auto-rows: 36px;
-  gap: 3px;
-}
-.cal-dow {
-  text-align: center;
-  font-size: 0.68rem;
-  font-weight: 600;
-  color: var(--ink-mute);
-  padding: 6px 0;
-}
-.cal-day {
-  height: 36px;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 8px;
-  font-size: 0.82rem;
-  color: var(--ink-soft);
-  position: relative;
-}
-.cal-day.has-rec {
-  background: var(--accent);
-  color: white;
-  font-weight: 700;
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(91,106,240,0.3);
-}
+.cal-month { font-weight: 700; font-size: 1rem; color: var(--ink); letter-spacing: -0.3px; }
+.cal-grid { display: grid; grid-template-columns: repeat(7,1fr); grid-auto-rows: 36px; gap: 3px; }
+.cal-dow { text-align: center; font-size: 0.68rem; font-weight: 600; color: var(--ink-mute); padding: 6px 0; }
+.cal-day { height: 36px; width: 100%; display: flex; align-items: center; justify-content: center; border-radius: 8px; font-size: 0.82rem; color: var(--ink-soft); position: relative; }
+.cal-day.has-rec { background: var(--accent); color: white; font-weight: 700; cursor: pointer; box-shadow: 0 2px 8px rgba(91,106,240,0.3); }
 .cal-day.has-rec:hover { background: var(--accent-hover); transform: scale(1.05); }
-.cal-day.today {
-  outline: 2px solid var(--accent);
-  outline-offset: -2px;
-  color: var(--accent);
-  font-weight: 700;
-}
+.cal-day.today { outline: 2px solid var(--accent); outline-offset: -2px; color: var(--accent); font-weight: 700; }
 .cal-day.today.has-rec { outline: 2px solid white; color: white; }
 .cal-day.empty { visibility: hidden; }
-.cal-day.sun { color: var(--rose); }
-.cal-day.sat { color: var(--sky); }
+.cal-day.sun { color: var(--rose); } .cal-day.sat { color: var(--sky); }
 .cal-day.has-rec.sun, .cal-day.has-rec.sat { color: white; }
-.cal-legend {
-  font-size: 0.72rem;
-  color: var(--ink-mute);
-  margin-top: 12px;
-  display: flex;
-  gap: 14px;
-}
-.cal-legend-dot {
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  background: var(--accent);
-  display: inline-block;
-  margin-right: 4px;
-}
-.cal-legend-ring {
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  border: 2px solid var(--accent);
-  display: inline-block;
-  margin-right: 4px;
-}
-.cal-detail {
-  margin-top: 14px;
-  background: var(--surface);
-  border-radius: var(--radius);
-  padding: 14px;
-  border: 1px solid var(--line);
-  box-shadow: var(--shadow);
-}
-.cal-detail-date {
-  font-weight: 700;
-  color: var(--ink);
-  margin-bottom: 10px;
-  font-size: 0.88rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.cal-item {
-  padding: 10px 12px;
-  background: var(--line-soft);
-  border-radius: 8px;
-  margin-bottom: 7px;
-  font-size: 0.83rem;
-  line-height: 1.6;
-  color: var(--ink-soft);
-}
-/* 달력 팝업에도 줄바꿈 보존 */
-.cal-item-content {
-  margin-top: 6px;
-  white-space: pre-wrap;
-  word-break: break-word;
-}
+.cal-legend { font-size: 0.72rem; color: var(--ink-mute); margin-top: 12px; display: flex; gap: 14px; }
+.cal-legend-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); display: inline-block; margin-right: 4px; }
+.cal-legend-ring { width: 8px; height: 8px; border-radius: 50%; border: 2px solid var(--accent); display: inline-block; margin-right: 4px; }
+.cal-detail { margin-top: 14px; background: var(--surface); border-radius: var(--radius); padding: 14px; border: 1px solid var(--line); box-shadow: var(--shadow); }
+.cal-detail-date { font-weight: 700; color: var(--ink); margin-bottom: 10px; font-size: 0.88rem; display: flex; align-items: center; justify-content: space-between; }
+.cal-item { padding: 10px 12px; background: var(--line-soft); border-radius: 8px; margin-bottom: 7px; font-size: 0.83rem; line-height: 1.6; color: var(--ink-soft); }
+.cal-item-content { margin-top: 6px; white-space: pre-wrap; word-break: break-word; }
 
-/* ── EDIT BANNER ── */
-.edit-banner {
-  background: #fff8e1;
-  border: 1px solid #ffd54f;
-  border-radius: var(--radius-sm);
-  padding: 10px 14px;
-  margin-bottom: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 0.84rem;
-  color: #7b5800;
-}
+.edit-banner { background: #fff8e1; border: 1px solid #ffd54f; border-radius: var(--radius-sm); padding: 10px 14px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; font-size: 0.84rem; color: #7b5800; }
 
-/* ── MODAL ── */
-.modal-overlay {
-  position: fixed; inset: 0;
-  background: rgba(26,26,46,0.45);
-  backdrop-filter: blur(4px);
-  display: flex; align-items: center; justify-content: center;
-  z-index: 9990; padding: 20px;
-}
-.modal-box {
-  background: var(--surface);
-  border-radius: 18px;
-  padding: 26px;
-  width: 100%;
-  max-width: 380px;
-  box-shadow: 0 20px 60px rgba(26,26,46,0.2);
-}
+.modal-overlay { position: fixed; inset: 0; background: rgba(26,26,46,0.45); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 9990; padding: 20px; }
+.modal-box { background: var(--surface); border-radius: 18px; padding: 26px; width: 100%; max-width: 380px; box-shadow: 0 20px 60px rgba(26,26,46,0.2); }
 .modal-box h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 10px; }
 .modal-box p  { font-size: 0.82rem; color: var(--ink-mute); line-height: 1.7; margin-bottom: 14px; }
 .modal-btns { display: flex; gap: 8px; margin-top: 14px; }
 .modal-btns button { flex: 1; }
 
-/* ── TOAST ── */
-#toast {
-  position: fixed;
-  bottom: calc(24px + var(--safe-bottom));
-  left: 50%;
-  transform: translateX(-50%) translateY(8px);
-  background: var(--ink);
-  color: white;
-  padding: 11px 22px;
-  border-radius: 30px;
-  font-size: 0.85rem;
-  font-weight: 500;
-  z-index: 9999;
-  opacity: 0;
-  transition: opacity 0.25s, transform 0.25s;
-  pointer-events: none;
-  white-space: nowrap;
-  font-family: inherit;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.2);
-}
+#toast { position: fixed; bottom: calc(24px + var(--safe-bottom)); left: 50%; transform: translateX(-50%) translateY(8px); background: var(--ink); color: white; padding: 11px 22px; border-radius: 30px; font-size: 0.85rem; font-weight: 500; z-index: 9999; opacity: 0; transition: opacity 0.25s, transform 0.25s; pointer-events: none; white-space: nowrap; font-family: inherit; box-shadow: 0 8px 30px rgba(0,0,0,0.2); }
 #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-/* ── BG STATUS ── */
-#bg-status {
-  position: fixed;
-  top: calc(var(--safe-top) + 12px);
-  right: 12px;
-  font-size: 0.72rem;
-  font-weight: 600;
-  padding: 5px 12px;
-  border-radius: 20px;
-  z-index: 999;
-  opacity: 0;
-  transition: opacity 0.3s;
-  pointer-events: none;
-}
+#bg-status { position: fixed; top: calc(var(--safe-top) + 12px); right: 12px; font-size: 0.72rem; font-weight: 600; padding: 5px 12px; border-radius: 20px; z-index: 999; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
 #bg-status.saving { background: #fff8e1; color: #7b5800; opacity: 1; }
 #bg-status.saved  { background: var(--green-soft); color: #16a34a; opacity: 1; }
 #bg-status.error  { background: var(--rose-soft); color: var(--rose); opacity: 1; }
 #bg-status.hide   { opacity: 0; }
 
-/* ── LOADING ── */
-#loading {
-  position: fixed; inset: 0;
-  background: rgba(26,26,46,0.3);
-  backdrop-filter: blur(2px);
-  display: flex; align-items: center; justify-content: center;
-  z-index: 9998;
-  font-size: 1rem;
-  color: white;
-  font-family: inherit;
-  font-weight: 600;
-}
-.loading-inner {
-  background: white;
-  color: var(--ink);
-  padding: 18px 32px;
-  border-radius: 14px;
-  box-shadow: var(--shadow-md);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 0.9rem;
-}
-.spinner {
-  width: 18px; height: 18px;
-  border: 2.5px solid var(--line);
-  border-top-color: var(--accent);
-  border-radius: 50%;
-  animation: spin 0.7s linear infinite;
-}
+#loading { position: fixed; inset: 0; background: rgba(26,26,46,0.3); backdrop-filter: blur(2px); display: flex; align-items: center; justify-content: center; z-index: 9998; }
+.loading-inner { background: white; color: var(--ink); padding: 18px 32px; border-radius: 14px; box-shadow: var(--shadow-md); display: flex; align-items: center; gap: 12px; font-size: 0.9rem; }
+.spinner { width: 18px; height: 18px; border: 2.5px solid var(--line); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
 .hidden { display: none !important; }
 section.hidden { display: none !important; }
-
-/* ── SECTION HEADER ── */
-.section-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 14px;
-}
-.section-title {
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--ink-mute);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-/* ── SCROLLBAR ── */
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-thumb { background: var(--line); border-radius: 10px; }
-::-webkit-scrollbar-track { background: transparent; }
-
-/* ── DIVIDER ── */
-.divider { height: 1px; background: var(--line); margin: 12px 0; }
-
-/* ── HINT TEXT ── */
+.section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.section-title { font-size: 0.8rem; font-weight: 600; color: var(--ink-mute); text-transform: uppercase; letter-spacing: 0.5px; }
+::-webkit-scrollbar { width: 4px; } ::-webkit-scrollbar-thumb { background: var(--line); border-radius: 10px; }
 .hint { font-size: 0.75rem; color: var(--ink-mute); font-style: italic; }
 
-/* ── CARD DATE CHIP ── */
-.date-chip {
-  font-size: 0.7rem;
-  color: var(--ink-mute);
-  background: var(--line-soft);
-  padding: 2px 8px;
-  border-radius: 5px;
-  margin-left: auto;
-}
+/* ── 통계 ── */
+.stat-nav { display: flex; align-items: center; gap: 8px; padding: 12px 16px; background: var(--surface); border-bottom: 1px solid var(--line); }
+.stat-nav select { margin: 0; flex: 1; }
+.stat-refresh-btn { background: var(--accent); color: white; border: none; padding: 9px 16px; border-radius: var(--radius-sm); cursor: pointer; font-family: inherit; font-size: 0.82rem; font-weight: 600; flex-shrink: 0; transition: background 0.2s; }
+.stat-refresh-btn:hover { background: var(--accent-hover); }
 
-/* animate in */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(8px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-.counsel-card, .student-item {
-  animation: fadeUp 0.25s ease both;
-}
+.stat-summary { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 12px; }
+.stat-num-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 10px; text-align: center; box-shadow: var(--shadow); }
+.stat-num-card .num { font-size: 1.7rem; font-weight: 700; color: var(--accent); line-height: 1; }
+.stat-num-card .num-label { font-size: 0.68rem; color: var(--ink-mute); margin-top: 5px; }
+
+.stat-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; margin-bottom: 12px; box-shadow: var(--shadow); }
+.stat-card-title { font-size: 0.75rem; font-weight: 700; color: var(--ink-mute); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 14px; }
+
+.bar-chart-wrap { overflow-x: hidden; }
+canvas { display: block; }
+
+.donut-wrap { display: flex; align-items: center; gap: 16px; }
+.donut-legend { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+.legend-row { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; }
+.legend-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+.legend-label { color: var(--ink-soft); flex: 1; }
+.legend-val { font-weight: 700; color: var(--ink); }
+.legend-pct { color: var(--ink-mute); font-size: 0.72rem; min-width: 30px; text-align: right; }
+
+.top-row { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--line-soft); }
+.top-row:last-child { border-bottom: none; }
+.top-rank { font-size: 0.75rem; font-weight: 700; color: var(--ink-mute); width: 20px; text-align: center; flex-shrink: 0; }
+.top-rank.gold { color: #f59e0b; } .top-rank.silver { color: #94a3b8; } .top-rank.bronze { color: #cd7c4e; }
+.top-bar-wrap { flex: 1; }
+.top-bar-name { font-size: 0.82rem; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+.top-bar-bg { background: var(--line-soft); border-radius: 4px; height: 6px; overflow: hidden; }
+.top-bar-fill { height: 100%; border-radius: 4px; background: var(--accent); transition: width 0.7s cubic-bezier(.4,0,.2,1); }
+.top-bar-count { font-size: 0.82rem; font-weight: 700; color: var(--accent); flex-shrink: 0; }
+
+@keyframes fadeUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+.counsel-card, .student-item { animation: fadeUp 0.25s ease both; }
 </style>
 </head>
 <body>
-<div id="loading" class="hidden">
-  <div class="loading-inner">
-    <div class="spinner"></div>
-    불러오는 중…
-  </div>
-</div>
+<div id="loading" class="hidden"><div class="loading-inner"><div class="spinner"></div>불러오는 중…</div></div>
 <div id="toast"></div>
 <div id="bg-status"></div>
 
 <div id="app">
-  <!-- HEADER -->
   <div class="header">
     <div class="header-top">
-      <div class="title">
-        <span class="title-dot"></span>
-        학생 상담일지
-      </div>
-      <button class="gear-btn" onclick="openGasModal()" title="GAS 설정">⚙️</button>
+      <div class="title"><span class="title-dot"></span>학생 상담일지</div>
+      <button class="gear-btn" onclick="openGasModal()">⚙️</button>
     </div>
     <div class="tab-bar">
-      <button class="tab-btn active" id="tab-daily" onclick="switchTab('daily')">
-        <span class="tab-icon">📅</span>일별
-      </button>
-      <button class="tab-btn" id="tab-cal" onclick="switchTab('cal')">
-        <span class="tab-icon">🗓</span>달력
-      </button>
-      <button class="tab-btn" id="tab-write" onclick="switchTab('write')">
-        <span class="tab-icon">✏️</span>입력
-      </button>
-      <button class="tab-btn" id="tab-students" onclick="switchTab('students')">
-        <span class="tab-icon">👥</span>학생
-      </button>
+      <button class="tab-btn active" id="tab-daily"    onclick="switchTab('daily')">   <span class="tab-icon">📅</span>일별</button>
+      <button class="tab-btn"        id="tab-cal"      onclick="switchTab('cal')">     <span class="tab-icon">🗓</span>달력</button>
+      <button class="tab-btn"        id="tab-write"    onclick="switchTab('write')">   <span class="tab-icon">✏️</span>입력</button>
+      <button class="tab-btn"        id="tab-students" onclick="switchTab('students')"><span class="tab-icon">👥</span>학생</button>
+      <button class="tab-btn"        id="tab-stats"    onclick="switchTab('stats')">   <span class="tab-icon">📊</span>통계</button>
     </div>
   </div>
 
-  <!-- TAB 1: 일별 조회 -->
+  <!-- TAB 1: 일별 -->
   <section id="sec-daily">
     <div class="date-nav">
       <button class="dnav-btn" onclick="shiftDate(-1)">‹</button>
@@ -727,25 +222,20 @@ section.hidden { display: none !important; }
       <input type="search" class="search-input" id="searchInput" placeholder="이름 또는 내용으로 검색…" oninput="filterCounsels()">
     </div>
     <div class="container" id="counselArea">
-      <div class="empty">
-        <span class="empty-icon">📋</span>
-        날짜를 선택하고<br>상담 기록을 확인하세요
-      </div>
+      <div class="empty"><span class="empty-icon">📋</span>날짜를 선택하고<br>상담 기록을 확인하세요</div>
     </div>
   </section>
 
-  <!-- TAB 2: 학생별 달력 -->
+  <!-- TAB 2: 달력 -->
   <section id="sec-cal" class="hidden">
     <div class="container">
       <label>학생 선택</label>
-      <select id="calStudentSelect" onchange="loadCalendar()">
-        <option value="">— 학생을 선택하세요 —</option>
-      </select>
+      <select id="calStudentSelect" onchange="loadCalendar()"><option value="">— 학생을 선택하세요 —</option></select>
       <div id="calArea"></div>
     </div>
   </section>
 
-  <!-- TAB 3: 상담 입력 -->
+  <!-- TAB 3: 입력 -->
   <section id="sec-write" class="hidden">
     <div class="container">
       <div id="edit-banner" class="edit-banner hidden">
@@ -758,11 +248,8 @@ section.hidden { display: none !important; }
       <input type="date" id="writeDateInput">
       <label>유형</label>
       <select id="typeSelect">
-        <option value="학업">학업</option>
-        <option value="생활">생활</option>
-        <option value="진로">진로</option>
-        <option value="심리">심리</option>
-        <option value="기타">기타</option>
+        <option value="학업">학업</option><option value="생활">생활</option>
+        <option value="진로">진로</option><option value="심리">심리</option><option value="기타">기타</option>
       </select>
       <label>상담 내용</label>
       <textarea id="contentInput" placeholder="상담 내용을 입력하세요…" rows="5"></textarea>
@@ -772,7 +259,7 @@ section.hidden { display: none !important; }
     </div>
   </section>
 
-  <!-- TAB 4: 학생 명단 -->
+  <!-- TAB 4: 학생 -->
   <section id="sec-students" class="hidden">
     <div class="container">
       <div class="section-header">
@@ -780,11 +267,19 @@ section.hidden { display: none !important; }
         <button onclick="forceReloadStudents()" class="btn btn-outline btn-sm">↺ 새로고침</button>
       </div>
       <div id="studentList">
-        <div class="empty">
-          <span class="empty-icon">🔗</span>
-          GAS 설정 후 새로고침 해주세요
-        </div>
+        <div class="empty"><span class="empty-icon">🔗</span>GAS 설정 후 새로고침 해주세요</div>
       </div>
+    </div>
+  </section>
+
+  <!-- TAB 5: 통계 -->
+  <section id="sec-stats" class="hidden">
+    <div class="stat-nav">
+      <select id="statYearSelect" onchange="renderStats()"></select>
+      <button class="stat-refresh-btn" onclick="loadStats()">↺ 불러오기</button>
+    </div>
+    <div class="container" id="statsArea">
+      <div class="empty"><span class="empty-icon">📊</span>↺ 불러오기를 눌러<br>통계를 확인하세요</div>
     </div>
   </section>
 </div>
@@ -796,7 +291,7 @@ section.hidden { display: none !important; }
     <p>Google Apps Script 배포 URL을 입력하세요.<br>
     시트: <strong>학생명단</strong>(A:학번, B:이름) · <strong>상담일지</strong>(A:ID, B:학번, C:이름, D:날짜, E:유형, F:내용, G:비고)</p>
     <label>GAS URL</label>
-    <input type="text" id="gasUrlInput" placeholder="https://script.google.com/macros/s/.../exec" style="font-size:0.8rem; font-family:monospace;">
+    <input type="text" id="gasUrlInput" placeholder="https://script.google.com/macros/s/.../exec" style="font-size:0.8rem;font-family:monospace;">
     <div class="modal-btns">
       <button class="btn btn-outline" onclick="document.getElementById('gasModal').classList.add('hidden')">취소</button>
       <button class="btn" onclick="saveGasUrl()">저장 &amp; 연결</button>
@@ -806,343 +301,255 @@ section.hidden { display: none !important; }
 
 <script>
 let GAS_URL  = localStorage.getItem('counsel_gas_url') || '';
-let students = [];
-let counsels = [];
-let editingId = null;
-let calYear  = new Date().getFullYear();
-let calMonth = new Date().getMonth();
-let calData  = [];
-
-// 날짜별 캐시
+let students = [], counsels = [], editingId = null;
+let calYear = new Date().getFullYear(), calMonth = new Date().getMonth(), calData = [];
 const counselCache = {};
+let statsAllData = [];
+
+const TYPE_COLORS = { '학업':'#0ea5e9','생활':'#22c55e','진로':'#f97316','심리':'#f43f5e','기타':'#9494b0' };
+const TYPES = ['학업','생활','진로','심리','기타'];
 
 window.addEventListener('DOMContentLoaded', () => {
   const today = fmt(new Date());
-  document.getElementById('dateInput').value      = today;
+  document.getElementById('dateInput').value = today;
   document.getElementById('writeDateInput').value = today;
+  initStatYearSelect();
   if (GAS_URL) { loadStudents(); loadCounselsByDate(); }
 });
 
 function fmt(d) { return d.toISOString().slice(0,10); }
 
-/* ── 탭 전환 (수정 중 이탈 경고) ── */
+function initStatYearSelect() {
+  const sel = document.getElementById('statYearSelect');
+  const cur = new Date().getFullYear();
+  for (let y=cur; y>=cur-4; y--) {
+    const o = document.createElement('option'); o.value=y; o.textContent=y+'년'; sel.appendChild(o);
+  }
+}
+
 function switchTab(tab) {
   if (editingId !== null && tab !== 'write') {
     if (!confirm('수정 중인 내용이 있습니다. 탭을 이동하면 취소됩니다. 계속할까요?')) return;
     cancelEdit();
   }
-  ['daily','cal','write','students'].forEach(t => {
-    document.getElementById('sec-' + t).classList.toggle('hidden', t !== tab);
-    document.getElementById('tab-' + t).classList.toggle('active', t === tab);
+  ['daily','cal','write','students','stats'].forEach(t => {
+    document.getElementById('sec-'+t).classList.toggle('hidden', t!==tab);
+    document.getElementById('tab-'+t).classList.toggle('active', t===tab);
   });
 }
 
-/* ── API ── */
 async function callApi(action, params={}) {
   if (!GAS_URL) { showToast('GAS URL을 먼저 설정해주세요'); return null; }
   document.getElementById('loading').classList.remove('hidden');
   try {
     const r = await fetch(GAS_URL, { method:'POST', mode:'cors', body: JSON.stringify({action,...params}) });
     const j = await r.json();
-    if (j.status === 'error') throw new Error(j.message);
+    if (j.status==='error') throw new Error(j.message);
     return j.data;
-  } catch(e) { showToast('오류: ' + e.message); return null; }
+  } catch(e) { showToast('오류: '+e.message); return null; }
   finally { document.getElementById('loading').classList.add('hidden'); }
 }
 
 async function callApiBg(action, params={}, label='저장') {
-  setBg('saving', '저장 중…');
+  setBg('saving','저장 중…');
   try {
     const r = await fetch(GAS_URL, { method:'POST', mode:'cors', body: JSON.stringify({action,...params}) });
     const j = await r.json();
-    if (j.status === 'error') throw new Error(j.message);
-    setBg('saved', '✓ ' + label + ' 완료');
-    return j.data;
-  } catch(e) { setBg('error', '✕ ' + label + ' 실패'); showToast(label + ' 실패: ' + e.message); throw e; }
+    if (j.status==='error') throw new Error(j.message);
+    setBg('saved','✓ '+label+' 완료'); return j.data;
+  } catch(e) { setBg('error','✕ '+label+' 실패'); showToast(label+' 실패: '+e.message); throw e; }
 }
 
 function setBg(state, text) {
-  const el = document.getElementById('bg-status');
-  el.className = state; el.textContent = text;
-  if (state==='saved'||state==='error') setTimeout(()=>{ el.className='hide'; }, 2500);
+  const el=document.getElementById('bg-status'); el.className=state; el.textContent=text;
+  if (state==='saved'||state==='error') setTimeout(()=>{ el.className='hide'; },2500);
 }
 
-/* ── 학생 명단 ── */
 async function loadStudents() {
-  const d = await callApi('getStudents');
-  if (!d) return;
-  students = d.students || [];
-  renderStudentList(); renderSelects();
+  const d=await callApi('getStudents'); if (!d) return;
+  students=d.students||[]; renderStudentList(); renderSelects();
 }
-
 async function forceReloadStudents() {
-  const d = await callApi('getStudents', { noCache: true });
-  if (!d) return;
-  students = d.students || [];
-  renderStudentList(); renderSelects();
-  showToast('학생 명단을 새로 불러왔습니다');
+  const d=await callApi('getStudents',{noCache:true}); if (!d) return;
+  students=d.students||[]; renderStudentList(); renderSelects(); showToast('학생 명단을 새로 불러왔습니다');
 }
-
 function renderStudentList() {
-  const el = document.getElementById('studentList');
-  if (!students.length) { el.innerHTML = '<div class="empty"><span class="empty-icon">👤</span>학생 없음</div>'; return; }
-  el.innerHTML = students.map((s, i) => `
+  const el=document.getElementById('studentList');
+  if (!students.length){el.innerHTML='<div class="empty"><span class="empty-icon">👤</span>학생 없음</div>';return;}
+  el.innerHTML=students.map((s,i)=>`
     <div class="student-item" style="animation-delay:${i*0.04}s" onclick="goStudentCal('${esc(s.num)}')">
       <div class="s-avatar">${esc(s.name[0])}</div>
-      <div class="s-info">
-        <div class="s-name">${esc(s.name)}</div>
-        <div class="s-num">${esc(s.num)}</div>
-      </div>
-      ${s.totalCount > 0 ? `<span class="s-count">${s.totalCount}건</span>` : ''}
+      <div class="s-info"><div class="s-name">${esc(s.name)}</div><div class="s-num">${esc(s.num)}</div></div>
+      ${s.totalCount>0?`<span class="s-count">${s.totalCount}건</span>`:''}
       <span class="s-arrow">›</span>
-    </div>
-  `).join('');
+    </div>`).join('');
 }
-
 function renderSelects() {
-  const o = '<option value="">학생을 선택하세요</option>' +
-    students.map(s=>`<option value="${esc(s.num)}">${esc(s.num)} ${esc(s.name)}</option>`).join('');
-  document.getElementById('studentSelect').innerHTML = o;
-  const o2 = '<option value="">— 학생을 선택하세요 —</option>' +
-    students.map(s=>`<option value="${esc(s.num)}">${esc(s.num)} ${esc(s.name)}</option>`).join('');
-  document.getElementById('calStudentSelect').innerHTML = o2;
+  const o='<option value="">학생을 선택하세요</option>'+students.map(s=>`<option value="${esc(s.num)}">${esc(s.num)} ${esc(s.name)}</option>`).join('');
+  document.getElementById('studentSelect').innerHTML=o;
+  const o2='<option value="">— 학생을 선택하세요 —</option>'+students.map(s=>`<option value="${esc(s.num)}">${esc(s.num)} ${esc(s.name)}</option>`).join('');
+  document.getElementById('calStudentSelect').innerHTML=o2;
 }
-
 function goStudentCal(num) {
-  document.getElementById('calStudentSelect').value = num;
-  calYear = new Date().getFullYear(); calMonth = new Date().getMonth(); calData = [];
+  document.getElementById('calStudentSelect').value=num;
+  calYear=new Date().getFullYear(); calMonth=new Date().getMonth(); calData=[];
   switchTab('cal'); loadCalendar();
 }
 
-/* ── 탭1: 일별 조회 ── */
-function shiftDate(d) {
-  const inp = document.getElementById('dateInput');
-  const dt = new Date(inp.value); dt.setDate(dt.getDate()+d);
-  inp.value = fmt(dt); loadCounselsByDate();
-}
-function goToday() {
-  document.getElementById('dateInput').value = fmt(new Date());
-  loadCounselsByDate();
-}
+function shiftDate(d) { const inp=document.getElementById('dateInput'); const dt=new Date(inp.value); dt.setDate(dt.getDate()+d); inp.value=fmt(dt); loadCounselsByDate(); }
+function goToday() { document.getElementById('dateInput').value=fmt(new Date()); loadCounselsByDate(); }
 
 async function loadCounselsByDate() {
-  const date = document.getElementById('dateInput').value;
-  if (!date) return;
-
-  // 검색어 초기화
-  document.getElementById('searchInput').value = '';
-
-  // 캐시 확인
-  if (counselCache[date]) {
-    counsels = counselCache[date];
-    renderCounsels(counsels);
-    return;
-  }
-
-  const area = document.getElementById('counselArea');
-  area.innerHTML = '<div class="empty"><div class="spinner" style="margin:0 auto 12px;"></div>불러오는 중…</div>';
-  const d = await callApi('getCounselsByDate', { date });
-  if (!d) { area.innerHTML = '<div class="empty"><span class="empty-icon">⚠️</span>불러오기 실패</div>'; return; }
-  counsels = d.counsels || [];
-  counselCache[date] = counsels; // 캐시 저장
-  renderCounsels(counsels);
+  const date=document.getElementById('dateInput').value; if(!date) return;
+  document.getElementById('searchInput').value='';
+  if (counselCache[date]) { counsels=counselCache[date]; renderCounsels(counsels); return; }
+  const area=document.getElementById('counselArea');
+  area.innerHTML='<div class="empty"><div class="spinner" style="margin:0 auto 12px;"></div>불러오는 중…</div>';
+  const d=await callApi('getCounselsByDate',{date});
+  if (!d){area.innerHTML='<div class="empty"><span class="empty-icon">⚠️</span>불러오기 실패</div>';return;}
+  counsels=d.counsels||[]; counselCache[date]=counsels; renderCounsels(counsels);
 }
-
 function renderCounsels(list) {
-  const area = document.getElementById('counselArea');
-  if (!list.length) {
-    area.innerHTML = '<div class="empty"><span class="empty-icon">📋</span>해당 날짜의 상담 기록이 없습니다</div>';
-    return;
-  }
-  area.innerHTML = list.map((c, i) => buildCard(c, i)).join('');
+  const area=document.getElementById('counselArea');
+  if (!list.length){area.innerHTML='<div class="empty"><span class="empty-icon">📋</span>해당 날짜의 상담 기록이 없습니다</div>';return;}
+  area.innerHTML=list.map((c,i)=>buildCard(c,i)).join('');
 }
-
-/* XSS 안전: 카드 DOM을 innerHTML 대신 data-id로 참조 */
-function buildCard(c, i) {
-  return `
-    <div class="counsel-card" id="card-${esc(c.id)}" style="animation-delay:${i*0.05}s">
-      <div class="counsel-head">
-        <span class="counsel-name">${esc(c.name||'')}</span>
-        <span class="counsel-num">${esc(c.num||'')}</span>
-        <span class="type-badge type-${esc(c.type||'기타')}">${esc(c.type||'기타')}</span>
-      </div>
-      <div class="counsel-content">${esc(c.content||'')}</div>
-      ${c.memo ? `<div class="counsel-memo">📝 ${esc(c.memo)}</div>` : ''}
-      <div class="counsel-actions">
-        <button class="icon-btn" data-action="edit" data-id="${esc(c.id)}">수정</button>
-        <button class="icon-btn del" data-action="delete" data-id="${esc(c.id)}">삭제</button>
-      </div>
+function buildCard(c,i) {
+  return `<div class="counsel-card" id="card-${esc(c.id)}" style="animation-delay:${i*0.05}s">
+    <div class="counsel-head">
+      <span class="counsel-name">${esc(c.name||'')}</span>
+      <span class="counsel-num">${esc(c.num||'')}</span>
+      <span class="type-badge type-${esc(c.type||'기타')}">${esc(c.type||'기타')}</span>
     </div>
-  `;
+    <div class="counsel-content">${esc(c.content||'')}</div>
+    ${c.memo?`<div class="counsel-memo">📝 ${esc(c.memo)}</div>`:''}
+    <div class="counsel-actions">
+      <button class="icon-btn" data-action="edit" data-id="${esc(c.id)}">수정</button>
+      <button class="icon-btn del" data-action="delete" data-id="${esc(c.id)}">삭제</button>
+    </div>
+  </div>`;
 }
-
-/* 이벤트 위임으로 수정/삭제 처리 — onclick 인라인 XSS 제거 */
-document.addEventListener('click', function(e) {
-  const btn = e.target.closest('[data-action]');
-  if (!btn) return;
-  const action = btn.dataset.action;
-  const id = btn.dataset.id;
-  if (action === 'edit') {
-    const c = counsels.find(x => x.id === id);
-    if (c) startEdit(c);
-  } else if (action === 'delete') {
-    deleteCounsel(id);
-  }
+document.addEventListener('click', e => {
+  const btn=e.target.closest('[data-action]'); if(!btn) return;
+  const {action,id}=btn.dataset;
+  if (action==='edit') { const c=counsels.find(x=>x.id===id); if(c) startEdit(c); }
+  else if (action==='delete') deleteCounsel(id);
 });
 
-/* ── 검색 필터 ── */
 function filterCounsels() {
-  const q = document.getElementById('searchInput').value.trim().toLowerCase();
-  if (!q) { renderCounsels(counsels); return; }
-  const filtered = counsels.filter(c =>
-    (c.name||'').toLowerCase().includes(q) ||
-    (c.num||'').toLowerCase().includes(q) ||
-    (c.content||'').toLowerCase().includes(q) ||
-    (c.memo||'').toLowerCase().includes(q)
-  );
-  renderCounsels(filtered);
+  const q=document.getElementById('searchInput').value.trim().toLowerCase();
+  if (!q){renderCounsels(counsels);return;}
+  renderCounsels(counsels.filter(c=>
+    (c.name||'').toLowerCase().includes(q)||(c.num||'').toLowerCase().includes(q)||
+    (c.content||'').toLowerCase().includes(q)||(c.memo||'').toLowerCase().includes(q)));
 }
 
-/* ── 탭3: 상담 입력 ── */
 async function submitCounsel() {
-  const num     = document.getElementById('studentSelect').value;
-  const date    = document.getElementById('writeDateInput').value;
-  const type    = document.getElementById('typeSelect').value;
-  const content = document.getElementById('contentInput').value.trim();
-  const memo    = document.getElementById('memoInput').value.trim();
-  if (!num)     { showToast('학생을 선택하세요'); return; }
-  if (!date)    { showToast('날짜를 선택하세요'); return; }
-  if (!content) { showToast('상담 내용을 입력하세요'); return; }
-  const student = students.find(s=>s.num===num)||{num,name:''};
-  const isEdit  = editingId !== null;
-  const savedId = editingId;
+  const num=document.getElementById('studentSelect').value;
+  const date=document.getElementById('writeDateInput').value;
+  const type=document.getElementById('typeSelect').value;
+  const content=document.getElementById('contentInput').value.trim();
+  const memo=document.getElementById('memoInput').value.trim();
+  if(!num){showToast('학생을 선택하세요');return;}
+  if(!date){showToast('날짜를 선택하세요');return;}
+  if(!content){showToast('상담 내용을 입력하세요');return;}
+  const student=students.find(s=>s.num===num)||{num,name:''};
+  const isEdit=editingId!==null; const savedId=editingId;
   cancelEdit();
-  document.getElementById('dateInput').value = date;
-  // 해당 날짜 캐시 무효화
-  delete counselCache[date];
+  document.getElementById('dateInput').value=date;
+  delete counselCache[date]; statsAllData=[];
   switchTab('daily');
   try {
-    await callApiBg(
-      isEdit ? 'updateCounsel' : 'saveCounsel',
-      {id:savedId, num:student.num, name:student.name, date, type, content, memo},
-      isEdit ? '수정' : '저장'
-    );
-    if (!isEdit) refreshCount(student.num, +1);
+    await callApiBg(isEdit?'updateCounsel':'saveCounsel',
+      {id:savedId,num:student.num,name:student.name,date,type,content,memo},isEdit?'수정':'저장');
+    if(!isEdit) refreshCount(student.num,+1);
     await loadCounselsByDate();
-  } catch(e) {}
+  } catch(e){}
 }
-
-/* XSS 안전: counsels 배열에서 직접 데이터 참조 */
 function startEdit(c) {
-  editingId = c.id;
-  document.getElementById('studentSelect').value  = c.num  || '';
-  document.getElementById('writeDateInput').value = c.date || fmt(new Date());
-  document.getElementById('typeSelect').value     = c.type || '학업';
-  document.getElementById('contentInput').value   = c.content || '';
-  document.getElementById('memoInput').value      = c.memo    || '';
+  editingId=c.id;
+  document.getElementById('studentSelect').value=c.num||'';
+  document.getElementById('writeDateInput').value=c.date||fmt(new Date());
+  document.getElementById('typeSelect').value=c.type||'학업';
+  document.getElementById('contentInput').value=c.content||'';
+  document.getElementById('memoInput').value=c.memo||'';
   document.getElementById('edit-banner').classList.remove('hidden');
-  document.getElementById('submitBtn').textContent = '수정 저장';
+  document.getElementById('submitBtn').textContent='수정 저장';
   switchTab('write');
 }
-
 function cancelEdit() {
-  editingId = null;
-  document.getElementById('studentSelect').value  = '';
-  document.getElementById('writeDateInput').value = fmt(new Date());
-  document.getElementById('typeSelect').value     = '학업';
-  document.getElementById('contentInput').value   = '';
-  document.getElementById('memoInput').value      = '';
+  editingId=null;
+  document.getElementById('studentSelect').value='';
+  document.getElementById('writeDateInput').value=fmt(new Date());
+  document.getElementById('typeSelect').value='학업';
+  document.getElementById('contentInput').value='';
+  document.getElementById('memoInput').value='';
   document.getElementById('edit-banner').classList.add('hidden');
-  document.getElementById('submitBtn').textContent = '저장하기';
+  document.getElementById('submitBtn').textContent='저장하기';
 }
-
 async function deleteCounsel(id) {
-  if (!confirm('이 상담 기록을 삭제할까요?')) return;
-  const c = counsels.find(x=>x.id===id);
-  const card = document.getElementById('card-'+id);
-  if (card) { card.style.opacity='.35'; card.style.pointerEvents='none'; }
+  if(!confirm('이 상담 기록을 삭제할까요?')) return;
+  const c=counsels.find(x=>x.id===id);
+  const card=document.getElementById('card-'+id);
+  if(card){card.style.opacity='.35';card.style.pointerEvents='none';}
   try {
-    await callApiBg('deleteCounsel', {id}, '삭제');
-    // 캐시 무효화
-    const date = document.getElementById('dateInput').value;
-    delete counselCache[date];
-    if (c) refreshCount(c.num, -1);
+    await callApiBg('deleteCounsel',{id},'삭제');
+    const date=document.getElementById('dateInput').value;
+    delete counselCache[date]; statsAllData=[];
+    if(c) refreshCount(c.num,-1);
     await loadCounselsByDate();
-  } catch(e) { if(card){ card.style.opacity=''; card.style.pointerEvents=''; } }
+  } catch(e){if(card){card.style.opacity='';card.style.pointerEvents='';}}
+}
+function refreshCount(num,delta) {
+  const s=students.find(s=>s.num===String(num)); if(!s) return;
+  s.totalCount=Math.max(0,(s.totalCount||0)+delta); renderStudentList();
 }
 
-function refreshCount(num, delta) {
-  const s = students.find(s=>s.num===String(num));
-  if (!s) return;
-  s.totalCount = Math.max(0, (s.totalCount||0) + delta);
-  renderStudentList();
-}
-
-/* ── 탭2: 학생별 달력 ── */
 async function loadCalendar() {
-  const num = document.getElementById('calStudentSelect').value;
-  if (!num) { document.getElementById('calArea').innerHTML=''; return; }
-  calData = [];
-  const d = await callApi('getCounselHistory', {num});
-  if (d && d.history) calData = d.history;
-  renderCalendar();
+  const num=document.getElementById('calStudentSelect').value;
+  if(!num){document.getElementById('calArea').innerHTML='';return;}
+  calData=[];
+  const d=await callApi('getCounselHistory',{num});
+  if(d&&d.history) calData=d.history; renderCalendar();
 }
-
 function shiftCalMonth(d) {
-  calMonth += d;
-  if (calMonth>11){calMonth=0; calYear++;} if (calMonth<0){calMonth=11; calYear--;}
-  renderCalendar();
+  calMonth+=d; if(calMonth>11){calMonth=0;calYear++;} if(calMonth<0){calMonth=11;calYear--;} renderCalendar();
 }
-
 function renderCalendar() {
-  const area = document.getElementById('calArea');
-  const prefix = `${calYear}-${String(calMonth+1).padStart(2,'0')}`;
-  const dmap = {};
-  calData.filter(d=>d.date.startsWith(prefix)).forEach(d=>{dmap[d.date]=d.counsels;});
-  const first = new Date(calYear,calMonth,1).getDay();
-  const days  = new Date(calYear,calMonth+1,0).getDate();
-  const todayStr = fmt(new Date());
-  const dows = ['일','월','화','수','목','금','토'];
-
-  let html = `<div class="cal-head">
+  const area=document.getElementById('calArea');
+  const prefix=`${calYear}-${String(calMonth+1).padStart(2,'0')}`;
+  const dmap={}; calData.filter(d=>d.date.startsWith(prefix)).forEach(d=>{dmap[d.date]=d.counsels;});
+  const first=new Date(calYear,calMonth,1).getDay();
+  const days=new Date(calYear,calMonth+1,0).getDate();
+  const todayStr=fmt(new Date());
+  const dows=['일','월','화','수','목','금','토'];
+  let html=`<div class="cal-head">
     <button class="cal-head-btn" onclick="shiftCalMonth(-1)">‹</button>
     <span class="cal-month">${calYear}년 ${calMonth+1}월</span>
     <button class="cal-head-btn" onclick="shiftCalMonth(1)">›</button>
-  </div>
-  <div class="cal-grid">
-    ${dows.map((d,i)=>`<div class="cal-dow" style="${i===0?'color:var(--rose)':i===6?'color:var(--sky)':''}">${d}</div>`).join('')}
-  `;
-  for (let i=0; i<first; i++) html += `<div class="cal-day empty"></div>`;
-  for (let d=1; d<=days; d++) {
-    const ds  = `${prefix}-${String(d).padStart(2,'0')}`;
-    const dow = (first+d-1)%7;
-    const cls = ['cal-day', dmap[ds]?'has-rec':'', ds===todayStr?'today':'',
-      !dmap[ds]&&dow===0?'sun':'', !dmap[ds]&&dow===6?'sat':''].filter(Boolean).join(' ');
-    const clk = dmap[ds] ? `data-caldate="${ds}"` : '';
-    html += `<div class="${cls}" ${clk}>${d}</div>`;
+  </div><div class="cal-grid">
+    ${dows.map((d,i)=>`<div class="cal-dow" style="${i===0?'color:var(--rose)':i===6?'color:var(--sky)':''}">${d}</div>`).join('')}`;
+  for(let i=0;i<first;i++) html+=`<div class="cal-day empty"></div>`;
+  for(let d=1;d<=days;d++) {
+    const ds=`${prefix}-${String(d).padStart(2,'0')}`;
+    const dow=(first+d-1)%7;
+    const cls=['cal-day',dmap[ds]?'has-rec':'',ds===todayStr?'today':'',
+      !dmap[ds]&&dow===0?'sun':'',!dmap[ds]&&dow===6?'sat':''].filter(Boolean).join(' ');
+    html+=`<div class="${cls}" ${dmap[ds]?`data-caldate="${ds}"`:''} >${d}</div>`;
   }
-  html += `</div>
-  <div class="cal-legend">
-    <span><span class="cal-legend-dot"></span>상담 기록</span>
-    <span><span class="cal-legend-ring"></span>오늘</span>
-  </div>
+  html+=`</div><div class="cal-legend"><span><span class="cal-legend-dot"></span>상담 기록</span><span><span class="cal-legend-ring"></span>오늘</span></div>
   <div id="calDetail" style="margin-top:10px;"></div>`;
-  area.innerHTML = html;
-
-  // 달력 날짜 클릭 이벤트 위임
-  area.querySelectorAll('[data-caldate]').forEach(el => {
-    el.addEventListener('click', () => onCalClick(el.dataset.caldate));
-  });
+  area.innerHTML=html;
+  area.querySelectorAll('[data-caldate]').forEach(el=>el.addEventListener('click',()=>onCalClick(el.dataset.caldate)));
 }
-
 function onCalClick(dateStr) {
-  const entry = calData.find(d=>d.date===dateStr);
-  const el = document.getElementById('calDetail');
-  if (!entry) { el.innerHTML=''; return; }
-  el.innerHTML = `<div class="cal-detail">
+  const entry=calData.find(d=>d.date===dateStr);
+  const el=document.getElementById('calDetail');
+  if(!entry){el.innerHTML='';return;}
+  el.innerHTML=`<div class="cal-detail">
     <div class="cal-detail-date">
       <span>📅 ${esc(dateStr)} · ${entry.counsels.length}건</span>
-      <button data-jumpdate="${esc(dateStr)}" style="background:none;border:1px solid var(--line);padding:4px 12px;border-radius:6px;cursor:pointer;font-size:0.74rem;font-family:inherit;color:var(--ink-soft);transition:all 0.15s;">이 날 보기</button>
+      <button data-jumpdate="${esc(dateStr)}" style="background:none;border:1px solid var(--line);padding:4px 12px;border-radius:6px;cursor:pointer;font-size:0.74rem;font-family:inherit;color:var(--ink-soft);">이 날 보기</button>
     </div>
     ${entry.counsels.map(c=>`<div class="cal-item">
       <span class="type-badge type-${esc(c.type||'기타')}">${esc(c.type||'기타')}</span>
@@ -1150,50 +557,158 @@ function onCalClick(dateStr) {
       ${c.memo?`<div style="font-size:0.76rem;color:var(--ink-mute);margin-top:5px;white-space:pre-wrap;word-break:break-word;">📝 ${esc(c.memo)}</div>`:''}
     </div>`).join('')}
   </div>`;
-  el.querySelector('[data-jumpdate]')?.addEventListener('click', e => {
-    jumpToDate(e.currentTarget.dataset.jumpdate);
+  el.querySelector('[data-jumpdate]')?.addEventListener('click',e=>jumpToDate(e.currentTarget.dataset.jumpdate));
+}
+function jumpToDate(dateStr) { document.getElementById('dateInput').value=dateStr; switchTab('daily'); loadCounselsByDate(); }
+
+/* ══════════════════════
+   통계
+══════════════════════ */
+async function loadStats() {
+  const area=document.getElementById('statsArea');
+  area.innerHTML='<div class="empty"><div class="spinner" style="margin:0 auto 12px;"></div>불러오는 중…</div>';
+  const d=await callApi('getAllCounsels');
+  if(!d){area.innerHTML='<div class="empty"><span class="empty-icon">⚠️</span>불러오기 실패<br><span style="font-size:0.78rem">GAS에 getAllCounsels 액션이 필요합니다</span></div>';return;}
+  statsAllData=d.counsels||[]; renderStats();
+}
+
+function renderStats() {
+  const area=document.getElementById('statsArea');
+  if(!statsAllData.length){area.innerHTML='<div class="empty"><span class="empty-icon">📊</span>데이터가 없습니다</div>';return;}
+
+  const year=parseInt(document.getElementById('statYearSelect').value);
+  const yData=statsAllData.filter(c=>(c.date||'').startsWith(String(year)));
+
+  const total=yData.length;
+  const studentSet=new Set(yData.map(c=>c.num).filter(Boolean));
+  const thisMonth=fmt(new Date()).slice(0,7);
+  const thisMonthCnt=yData.filter(c=>(c.date||'').startsWith(thisMonth)).length;
+
+  const monthly=Array.from({length:12},(_,i)=>{
+    const m=String(i+1).padStart(2,'0');
+    return yData.filter(c=>(c.date||'').startsWith(`${year}-${m}`)).length;
+  });
+
+  const typeCounts={}; TYPES.forEach(t=>{typeCounts[t]=0;});
+  yData.forEach(c=>{const t=c.type||'기타'; typeCounts[t]=(typeCounts[t]||0)+1;});
+
+  const stuMap={}; yData.forEach(c=>{if(c.num){const k=c.num+'|'+(c.name||''); stuMap[k]=(stuMap[k]||0)+1;}});
+  const top=Object.entries(stuMap).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([k,v])=>{const[num,name]=k.split('|');return{num,name,count:v};});
+  const maxC=top[0]?.count||1;
+
+  area.innerHTML=`
+    <div class="stat-summary">
+      <div class="stat-num-card"><div class="num">${total}</div><div class="num-label">총 상담 건수</div></div>
+      <div class="stat-num-card"><div class="num">${studentSet.size}</div><div class="num-label">상담 학생 수</div></div>
+      <div class="stat-num-card"><div class="num">${thisMonthCnt}</div><div class="num-label">이번 달</div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-title">월별 상담 건수</div>
+      <div class="bar-chart-wrap"><canvas id="barCanvas"></canvas></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-card-title">유형별 분포</div>
+      <div class="donut-wrap">
+        <canvas id="donutCanvas" width="130" height="130" style="flex-shrink:0"></canvas>
+        <div class="donut-legend" id="donutLegend"></div>
+      </div>
+    </div>
+    ${top.length?`<div class="stat-card"><div class="stat-card-title">상담 횟수 상위 학생</div><div id="topList"></div></div>`:''}
+  `;
+
+  drawBarChart(monthly, year);
+  drawDonut(typeCounts, total);
+
+  if(top.length) {
+    const ranks=['gold','silver','bronze'];
+    document.getElementById('topList').innerHTML=top.map((s,i)=>`
+      <div class="top-row">
+        <span class="top-rank ${ranks[i]||''}">${i+1}</span>
+        <div class="top-bar-wrap">
+          <div class="top-bar-name">${esc(s.name||s.num)} <span style="font-size:0.7rem;color:var(--ink-mute);font-weight:400">${esc(s.num)}</span></div>
+          <div class="top-bar-bg"><div class="top-bar-fill" style="width:${Math.round(s.count/maxC*100)}%"></div></div>
+        </div>
+        <span class="top-bar-count">${s.count}건</span>
+      </div>`).join('');
+  }
+}
+
+function drawBarChart(counts, year) {
+  const canvas=document.getElementById('barCanvas'); if(!canvas) return;
+  const W=canvas.parentElement.clientWidth||360, H=160;
+  canvas.width=W; canvas.height=H;
+  const ctx=canvas.getContext('2d');
+  const PL=28,PR=8,PT=14,PB=28;
+  const cW=W-PL-PR, cH=H-PT-PB;
+  const max=Math.max(...counts,1);
+  const bw=cW/12, gap=bw*0.28;
+  const nowY=new Date().getFullYear(), nowM=new Date().getMonth();
+  const curY=parseInt(document.getElementById('statYearSelect').value);
+
+  // 격자
+  ctx.strokeStyle='#e8e8f0'; ctx.lineWidth=1;
+  for(let i=0;i<=4;i++){
+    const y=PT+cH-(cH*i/4);
+    ctx.beginPath(); ctx.moveTo(PL,y); ctx.lineTo(W-PR,y); ctx.stroke();
+    if(i>0){ctx.fillStyle='#9494b0';ctx.font='10px Pretendard,sans-serif';ctx.textAlign='right';ctx.fillText(Math.round(max*i/4),PL-3,y+3);}
+  }
+
+  counts.forEach((v,i)=>{
+    const x=PL+i*bw+gap/2, bww=bw-gap;
+    const bh=v===0?0:Math.max(3,cH*v/max), by=PT+cH-bh;
+    const isNow=(curY===nowY && i===nowM);
+    ctx.fillStyle=isNow?'#5b6af0':'#c7cbfb';
+    ctx.beginPath(); ctx.roundRect(x,by,bww,bh,3); ctx.fill();
+    if(v>0){ctx.fillStyle='#1a1a2e';ctx.font='bold 9px Pretendard,sans-serif';ctx.textAlign='center';ctx.fillText(v,x+bww/2,by-3);}
+    ctx.fillStyle='#9494b0';ctx.font='9px Pretendard,sans-serif';ctx.textAlign='center';
+    ctx.fillText(String(i+1),x+bww/2,H-PB+13);
   });
 }
 
-function jumpToDate(dateStr) {
-  document.getElementById('dateInput').value = dateStr;
-  switchTab('daily'); loadCounselsByDate();
+function drawDonut(typeCounts, total) {
+  const canvas=document.getElementById('donutCanvas'); if(!canvas) return;
+  const ctx=canvas.getContext('2d');
+  const cx=65,cy=65,R=56,r=34;
+  ctx.clearRect(0,0,130,130);
+  if(total===0){ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.strokeStyle='#e8e8f0';ctx.lineWidth=R-r;ctx.stroke();return;}
+
+  let start=-Math.PI/2;
+  let legendHTML='';
+  TYPES.forEach(type=>{
+    const cnt=typeCounts[type]||0; if(!cnt) return;
+    const slice=(cnt/total)*Math.PI*2;
+    ctx.beginPath(); ctx.moveTo(cx,cy); ctx.arc(cx,cy,R,start,start+slice); ctx.closePath();
+    ctx.fillStyle=TYPE_COLORS[type]; ctx.fill();
+    ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2); ctx.fillStyle='#fff'; ctx.fill();
+    start+=slice;
+    legendHTML+=`<div class="legend-row">
+      <span class="legend-dot" style="background:${TYPE_COLORS[type]}"></span>
+      <span class="legend-label">${esc(type)}</span>
+      <span class="legend-val">${cnt}건</span>
+      <span class="legend-pct">${Math.round(cnt/total*100)}%</span>
+    </div>`;
+  });
+  document.getElementById('donutLegend').innerHTML=legendHTML;
+
+  ctx.fillStyle='#1a1a2e'; ctx.font='bold 17px Pretendard,sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText(total,cx,cy-6);
+  ctx.fillStyle='#9494b0'; ctx.font='10px Pretendard,sans-serif'; ctx.fillText('건',cx,cy+10);
 }
 
-/* ── GAS 설정 ── */
-function openGasModal() {
-  document.getElementById('gasUrlInput').value = GAS_URL;
-  document.getElementById('gasModal').classList.remove('hidden');
-}
-function closeGasOutside(e) {
-  if (e.target === document.getElementById('gasModal'))
-    document.getElementById('gasModal').classList.add('hidden');
-}
-function saveGasUrl() {
-  const url = document.getElementById('gasUrlInput').value.trim();
-  if (!url) { showToast('URL을 입력하세요'); return; }
-  GAS_URL = url; localStorage.setItem('counsel_gas_url', url);
+/* GAS 설정 */
+function openGasModal(){document.getElementById('gasUrlInput').value=GAS_URL;document.getElementById('gasModal').classList.remove('hidden');}
+function closeGasOutside(e){if(e.target===document.getElementById('gasModal'))document.getElementById('gasModal').classList.add('hidden');}
+function saveGasUrl(){
+  const url=document.getElementById('gasUrlInput').value.trim();
+  if(!url){showToast('URL을 입력하세요');return;}
+  GAS_URL=url; localStorage.setItem('counsel_gas_url',url);
   document.getElementById('gasModal').classList.add('hidden');
   showToast('저장됨. 연결 중…'); loadStudents(); loadCounselsByDate();
 }
 
-/* ── 유틸 ── */
-function esc(s) {
-  return String(s)
-    .replace(/&/g,'&amp;')
-    .replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;')
-    .replace(/"/g,'&quot;')
-    .replace(/'/g,'&#39;');
-}
-
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
 let _tt;
-function showToast(msg) {
-  clearTimeout(_tt);
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.classList.add('show');
-  _tt = setTimeout(()=>t.classList.remove('show'), 2500);
-}
+function showToast(msg){clearTimeout(_tt);const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');_tt=setTimeout(()=>t.classList.remove('show'),2500);}
 </script>
 </body>
 </html>
