@@ -146,6 +146,12 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
 
 .hidden { display: none !important; }
 section.hidden { display: none !important; }
+
+/* ── 확인 모달 ── */
+#confirmModal .modal-box { text-align: center; }
+#confirmModal .modal-icon { font-size: 2rem; margin-bottom: 10px; }
+#confirmModal .btn-danger { background: var(--rose); }
+#confirmModal .btn-danger:hover { background: #e11d48; box-shadow: 0 4px 16px rgba(244,63,94,0.3); }
 .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
 .section-title { font-size: 0.8rem; font-weight: 600; color: var(--ink-mute); text-transform: uppercase; letter-spacing: 0.5px; }
 ::-webkit-scrollbar { width: 4px; } ::-webkit-scrollbar-thumb { background: var(--line); border-radius: 10px; }
@@ -299,9 +305,22 @@ canvas { display: block; }
   </div>
 </div>
 
+<!-- 확인 모달 -->
+<div id="confirmModal" class="modal-overlay hidden" onclick="closeConfirmOutside(event)">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-icon">🗑️</div>
+    <h3 id="confirmTitle">삭제할까요?</h3>
+    <p id="confirmMsg" style="color:var(--ink-mute);font-size:0.82rem;line-height:1.7;margin-bottom:14px;white-space:pre-line"></p>
+    <div class="modal-btns">
+      <button class="btn btn-outline" onclick="resolveConfirm(false)">취소</button>
+      <button class="btn btn-danger" id="confirmOkBtn" onclick="resolveConfirm(true)">삭제</button>
+    </div>
+  </div>
+</div>
+
 <script>
 let GAS_URL  = localStorage.getItem('counsel_gas_url') || '';
-let students = [], counsels = [], editingId = null;
+let students = [], counsels = [], editingId = null, editingOrigDate = null;
 let calYear = new Date().getFullYear(), calMonth = new Date().getMonth(), calData = [];
 const counselCache = {};
 let statsAllData = [];
@@ -327,9 +346,10 @@ function initStatYearSelect() {
   }
 }
 
-function switchTab(tab) {
+async function switchTab(tab) {
   if (editingId !== null && tab !== 'write') {
-    if (!confirm('수정 중인 내용이 있습니다. 탭을 이동하면 취소됩니다. 계속할까요?')) return;
+    const ok = await showConfirm('수정을 취소할까요?', '수정 중인 내용이 저장되지 않습니다.', '계속', false);
+    if (!ok) return;
     cancelEdit();
   }
   ['daily','cal','write','students','stats'].forEach(t => {
@@ -454,10 +474,12 @@ async function submitCounsel() {
   if(!date){showToast('날짜를 선택하세요');return;}
   if(!content){showToast('상담 내용을 입력하세요');return;}
   const student=students.find(s=>s.num===num)||{num,name:''};
-  const isEdit=editingId!==null; const savedId=editingId;
+  const isEdit=editingId!==null; const savedId=editingId; const savedOrigDate=editingOrigDate;
   cancelEdit();
   document.getElementById('dateInput').value=date;
-  delete counselCache[date]; statsAllData=[];
+  delete counselCache[date];
+  if (savedOrigDate && savedOrigDate !== date) delete counselCache[savedOrigDate];
+  statsAllData=[];
   switchTab('daily');
   try {
     await callApiBg(isEdit?'updateCounsel':'saveCounsel',
@@ -468,6 +490,7 @@ async function submitCounsel() {
 }
 function startEdit(c) {
   editingId=c.id;
+  editingOrigDate=c.date||null;
   document.getElementById('studentSelect').value=c.num||'';
   document.getElementById('writeDateInput').value=c.date||fmt(new Date());
   document.getElementById('typeSelect').value=c.type||'학업';
@@ -479,6 +502,7 @@ function startEdit(c) {
 }
 function cancelEdit() {
   editingId=null;
+  editingOrigDate=null;
   document.getElementById('studentSelect').value='';
   document.getElementById('writeDateInput').value=fmt(new Date());
   document.getElementById('typeSelect').value='학업';
@@ -488,8 +512,10 @@ function cancelEdit() {
   document.getElementById('submitBtn').textContent='저장하기';
 }
 async function deleteCounsel(id) {
-  if(!confirm('이 상담 기록을 삭제할까요?')) return;
   const c=counsels.find(x=>x.id===id);
+  const name=c?`${c.name||''} (${c.num||''}) · ${c.date||''}`:'';
+  const ok=await showConfirm('상담 기록을 삭제할까요?', name?`${name}\n기록이 영구 삭제됩니다.`:'이 상담 기록이 영구 삭제됩니다.');
+  if(!ok) return;
   const card=document.getElementById('card-'+id);
   if(card){card.style.opacity='.35';card.style.pointerEvents='none';}
   try {
@@ -596,6 +622,10 @@ function renderStats() {
   const top=Object.entries(stuMap).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([k,v])=>{const[num,name]=k.split('|');return{num,name,count:v};});
   const maxC=top[0]?.count||1;
 
+  // 미상담 학생: 전체 학생 중 해당 연도에 상담 기록 없는 학생
+  const counseledNums=new Set(yData.map(c=>c.num).filter(Boolean));
+  const neverCounseled=students.filter(s=>!counseledNums.has(String(s.num)));
+
   area.innerHTML=`
     <div class="stat-summary">
       <div class="stat-num-card"><div class="num">${total}</div><div class="num-label">총 상담 건수</div></div>
@@ -614,6 +644,24 @@ function renderStats() {
       </div>
     </div>
     ${top.length?`<div class="stat-card"><div class="stat-card-title">상담 횟수 상위 학생</div><div id="topList"></div></div>`:''}
+    ${students.length?`
+    <div class="stat-card" style="border-color:${neverCounseled.length?'var(--rose)':'var(--green)'}">
+      <div class="stat-card-title" style="display:flex;align-items:center;justify-content:space-between">
+        <span>미상담 학생 (${year}년 기준)</span>
+        <span style="font-size:0.9rem;font-weight:700;color:${neverCounseled.length?'var(--rose)':'var(--green)'}">
+          ${neverCounseled.length?neverCounseled.length+'명':'전원 완료 ✓'}
+        </span>
+      </div>
+      ${neverCounseled.length===0
+        ?`<div style="text-align:center;padding:12px 0;font-size:0.85rem;color:var(--green)">🎉 모든 학생과 상담을 완료했어요!</div>`
+        :`<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px">
+          ${neverCounseled.map(s=>`
+            <span onclick="goStudentCal('${esc(s.num)}')" style="background:var(--rose-soft);color:var(--rose);font-size:0.78rem;font-weight:600;padding:4px 11px;border-radius:20px;cursor:pointer;border:1px solid var(--rose-soft);transition:all 0.15s"
+              onmouseover="this.style.borderColor='var(--rose)'" onmouseout="this.style.borderColor='var(--rose-soft)'">
+              ${esc(s.name)}
+            </span>`).join('')}
+        </div>`}
+    </div>`:''}
   `;
 
   drawBarChart(monthly, year);
@@ -707,6 +755,22 @@ function saveGasUrl(){
 }
 
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+
+/* ── 커스텀 확인 모달 ── */
+let _confirmResolve = null;
+function showConfirm(title, msg, okLabel='삭제', isDanger=true) {
+  document.getElementById('confirmTitle').textContent = title;
+  document.getElementById('confirmMsg').textContent   = msg;
+  document.getElementById('confirmOkBtn').textContent = okLabel;
+  document.getElementById('confirmOkBtn').className   = 'btn ' + (isDanger ? 'btn-danger' : '');
+  document.getElementById('confirmModal').classList.remove('hidden');
+  return new Promise(res => { _confirmResolve = res; });
+}
+function resolveConfirm(result) {
+  document.getElementById('confirmModal').classList.add('hidden');
+  if (_confirmResolve) { _confirmResolve(result); _confirmResolve = null; }
+}
+function closeConfirmOutside(e) { if (e.target===document.getElementById('confirmModal')) resolveConfirm(false); }
 let _tt;
 function showToast(msg){clearTimeout(_tt);const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');_tt=setTimeout(()=>t.classList.remove('show'),2500);}
 </script>
