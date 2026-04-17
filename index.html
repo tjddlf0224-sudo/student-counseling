@@ -593,6 +593,11 @@ function jumpToDate(dateStr) { document.getElementById('dateInput').value=dateSt
 async function loadStats() {
   const area=document.getElementById('statsArea');
   area.innerHTML='<div class="empty"><div class="spinner" style="margin:0 auto 12px;"></div>불러오는 중…</div>';
+  // 학생 명단이 없으면 먼저 로드 (미상담 학생 표시에 필요)
+  if(!students.length) {
+    const sd=await callApi('getStudents');
+    if(sd) { students=sd.students||[]; renderStudentList(); renderSelects(); }
+  }
   const d=await callApi('getAllCounsels');
   if(!d){area.innerHTML='<div class="empty"><span class="empty-icon">⚠️</span>불러오기 실패<br><span style="font-size:0.78rem">GAS에 getAllCounsels 액션이 필요합니다</span></div>';return;}
   statsAllData=d.counsels||[]; renderStats();
@@ -622,9 +627,15 @@ function renderStats() {
   const top=Object.entries(stuMap).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([k,v])=>{const[num,name]=k.split('|');return{num,name,count:v};});
   const maxC=top[0]?.count||1;
 
-  // 미상담 학생: 전체 학생 중 해당 연도에 상담 기록 없는 학생
+  // 상담 횟수 하위 5명: 미상담(0건) 포함, 횟수 적은 순 정렬
   const counseledNums=new Set(yData.map(c=>c.num).filter(Boolean));
-  const neverCounseled=students.filter(s=>!counseledNums.has(String(s.num)));
+  const allStudentsWithCount=students.map(s=>{
+    const k=s.num+'|'+s.name;
+    const cnt=stuMap[k]||0;
+    return{num:s.num,name:s.name,count:cnt};
+  });
+  const bottom=allStudentsWithCount.sort((a,b)=>a.count-b.count).slice(0,5);
+  const minC=bottom[bottom.length-1]?.count||1;
 
   area.innerHTML=`
     <div class="stat-summary">
@@ -644,23 +655,10 @@ function renderStats() {
       </div>
     </div>
     ${top.length?`<div class="stat-card"><div class="stat-card-title">상담 횟수 상위 학생</div><div id="topList"></div></div>`:''}
-    ${students.length?`
-    <div class="stat-card" style="border-color:${neverCounseled.length?'var(--rose)':'var(--green)'}">
-      <div class="stat-card-title" style="display:flex;align-items:center;justify-content:space-between">
-        <span>미상담 학생 (${year}년 기준)</span>
-        <span style="font-size:0.9rem;font-weight:700;color:${neverCounseled.length?'var(--rose)':'var(--green)'}">
-          ${neverCounseled.length?neverCounseled.length+'명':'전원 완료 ✓'}
-        </span>
-      </div>
-      ${neverCounseled.length===0
-        ?`<div style="text-align:center;padding:12px 0;font-size:0.85rem;color:var(--green)">🎉 모든 학생과 상담을 완료했어요!</div>`
-        :`<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px">
-          ${neverCounseled.map(s=>`
-            <span onclick="goStudentCal('${esc(s.num)}')" style="background:var(--rose-soft);color:var(--rose);font-size:0.78rem;font-weight:600;padding:4px 11px;border-radius:20px;cursor:pointer;border:1px solid var(--rose-soft);transition:all 0.15s"
-              onmouseover="this.style.borderColor='var(--rose)'" onmouseout="this.style.borderColor='var(--rose-soft)'">
-              ${esc(s.name)}
-            </span>`).join('')}
-        </div>`}
+    ${students.length&&bottom.length?`
+    <div class="stat-card">
+      <div class="stat-card-title">상담 횟수 하위 학생</div>
+      <div id="bottomList"></div>
     </div>`:''}
   `;
 
@@ -677,6 +675,20 @@ function renderStats() {
           <div class="top-bar-bg"><div class="top-bar-fill" style="width:${Math.round(s.count/maxC*100)}%"></div></div>
         </div>
         <span class="top-bar-count">${s.count}건</span>
+      </div>`).join('');
+  }
+
+  // 하위 학생 렌더링
+  if(bottom.length && document.getElementById('bottomList')) {
+    const maxB=bottom.reduce((m,s)=>Math.max(m,s.count),0)||1;
+    document.getElementById('bottomList').innerHTML=bottom.map((s,i)=>`
+      <div class="top-row" onclick="goStudentCal('${esc(s.num)}')" style="cursor:pointer">
+        <span class="top-rank">${i+1}</span>
+        <div class="top-bar-wrap">
+          <div class="top-bar-name">${esc(s.name||s.num)} <span style="font-size:0.7rem;color:var(--ink-mute);font-weight:400">${esc(s.num)}</span></div>
+          <div class="top-bar-bg"><div class="top-bar-fill" style="width:${s.count===0?0:Math.max(8,Math.round(s.count/maxB*100))}%;background:${s.count===0?'var(--rose)':'var(--orange)'}"></div></div>
+        </div>
+        <span class="top-bar-count" style="color:${s.count===0?'var(--rose)':'var(--orange)'}">${s.count}건</span>
       </div>`).join('');
   }
 }
