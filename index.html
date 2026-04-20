@@ -147,7 +147,6 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
 
 .hidden { display: none !important; }
 section.hidden { display: none !important; }
-
 /* ── 확인 모달 ── */
 #confirmModal .modal-box { text-align: center; }
 #confirmModal .modal-icon { font-size: 2rem; margin-bottom: 10px; }
@@ -357,7 +356,7 @@ function initStatYearSelect() {
 
 async function switchTab(tab) {
   if (editingId !== null && tab !== 'write') {
-    const ok = await showConfirm('수정을 취소할까요?', '수정 중인 내용이 저장되지 않습니다.', '계속', false);
+    const ok=await showConfirm('수정을 취소할까요?','수정 중인 내용이 저장되지 않습니다.','계속',false);
     if (!ok) return;
     cancelEdit();
   }
@@ -487,7 +486,7 @@ async function submitCounsel() {
   cancelEdit();
   document.getElementById('dateInput').value=date;
   delete counselCache[date];
-  if (savedOrigDate && savedOrigDate !== date) delete counselCache[savedOrigDate];
+  if(savedOrigDate && savedOrigDate!==date) delete counselCache[savedOrigDate];
   statsAllData=[];
   switchTab('daily');
   try {
@@ -523,7 +522,7 @@ function cancelEdit() {
 async function deleteCounsel(id) {
   const c=counsels.find(x=>x.id===id);
   const name=c?`${c.name||''} (${c.num||''}) · ${c.date||''}`:'';
-  const ok=await showConfirm('상담 기록을 삭제할까요?', name?`${name}\n기록이 영구 삭제됩니다.`:'이 상담 기록이 영구 삭제됩니다.');
+  const ok=await showConfirm('상담 기록을 삭제할까요?',name?`${name}\n기록이 영구 삭제됩니다.`:'이 상담 기록이 영구 삭제됩니다.');
   if(!ok) return;
   const card=document.getElementById('card-'+id);
   if(card){card.style.opacity='.35';card.style.pointerEvents='none';}
@@ -544,16 +543,10 @@ async function loadCalendar() {
   const num=document.getElementById('calStudentSelect').value;
   if(!num){document.getElementById('calArea').innerHTML='';return;}
   calData=[];
-  if(num==='__ALL__') {
-    // 전체 학생: getAllCounsels 또는 캐시된 statsAllData 활용
-    const d=await callApi('getAllCounsels');
-    if(!d) return;
-    // 날짜별로 그룹핑
+  if(num==='__ALL__'){
+    const d=await callApi('getAllCounsels'); if(!d) return;
     const map={};
-    (d.counsels||[]).forEach(c=>{
-      if(!map[c.date]) map[c.date]=[];
-      map[c.date].push(c);
-    });
+    (d.counsels||[]).forEach(c=>{if(!map[c.date])map[c.date]=[];map[c.date].push(c);});
     calData=Object.entries(map).map(([date,cs])=>({date,counsels:cs}));
   } else {
     const d=await callApi('getCounselHistory',{num});
@@ -561,11 +554,9 @@ async function loadCalendar() {
   }
   renderCalendar();
 }
-
 function shiftCalMonth(d) {
   calMonth+=d; if(calMonth>11){calMonth=0;calYear++;} if(calMonth<0){calMonth=11;calYear--;} renderCalendar();
 }
-
 function renderCalendar() {
   const isAll=document.getElementById('calStudentSelect').value==='__ALL__';
   const area=document.getElementById('calArea');
@@ -582,13 +573,12 @@ function renderCalendar() {
   </div><div class="cal-grid">
     ${dows.map((d,i)=>`<div class="cal-dow" style="${i===0?'color:var(--rose)':i===6?'color:var(--sky)':''}">${d}</div>`).join('')}`;
   for(let i=0;i<first;i++) html+=`<div class="cal-day empty"></div>`;
-  for(let d=1;d<=days;d++) {
+  for(let d=1;d<=days;d++){
     const ds=`${prefix}-${String(d).padStart(2,'0')}`;
     const dow=(first+d-1)%7;
     const cnt=dmap[ds]?dmap[ds].length:0;
     const cls=['cal-day',dmap[ds]?'has-rec':'',ds===todayStr?'today':'',
       !dmap[ds]&&dow===0?'sun':'',!dmap[ds]&&dow===6?'sat':''].filter(Boolean).join(' ');
-    // 전체 모드: 날짜 셀에 건수 배지 표시
     const badge=isAll&&cnt>1?`<span style="position:absolute;top:2px;right:3px;font-size:0.55rem;font-weight:700;line-height:1">${cnt}</span>`:'';
     html+=`<div class="${cls}" style="position:relative" ${dmap[ds]?`data-caldate="${ds}"`:''} >${d}${badge}</div>`;
   }
@@ -597,30 +587,26 @@ function renderCalendar() {
   area.innerHTML=html;
   area.querySelectorAll('[data-caldate]').forEach(el=>el.addEventListener('click',()=>onCalClick(el.dataset.caldate)));
 }
-
 function onCalClick(dateStr) {
   const isAll=document.getElementById('calStudentSelect').value==='__ALL__';
   const entry=calData.find(d=>d.date===dateStr);
   const el=document.getElementById('calDetail');
   if(!entry){el.innerHTML='';return;}
-
-  // 전체 모드: 학생별로 묶어서 표시
-  if(isAll) {
+  if(isAll){
     el.innerHTML=`<div class="cal-detail">
       <div class="cal-detail-date">
         <span>📅 ${esc(dateStr)} · ${entry.counsels.length}건 · ${new Set(entry.counsels.map(c=>c.num)).size}명</span>
         <button data-jumpdate="${esc(dateStr)}" style="background:none;border:1px solid var(--line);padding:4px 12px;border-radius:6px;cursor:pointer;font-size:0.74rem;font-family:inherit;color:var(--ink-soft);">일별로 보기</button>
       </div>
-      ${entry.counsels.map(c=>`
-        <div class="cal-item">
-          <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;flex-wrap:wrap">
-            <span style="font-size:0.85rem;font-weight:700;color:var(--ink)">${esc(c.name||'')}</span>
-            <span style="font-size:0.7rem;color:var(--ink-mute);background:var(--line-soft);padding:1px 6px;border-radius:4px">${esc(c.num||'')}</span>
-            <span class="type-badge type-${esc(c.type||'기타')}">${esc(c.type||'기타')}</span>
-          </div>
-          <div class="cal-item-content">${esc(c.content||'')}</div>
-          ${c.memo?`<div style="font-size:0.76rem;color:var(--ink-mute);margin-top:5px;white-space:pre-wrap;word-break:break-word;">📝 ${esc(c.memo)}</div>`:''}
-        </div>`).join('')}
+      ${entry.counsels.map(c=>`<div class="cal-item">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;flex-wrap:wrap">
+          <span style="font-size:0.85rem;font-weight:700;color:var(--ink)">${esc(c.name||'')}</span>
+          <span style="font-size:0.7rem;color:var(--ink-mute);background:var(--line-soft);padding:1px 6px;border-radius:4px">${esc(c.num||'')}</span>
+          <span class="type-badge type-${esc(c.type||'기타')}">${esc(c.type||'기타')}</span>
+        </div>
+        <div class="cal-item-content">${esc(c.content||'')}</div>
+        ${c.memo?`<div style="font-size:0.76rem;color:var(--ink-mute);margin-top:5px;white-space:pre-wrap;word-break:break-word;">📝 ${esc(c.memo)}</div>`:''}
+      </div>`).join('')}
     </div>`;
   } else {
     el.innerHTML=`<div class="cal-detail">
@@ -645,11 +631,7 @@ function jumpToDate(dateStr) { document.getElementById('dateInput').value=dateSt
 async function loadStats() {
   const area=document.getElementById('statsArea');
   area.innerHTML='<div class="empty"><div class="spinner" style="margin:0 auto 12px;"></div>불러오는 중…</div>';
-  // 학생 명단이 없으면 먼저 로드 (미상담 학생 표시에 필요)
-  if(!students.length) {
-    const sd=await callApi('getStudents');
-    if(sd) { students=sd.students||[]; renderStudentList(); renderSelects(); }
-  }
+  if(!students.length){const sd=await callApi('getStudents');if(sd){students=sd.students||[];renderStudentList();renderSelects();}}
   const d=await callApi('getAllCounsels');
   if(!d){area.innerHTML='<div class="empty"><span class="empty-icon">⚠️</span>불러오기 실패<br><span style="font-size:0.78rem">GAS에 getAllCounsels 액션이 필요합니다</span></div>';return;}
   statsAllData=d.counsels||[]; renderStats();
@@ -679,15 +661,8 @@ function renderStats() {
   const top=Object.entries(stuMap).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([k,v])=>{const[num,name]=k.split('|');return{num,name,count:v};});
   const maxC=top[0]?.count||1;
 
-  // 상담 횟수 하위 5명: 미상담(0건) 포함, 횟수 적은 순 정렬
-  const counseledNums=new Set(yData.map(c=>c.num).filter(Boolean));
-  const allStudentsWithCount=students.map(s=>{
-    const k=s.num+'|'+s.name;
-    const cnt=stuMap[k]||0;
-    return{num:s.num,name:s.name,count:cnt};
-  });
-  const bottom=allStudentsWithCount.sort((a,b)=>a.count-b.count).slice(0,5);
-  const minC=bottom[bottom.length-1]?.count||1;
+  const bottom=students.map(s=>{const k=s.num+'|'+s.name;return{num:s.num,name:s.name,count:stuMap[k]||0};}).sort((a,b)=>a.count-b.count).slice(0,5);
+  const maxB=bottom.reduce((m,s)=>Math.max(m,s.count),0)||1;
 
   area.innerHTML=`
     <div class="stat-summary">
@@ -707,11 +682,7 @@ function renderStats() {
       </div>
     </div>
     ${top.length?`<div class="stat-card"><div class="stat-card-title">상담 횟수 상위 학생</div><div id="topList"></div></div>`:''}
-    ${students.length&&bottom.length?`
-    <div class="stat-card">
-      <div class="stat-card-title">상담 횟수 하위 학생</div>
-      <div id="bottomList"></div>
-    </div>`:''}
+    ${students.length&&bottom.length?`<div class="stat-card"><div class="stat-card-title">상담 횟수 하위 학생</div><div id="bottomList"></div></div>`:''}
   `;
 
   drawBarChart(monthly, year);
@@ -730,9 +701,7 @@ function renderStats() {
       </div>`).join('');
   }
 
-  // 하위 학생 렌더링
-  if(bottom.length && document.getElementById('bottomList')) {
-    const maxB=bottom.reduce((m,s)=>Math.max(m,s.count),0)||1;
+  if(bottom.length&&document.getElementById('bottomList')){
     document.getElementById('bottomList').innerHTML=bottom.map((s,i)=>`
       <div class="top-row" onclick="goStudentCal('${esc(s.num)}')" style="cursor:pointer">
         <span class="top-rank">${i+1}</span>
@@ -819,22 +788,20 @@ function saveGasUrl(){
 }
 
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
-
-/* ── 커스텀 확인 모달 ── */
-let _confirmResolve = null;
-function showConfirm(title, msg, okLabel='삭제', isDanger=true) {
-  document.getElementById('confirmTitle').textContent = title;
-  document.getElementById('confirmMsg').textContent   = msg;
-  document.getElementById('confirmOkBtn').textContent = okLabel;
-  document.getElementById('confirmOkBtn').className   = 'btn ' + (isDanger ? 'btn-danger' : '');
+let _confirmResolve=null;
+function showConfirm(title,msg,okLabel='삭제',isDanger=true){
+  document.getElementById('confirmTitle').textContent=title;
+  document.getElementById('confirmMsg').textContent=msg;
+  document.getElementById('confirmOkBtn').textContent=okLabel;
+  document.getElementById('confirmOkBtn').className='btn '+(isDanger?'btn-danger':'');
   document.getElementById('confirmModal').classList.remove('hidden');
-  return new Promise(res => { _confirmResolve = res; });
+  return new Promise(res=>{_confirmResolve=res;});
 }
-function resolveConfirm(result) {
+function resolveConfirm(result){
   document.getElementById('confirmModal').classList.add('hidden');
-  if (_confirmResolve) { _confirmResolve(result); _confirmResolve = null; }
+  if(_confirmResolve){_confirmResolve(result);_confirmResolve=null;}
 }
-function closeConfirmOutside(e) { if (e.target===document.getElementById('confirmModal')) resolveConfirm(false); }
+function closeConfirmOutside(e){if(e.target===document.getElementById('confirmModal'))resolveConfirm(false);}
 let _tt;
 function showToast(msg){clearTimeout(_tt);const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');_tt=setTimeout(()=>t.classList.remove('show'),2500);}
 </script>
