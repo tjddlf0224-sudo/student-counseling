@@ -102,6 +102,18 @@ textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
 .s-count { background: var(--accent-soft); color: var(--accent); font-size: 0.7rem; font-weight: 700; padding: 3px 9px; border-radius: 20px; }
 .s-arrow { color: var(--ink-mute); font-size: 0.85rem; }
 
+/* 학생별 기록 패널 */
+.s-history-panel { margin-top: 12px; }
+.s-history-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; background: var(--accent); border-radius: var(--radius) var(--radius) 0 0; }
+.s-history-name { font-size: 0.95rem; font-weight: 700; color: white; display: flex; align-items: center; gap: 8px; }
+.s-history-close { background: rgba(255,255,255,0.2); border: none; color: white; width: 28px; height: 28px; border-radius: 8px; cursor: pointer; font-size: 1rem; display: flex; align-items: center; justify-content: center; }
+.s-history-body { background: var(--surface); border: 1px solid var(--line); border-top: none; border-radius: 0 0 var(--radius) var(--radius); padding: 12px; }
+.s-history-item { padding: 12px; background: var(--line-soft); border-radius: var(--radius-sm); margin-bottom: 8px; }
+.s-history-item:last-child { margin-bottom: 0; }
+.s-history-date { font-size: 0.75rem; font-weight: 600; color: var(--ink-mute); margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+.s-history-content { font-size: 0.875rem; line-height: 1.7; color: var(--ink-soft); white-space: pre-wrap; word-break: break-word; font-family: 'Gowun Dodum', sans-serif; }
+.s-history-memo { font-size: 0.78rem; color: var(--ink-mute); margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--line); white-space: pre-wrap; word-break: break-word; }
+
 .cal-head { display: flex; align-items: center; justify-content: space-between; padding: 10px 0 14px; }
 .cal-head-btn { background: var(--line-soft); border: none; cursor: pointer; font-size: 1rem; color: var(--ink-soft); width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
 .cal-head-btn:hover { background: var(--accent-soft); color: var(--accent); }
@@ -277,6 +289,7 @@ canvas { display: block; }
       <div id="studentList">
         <div class="empty"><span class="empty-icon">🔗</span>GAS 설정 후 새로고침 해주세요</div>
       </div>
+      <div id="studentHistoryPanel" class="s-history-panel hidden"></div>
     </div>
   </section>
 
@@ -358,7 +371,7 @@ async function switchTab(tab) {
     document.getElementById('sec-'+t).classList.toggle('hidden', t!==tab);
     document.getElementById('tab-'+t).classList.toggle('active', t===tab);
   });
-}
+  if (tab !== 'students') closeStudentHistory();
 
 async function callApi(action, params={}) {
   if (!GAS_URL) { showToast('GAS URL을 먼저 설정해주세요'); return null; }
@@ -399,7 +412,7 @@ function renderStudentList() {
   const el=document.getElementById('studentList');
   if (!students.length){el.innerHTML='<div class="empty"><span class="empty-icon">👤</span>학생 없음</div>';return;}
   el.innerHTML=students.map((s,i)=>`
-    <div class="student-item" style="animation-delay:${i*0.04}s" onclick="goStudentCal('${esc(s.num)}')">
+    <div class="student-item" style="animation-delay:${i*0.04}s" onclick="goStudentHistory('${esc(s.num)}','${esc(s.name)}')">
       <div class="s-avatar">${esc(s.name[0])}</div>
       <div class="s-info"><div class="s-name">${esc(s.name)}</div><div class="s-num">${esc(s.num)}</div></div>
       ${s.totalCount>0?`<span class="s-count">${s.totalCount}건</span>`:''}
@@ -411,6 +424,40 @@ function renderSelects() {
   document.getElementById('studentSelect').innerHTML=o;
   const o2='<option value="">— 학생을 선택하세요 —</option><option value="__ALL__">👥 학생 전체</option>'+students.map(s=>`<option value="${esc(s.num)}">${esc(s.num)} ${esc(s.name)}</option>`).join('');
   document.getElementById('calStudentSelect').innerHTML=o2;
+}
+async function goStudentHistory(num, name) {
+  const panel = document.getElementById('studentHistoryPanel');
+  panel.classList.remove('hidden');
+  panel.innerHTML = `<div class="s-history-header">
+    <span class="s-history-name">👤 ${esc(name)} <span style="font-size:0.75rem;opacity:0.8;font-weight:400">${esc(num)}</span></span>
+    <button class="s-history-close" onclick="closeStudentHistory()">✕</button>
+  </div>
+  <div class="s-history-body"><div class="empty" style="padding:30px 0"><div class="spinner" style="margin:0 auto 10px"></div>불러오는 중…</div></div>`;
+  panel.scrollIntoView({behavior:'smooth', block:'start'});
+
+  const d = await callApi('getCounselHistory', {num});
+  if (!d || !d.history) {
+    panel.querySelector('.s-history-body').innerHTML = '<div class="empty" style="padding:30px 0"><span class="empty-icon">⚠️</span>불러오기 실패</div>';
+    return;
+  }
+  // history: [{date, counsels:[]}] 형태
+  const all = d.history.flatMap(h => h.counsels.map(c => ({...c, date: h.date}))).sort((a,b) => b.date.localeCompare(a.date));
+  if (!all.length) {
+    panel.querySelector('.s-history-body').innerHTML = '<div class="empty" style="padding:30px 0"><span class="empty-icon">📋</span>상담 기록이 없습니다</div>';
+    return;
+  }
+  panel.querySelector('.s-history-body').innerHTML = all.map(c => `
+    <div class="s-history-item">
+      <div class="s-history-date">
+        <span>📅 ${esc(c.date)}</span>
+        <span class="type-badge type-${esc(c.type||'기타')}">${esc(c.type||'기타')}</span>
+      </div>
+      <div class="s-history-content">${esc(c.content||'')}</div>
+      ${c.memo ? `<div class="s-history-memo">📝 ${esc(c.memo)}</div>` : ''}
+    </div>`).join('');
+}
+function closeStudentHistory() {
+  document.getElementById('studentHistoryPanel').classList.add('hidden');
 }
 function goStudentCal(num) {
   document.getElementById('calStudentSelect').value=num;
