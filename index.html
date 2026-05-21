@@ -372,6 +372,7 @@ async function switchTab(tab) {
     document.getElementById('tab-'+t).classList.toggle('active', t===tab);
   });
   if (tab !== 'students') closeStudentHistory();
+}
 
 async function callApi(action, params={}) {
   if (!GAS_URL) { showToast('GAS URL을 먼저 설정해주세요'); return null; }
@@ -428,33 +429,34 @@ function renderSelects() {
 async function goStudentHistory(num, name) {
   const panel = document.getElementById('studentHistoryPanel');
   panel.classList.remove('hidden');
-  panel.innerHTML = `<div class="s-history-header">
-    <span class="s-history-name">👤 ${esc(name)} <span style="font-size:0.75rem;opacity:0.8;font-weight:400">${esc(num)}</span></span>
-    <button class="s-history-close" onclick="closeStudentHistory()">✕</button>
-  </div>
-  <div class="s-history-body"><div class="empty" style="padding:30px 0"><div class="spinner" style="margin:0 auto 10px"></div>불러오는 중…</div></div>`;
+  panel.innerHTML =
+    '<div class="s-history-header">'
+    + '<span class="s-history-name">\uD83D\uDC64 ' + esc(name)
+    + ' <span style="font-size:0.75rem;opacity:0.8;font-weight:400">' + esc(num) + '</span></span>'
+    + '<button class="s-history-close" onclick="closeStudentHistory()">\u2715</button>'
+    + '</div>'
+    + '<div class="s-history-body"><div class="empty" style="padding:30px 0">'
+    + '<div class="spinner" style="margin:0 auto 10px"></div>불러오는 중…</div></div>';
   panel.scrollIntoView({behavior:'smooth', block:'start'});
 
   const d = await callApi('getCounselHistory', {num});
   if (!d || !d.history) {
-    panel.querySelector('.s-history-body').innerHTML = '<div class="empty" style="padding:30px 0"><span class="empty-icon">⚠️</span>불러오기 실패</div>';
+    panel.querySelector('.s-history-body').innerHTML = '<div class="empty" style="padding:30px 0"><span class="empty-icon">\u26A0\uFE0F</span>불러오기 실패</div>';
     return;
   }
-  // history: [{date, counsels:[]}] 형태
-  const all = d.history.flatMap(h => h.counsels.map(c => ({...c, date: h.date}))).sort((a,b) => b.date.localeCompare(a.date));
+  const all = d.history.flatMap(h => h.counsels.map(c => Object.assign({}, c, {date: h.date}))).sort((a,b) => b.date.localeCompare(a.date));
   if (!all.length) {
-    panel.querySelector('.s-history-body').innerHTML = '<div class="empty" style="padding:30px 0"><span class="empty-icon">📋</span>상담 기록이 없습니다</div>';
+    panel.querySelector('.s-history-body').innerHTML = '<div class="empty" style="padding:30px 0"><span class="empty-icon">\uD83D\uDCCB</span>상담 기록이 없습니다</div>';
     return;
   }
-  panel.querySelector('.s-history-body').innerHTML = all.map(c => `
-    <div class="s-history-item">
-      <div class="s-history-date">
-        <span>📅 ${esc(c.date)}</span>
-        <span class="type-badge type-${esc(c.type||'기타')}">${esc(c.type||'기타')}</span>
-      </div>
-      <div class="s-history-content">${esc(c.content||'')}</div>
-      ${c.memo ? `<div class="s-history-memo">📝 ${esc(c.memo)}</div>` : ''}
-    </div>`).join('');
+  panel.querySelector('.s-history-body').innerHTML = all.map(function(c) {
+    return '<div class="s-history-item">'
+      + '<div class="s-history-date"><span>\uD83D\uDCC5 ' + esc(c.date) + '</span>'
+      + '<span class="type-badge type-' + esc(c.type||'기타') + '">' + esc(c.type||'기타') + '</span></div>'
+      + '<div class="s-history-content">' + esc(c.content||'') + '</div>'
+      + (c.memo ? '<div class="s-history-memo">\uD83D\uDCDD ' + esc(c.memo) + '</div>' : '')
+      + '</div>';
+  }).join('');
 }
 function closeStudentHistory() {
   document.getElementById('studentHistoryPanel').classList.add('hidden');
@@ -607,12 +609,12 @@ function renderCalendar() {
   const days=new Date(calYear,calMonth+1,0).getDate();
   const todayStr=fmt(new Date());
   const dows=['일','월','화','수','목','금','토'];
-  let html=`<div class="cal-head">
-    <button class="cal-head-btn" onclick="shiftCalMonth(-1)">‹</button>
-    <span class="cal-month">${calYear}년 ${calMonth+1}월</span>
-    <button class="cal-head-btn" onclick="shiftCalMonth(1)">›</button>
-  </div><div class="cal-grid">
-    ${dows.map((d,i)=>`<div class="cal-dow" style="${i===0?'color:var(--rose)':i===6?'color:var(--sky)':''}">${d}</div>`).join('')}`;
+  const dowsHtml = dows.map(function(d,i){ return '<div class="cal-dow" style="' + (i===0?'color:var(--rose)':i===6?'color:var(--sky)':'') + '">' + d + '</div>'; }).join('');
+  let html = '<div class="cal-head">'
+    + '<button class="cal-head-btn" onclick="shiftCalMonth(-1)">\u2039</button>'
+    + '<span class="cal-month">' + calYear + '\ub144 ' + (calMonth+1) + '\uc6d4</span>'
+    + '<button class="cal-head-btn" onclick="shiftCalMonth(1)">\u203a</button>'
+    + '</div><div class="cal-grid">' + dowsHtml;
   for(let i=0;i<first;i++) html+=`<div class="cal-day empty"></div>`;
   for(let d=1;d<=days;d++){
     const ds=`${prefix}-${String(d).padStart(2,'0')}`;
@@ -621,7 +623,8 @@ function renderCalendar() {
     const cls=['cal-day',dmap[ds]?'has-rec':'',ds===todayStr?'today':'',
       !dmap[ds]&&dow===0?'sun':'',!dmap[ds]&&dow===6?'sat':''].filter(Boolean).join(' ');
     const badge=isAll&&cnt>1?`<span style="position:absolute;top:2px;right:3px;font-size:0.55rem;font-weight:700;line-height:1">${cnt}</span>`:'';
-    html+=`<div class="${cls}" style="position:relative" ${dmap[ds]?`data-caldate="${ds}"`:''} >${d}${badge}</div>`;
+    const dataAttr = dmap[ds] ? 'data-caldate="' + ds + '"' : '';
+    html+=`<div class="${cls}" style="position:relative" ${dataAttr} >${d}${badge}</div>`;
   }
   html+=`</div><div class="cal-legend"><span><span class="cal-legend-dot"></span>상담 기록</span><span><span class="cal-legend-ring"></span>오늘</span></div>
   <div id="calDetail" style="margin-top:10px;"></div>`;
@@ -633,36 +636,35 @@ function onCalClick(dateStr) {
   const entry=calData.find(d=>d.date===dateStr);
   const el=document.getElementById('calDetail');
   if(!entry){el.innerHTML='';return;}
+  const jumpBtn='<button data-jumpdate="'+esc(dateStr)+'" style="background:none;border:1px solid var(--line);padding:4px 12px;border-radius:6px;cursor:pointer;font-size:0.74rem;font-family:inherit;color:var(--ink-soft);">'+(isAll?'일별로 보기':'이 날 보기')+'</button>';
+  let itemsHtml;
   if(isAll){
-    el.innerHTML=`<div class="cal-detail">
-      <div class="cal-detail-date">
-        <span>📅 ${esc(dateStr)} · ${entry.counsels.length}건 · ${new Set(entry.counsels.map(c=>c.num)).size}명</span>
-        <button data-jumpdate="${esc(dateStr)}" style="background:none;border:1px solid var(--line);padding:4px 12px;border-radius:6px;cursor:pointer;font-size:0.74rem;font-family:inherit;color:var(--ink-soft);">일별로 보기</button>
-      </div>
-      ${entry.counsels.map(c=>`<div class="cal-item">
-        <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;flex-wrap:wrap">
-          <span style="font-size:0.85rem;font-weight:700;color:var(--ink)">${esc(c.name||'')}</span>
-          <span style="font-size:0.7rem;color:var(--ink-mute);background:var(--line-soft);padding:1px 6px;border-radius:4px">${esc(c.num||'')}</span>
-          <span class="type-badge type-${esc(c.type||'기타')}">${esc(c.type||'기타')}</span>
-        </div>
-        <div class="cal-item-content">${esc(c.content||'')}</div>
-        ${c.memo?`<div style="font-size:0.76rem;color:var(--ink-mute);margin-top:5px;white-space:pre-wrap;word-break:break-word;">📝 ${esc(c.memo)}</div>`:''}
-      </div>`).join('')}
-    </div>`;
+    const cnt=entry.counsels.length;
+    const pplCnt=new Set(entry.counsels.map(function(c){return c.num;})).size;
+    const header='<div class="cal-detail-date"><span>\uD83D\uDCC5 '+esc(dateStr)+' \u00B7 '+cnt+'\uAC74 \u00B7 '+pplCnt+'\uBA85</span>'+jumpBtn+'</div>';
+    itemsHtml=header+entry.counsels.map(function(c){
+      return '<div class="cal-item">'
+        +'<div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;flex-wrap:wrap">'
+        +'<span style="font-size:0.85rem;font-weight:700;color:var(--ink)">'+esc(c.name||'')+'</span>'
+        +'<span style="font-size:0.7rem;color:var(--ink-mute);background:var(--line-soft);padding:1px 6px;border-radius:4px">'+esc(c.num||'')+'</span>'
+        +'<span class="type-badge type-'+esc(c.type||'기타')+'">'+esc(c.type||'기타')+'</span>'
+        +'</div>'
+        +'<div class="cal-item-content">'+esc(c.content||'')+'</div>'
+        +(c.memo?'<div style="font-size:0.76rem;color:var(--ink-mute);margin-top:5px;white-space:pre-wrap;word-break:break-word;">\uD83D\uDCDD '+esc(c.memo)+'</div>':'')
+        +'</div>';
+    }).join('');
   } else {
-    el.innerHTML=`<div class="cal-detail">
-      <div class="cal-detail-date">
-        <span>📅 ${esc(dateStr)} · ${entry.counsels.length}건</span>
-        <button data-jumpdate="${esc(dateStr)}" style="background:none;border:1px solid var(--line);padding:4px 12px;border-radius:6px;cursor:pointer;font-size:0.74rem;font-family:inherit;color:var(--ink-soft);">이 날 보기</button>
-      </div>
-      ${entry.counsels.map(c=>`<div class="cal-item">
-        <span class="type-badge type-${esc(c.type||'기타')}">${esc(c.type||'기타')}</span>
-        <div class="cal-item-content">${esc(c.content||'')}</div>
-        ${c.memo?`<div style="font-size:0.76rem;color:var(--ink-mute);margin-top:5px;white-space:pre-wrap;word-break:break-word;">📝 ${esc(c.memo)}</div>`:''}
-      </div>`).join('')}
-    </div>`;
+    const header='<div class="cal-detail-date"><span>\uD83D\uDCC5 '+esc(dateStr)+' \u00B7 '+entry.counsels.length+'\uAC74</span>'+jumpBtn+'</div>';
+    itemsHtml=header+entry.counsels.map(function(c){
+      return '<div class="cal-item">'
+        +'<span class="type-badge type-'+esc(c.type||'기타')+'">'+esc(c.type||'기타')+'</span>'
+        +'<div class="cal-item-content">'+esc(c.content||'')+'</div>'
+        +(c.memo?'<div style="font-size:0.76rem;color:var(--ink-mute);margin-top:5px;white-space:pre-wrap;word-break:break-word;">\uD83D\uDCDD '+esc(c.memo)+'</div>':'')
+        +'</div>';
+    }).join('');
   }
-  el.querySelector('[data-jumpdate]')?.addEventListener('click',e=>jumpToDate(e.currentTarget.dataset.jumpdate));
+  el.innerHTML='<div class="cal-detail">'+itemsHtml+'</div>';
+  el.querySelector('[data-jumpdate]')?.addEventListener('click',function(e){jumpToDate(e.currentTarget.dataset.jumpdate);});
 }
 function jumpToDate(dateStr) { document.getElementById('dateInput').value=dateStr; switchTab('daily'); loadCounselsByDate(); }
 
