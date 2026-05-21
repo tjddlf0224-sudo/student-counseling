@@ -140,10 +140,14 @@ textarea{resize:vertical;min-height:90px;line-height:1.6;}
 .s-del-btn:hover{background:var(--rose-soft);color:var(--rose);}
 
 /* 학생 추가 입력 */
-.add-student-form{background:var(--surface);border:1.5px solid var(--accent);border-radius:var(--radius);padding:14px;margin-bottom:14px;}
-.add-student-form .form-row{display:flex;gap:8px;margin-top:8px;}
-.add-student-form input{flex:1;padding:9px 12px;border:1.5px solid var(--line);border-radius:var(--radius-sm);font-family:inherit;font-size:0.88rem;color:var(--ink);background:var(--surface);outline:none;-webkit-appearance:none;appearance:none;}
+.add-student-form{background:var(--surface);border:1.5px solid var(--accent);border-radius:var(--radius);padding:12px;margin-bottom:14px;}
+.add-student-form .form-row{display:flex;gap:6px;margin-top:8px;align-items:center;}
+.add-student-form input{min-width:0;padding:9px 10px;border:1.5px solid var(--line);border-radius:var(--radius-sm);font-family:inherit;font-size:0.85rem;color:var(--ink);background:var(--surface);outline:none;-webkit-appearance:none;appearance:none;}
 .add-student-form input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(91,106,240,0.1);}
+.add-student-form .num-input{flex:2;}
+.add-student-form .name-input{flex:2;}
+.add-student-form .add-btn{flex:0 0 auto;padding:9px 14px;background:var(--accent);color:white;border:none;border-radius:var(--radius-sm);font-family:inherit;font-size:0.85rem;font-weight:600;cursor:pointer;white-space:nowrap;}
+.add-student-form .add-btn:hover{background:var(--accent-hover);}
 
 /* 학생 기록 모달 */
 #studentHistoryModal{position:fixed;inset:0;z-index:9980;display:flex;flex-direction:column;background:var(--bg);transform:translateX(100%);transition:transform 0.28s cubic-bezier(.4,0,.2,1);}
@@ -367,11 +371,11 @@ canvas{display:block;}
         <button onclick="toggleAddForm()" class="btn btn-sm" id="addToggleBtn">+ 추가</button>
       </div>
       <div id="addStudentForm" class="add-student-form hidden">
-        <div style="font-size:0.8rem;font-weight:600;color:var(--accent);margin-bottom:4px;">새 학생 추가</div>
+        <div style="font-size:0.8rem;font-weight:600;color:var(--accent);">새 학생 추가</div>
         <div class="form-row">
-          <input type="text" id="newNum"  placeholder="학번 (예: 10101)" maxlength="20">
-          <input type="text" id="newName" placeholder="이름" maxlength="10">
-          <button class="btn btn-sm" onclick="addStudent()" style="flex-shrink:0">추가</button>
+          <input type="text" id="newNum"  class="num-input"  placeholder="학번" maxlength="20">
+          <input type="text" id="newName" class="name-input" placeholder="이름" maxlength="10">
+          <button class="add-btn" onclick="addStudent()">추가</button>
         </div>
       </div>
       <div id="studentList">
@@ -413,13 +417,6 @@ canvas{display:block;}
       <h4>계정</h4>
       <div id="settingsUserInfo"></div>
       <button class="btn btn-outline" onclick="signOut()" style="margin-top:0">로그아웃</button>
-    </div>
-    <div class="settings-section">
-      <h4>📥 기존 데이터 가져오기 (GAS)</h4>
-      <p style="font-size:0.8rem;color:var(--ink-mute);line-height:1.6;margin-bottom:10px">기존 GAS 데이터를 Firestore로 한 번만 이전할 때 사용합니다.</p>
-      <label style="margin-top:0">GAS URL</label>
-      <input type="text" id="gasImportUrl" placeholder="https://script.google.com/macros/s/.../exec" style="font-size:0.8rem;font-family:monospace;">
-      <button class="btn btn-sm" style="margin-top:8px" onclick="importFromGas()">가져오기 시작</button>
     </div>
     <div class="settings-section">
       <h4>🗑️ 데이터 초기화</h4>
