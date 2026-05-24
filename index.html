@@ -405,7 +405,7 @@ canvas{display:block;}
   <section id="sec-stats" class="hidden">
     <div class="stat-nav">
       <select id="statYearSelect" onchange="renderStats()"></select>
-      <button class="stat-refresh-btn" onclick="renderStats()">↺ 새로고침</button>
+      <button class="stat-refresh-btn" onclick="renderStats(true)">↺ 새로고침</button>
     </div>
     <div class="container" id="statsArea">
       <div class="empty"><span class="empty-icon">📊</span>상담 기록이 쌓이면<br>통계가 표시됩니다</div>
@@ -825,6 +825,7 @@ window.submitCounsel = async function() {
       await addDoc(counselsCol(), data);
     }
     setBg('saved', '✓ ' + (isEdit ? '수정' : '저장') + ' 완료');
+    statsAllData = []; // 통계 캐시 초기화
     await loadStudents();
     await loadCounselsByDate();
   } catch(e) {
@@ -869,6 +870,7 @@ async function deleteCounsel(id) {
   try {
     await deleteDoc(doc(counselsCol(), id));
     setBg('saved', '✓ 삭제 완료');
+    statsAllData = []; // 통계 캐시 초기화
     await loadStudents();
     await loadCounselsByDate();
   } catch(e) {
@@ -1058,16 +1060,33 @@ function exportAsFile(text, name) {
 }
 
 /* ── 통계 ── */
-window.renderStats = async function() {
+window.renderStats = async function(forceReload) {
   var area = document.getElementById('statsArea');
-  area.innerHTML = '<div class="empty"><div class="spinner" style="margin:0 auto 12px"></div>불러오는 중…</div>';
   try {
+    // 캐시 있고 강제 재로드 아니면 바로 렌더링
+    if (!forceReload && statsAllData.length) {
+      renderStatsUI();
+      return;
+    }
+    area.innerHTML = '<div class="empty"><div class="spinner" style="margin:0 auto 12px"></div>불러오는 중…</div>';
     var snap = await getDocs(counselsCol());
     statsAllData = snap.docs.map(function(d){return Object.assign({id:d.id},d.data());});
     if (!statsAllData.length) {
       area.innerHTML = '<div class="empty"><span class="empty-icon">📊</span>상담 기록이 쌓이면<br>통계가 표시됩니다</div>';
       return;
     }
+    renderStatsUI();
+  } catch(e) {
+    area.innerHTML = '<div class="empty"><span class="empty-icon">⚠️</span>불러오기 실패</div>';
+  }
+};
+
+function renderStatsUI() {
+  var area = document.getElementById('statsArea');
+  if (!statsAllData.length) {
+    area.innerHTML = '<div class="empty"><span class="empty-icon">📊</span>상담 기록이 쌓이면<br>통계가 표시됩니다</div>';
+    return;
+  }
     var year  = parseInt(document.getElementById('statYearSelect').value);
     var yData = statsAllData.filter(function(c){return (c.date||'').startsWith(String(year));});
     var total = yData.length;
@@ -1106,19 +1125,16 @@ window.renderStats = async function() {
       +'<div class="stat-card"><div class="stat-card-title">유형별 분포</div><div class="donut-wrap"><canvas id="donutCanvas" width="130" height="130" style="flex-shrink:0"></canvas><div class="donut-legend" id="donutLegend"></div></div></div>'
       +(top.length?'<div class="stat-card"><div class="stat-card-title">상담 횟수 상위 학생</div><div id="topList"></div></div>':'')
       +(students.length&&bottom.length?'<div class="stat-card"><div class="stat-card-title">상담 횟수 하위 학생</div><div id="bottomList"></div></div>':'')
-      +(students.length?'<div class="stat-card" style="border-color:'+(neverCounseled.length?'var(--rose)':'var(--green)')+'">'
+      +(students.length&&neverCounseled.length?'<div class="stat-card" style="border-color:var(--rose)">'
         +'<div class="stat-card-title" style="display:flex;align-items:center;justify-content:space-between">'
         +'<span>미상담 학생 ('+year+'년)</span>'
-        +'<span style="font-size:0.9rem;font-weight:700;color:'+(neverCounseled.length?'var(--rose)':'var(--green)')+';">'
-        +(neverCounseled.length?neverCounseled.length+'명':'전원 완료 ✓')+'</span></div>'
-        +(neverCounseled.length===0
-          ?'<div style="text-align:center;padding:10px 0;font-size:0.85rem;color:var(--green)">🎉 모든 학생과 상담을 완료했어요!</div>'
-          :'<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px">'
-          +neverCounseled.map(function(s){
-            return '<span onclick="goStudentHistory(\''+esc(s.num)+'\',\''+esc(s.name)+'\')" '
-              +'style="background:var(--rose-soft);color:var(--rose);font-size:0.78rem;font-weight:600;padding:4px 11px;border-radius:20px;cursor:pointer;">'
-              +esc(s.name)+'</span>';
-          }).join('')+'</div>')
+        +'<span style="font-size:0.9rem;font-weight:700;color:var(--rose);">'+neverCounseled.length+'명</span></div>'
+        +'<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px">'
+        +neverCounseled.map(function(s){
+          return '<span onclick="goStudentHistory(\''+esc(s.num)+'\',\''+esc(s.name)+'\')" '
+            +'style="background:var(--rose-soft);color:var(--rose);font-size:0.78rem;font-weight:600;padding:4px 11px;border-radius:20px;cursor:pointer;">'
+            +esc(s.name)+'</span>';
+        }).join('')+'</div>'
         +'</div>':'');
     drawBarChart(monthly, year);
     drawDonut(typeCounts, total);
@@ -1141,10 +1157,7 @@ window.renderStats = async function() {
           +'<span class="top-bar-count" style="color:'+(s.count===0?'var(--rose)':'var(--orange)')+'">'+s.count+'건</span></div>';
       }).join('');
     }
-  } catch(e) {
-    area.innerHTML = '<div class="empty"><span class="empty-icon">⚠️</span>불러오기 실패</div>';
-  }
-};
+}
 
 function drawBarChart(counts, year) {
   var canvas = document.getElementById('barCanvas'); if(!canvas)return;
