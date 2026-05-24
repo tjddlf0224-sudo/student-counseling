@@ -158,6 +158,8 @@ textarea{resize:vertical;min-height:90px;line-height:1.6;}
 .s-modal-name{font-size:1rem;font-weight:700;color:white;}
 .s-modal-num{font-size:0.75rem;color:rgba(255,255,255,0.75);margin-top:1px;}
 .s-modal-count{background:rgba(255,255,255,0.2);color:white;font-size:0.72rem;font-weight:700;padding:3px 10px;border-radius:20px;flex-shrink:0;}
+.s-modal-export{background:rgba(255,255,255,0.2);border:none;color:white;padding:5px 12px;border-radius:8px;cursor:pointer;font-family:inherit;font-size:0.76rem;font-weight:600;flex-shrink:0;}
+.s-modal-export:hover{background:rgba(255,255,255,0.35);}
 .s-modal-body{flex:1;overflow-y:auto;padding:14px 16px;padding-bottom:calc(16px + var(--safe-bottom));}
 .s-history-item{padding:14px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);margin-bottom:10px;box-shadow:var(--shadow);}
 .s-history-item:last-child{margin-bottom:0;}
@@ -218,6 +220,19 @@ section.hidden{display:none !important;}
 .section-title{font-size:0.8rem;font-weight:600;color:var(--ink-mute);text-transform:uppercase;letter-spacing:0.5px;}
 ::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-thumb{background:var(--line);border-radius:10px;}
 .hint{font-size:0.75rem;color:var(--ink-mute);font-style:italic;}
+
+/* 오프라인 배너 */
+#offlineBanner{position:fixed;top:calc(var(--safe-top));left:50%;transform:translateX(-50%);width:100%;max-width:430px;z-index:9997;background:#ef4444;color:white;text-align:center;padding:8px 16px;font-size:0.8rem;font-weight:600;display:none;}
+#offlineBanner.show{display:block;}
+
+/* 광고 배너 */
+#adBannerWrap{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;z-index:500;display:flex;flex-direction:column;align-items:center;background:var(--surface);border-top:1px solid var(--line);padding-bottom:var(--safe-bottom);}
+#adBanner{width:320px;height:50px;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+#adRemoveBtn{width:100%;padding:8px 0;background:none;border:none;border-top:1px solid var(--line-soft);font-family:inherit;font-size:0.74rem;color:var(--ink-mute);cursor:pointer;}
+#adRemoveBtn:hover{background:var(--line-soft);color:var(--ink-soft);}
+#adBannerWrap.hidden{display:none!important;}
+body.has-ad #app{padding-bottom:108px;}
+body.has-ad #toast{bottom:calc(118px + var(--safe-bottom));}
 
 /* 설정 모달 */
 .settings-section{margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--line);}
@@ -293,6 +308,8 @@ canvas{display:block;}
   </div>
 </div>
 
+<div id="offlineBanner">📡 인터넷 연결이 끊겼습니다</div>
+
 <div id="app" class="hidden">
   <div class="header">
     <div class="header-top">
@@ -347,7 +364,7 @@ canvas{display:block;}
         <button onclick="cancelEdit()" class="btn btn-outline btn-sm">취소</button>
       </div>
       <label>학생</label>
-      <select id="studentSelect"><option value="">학생을 선택하세요</option></select>
+      <select id="studentSelect" onchange="onStudentSelectChange()"><option value="">학생을 선택하세요</option></select>
       <label>상담 날짜</label>
       <input type="date" id="writeDateInput">
       <label>유형</label>
@@ -405,6 +422,7 @@ canvas{display:block;}
       <div class="s-modal-num"  id="sModalNum"></div>
     </div>
     <span class="s-modal-count" id="sModalCount"></span>
+    <button class="s-modal-export" id="sModalExportBtn" onclick="exportStudentHistory()" style="display:none">내보내기</button>
   </div>
   <div class="s-modal-body" id="sModalBody"></div>
 </div>
@@ -419,6 +437,16 @@ canvas{display:block;}
       <button class="btn btn-outline" onclick="signOut()" style="margin-top:0">로그아웃</button>
     </div>
     <div class="settings-section">
+      <h4>📢 광고</h4>
+      <div id="adStatusInfo" style="font-size:0.82rem;color:var(--ink-mute);margin-bottom:10px;line-height:1.6"></div>
+      <button class="btn btn-outline btn-sm" onclick="openAdRemoveModal()" id="adRemoveSettingBtn">광고 제거하기</button>
+    </div>
+    <div class="settings-section">
+      <h4>🎓 학년도 초기화</h4>
+      <p style="font-size:0.8rem;color:var(--ink-mute);line-height:1.6;margin-bottom:10px">새 학년도 시작 시 학생 명단을 교체합니다.<br>상담 기록은 유지되고 학생 명단만 삭제됩니다.</p>
+      <button class="btn btn-outline btn-sm" onclick="resetSchoolYear()">학생 명단 초기화</button>
+    </div>
+    <div class="settings-section">
       <h4>🗑️ 데이터 초기화</h4>
       <div class="settings-row">
         <button class="btn btn-outline btn-sm" onclick="clearAllCounsels()">상담기록만 삭제</button>
@@ -426,6 +454,26 @@ canvas{display:block;}
       </div>
     </div>
     <button class="btn btn-outline" onclick="closeModal('settingsModal')" style="margin-top:4px">닫기</button>
+  </div>
+</div>
+
+<!-- 광고 배너 -->
+<div id="adBannerWrap" class="hidden">
+  <div id="adBanner">
+    <!-- AdMob 배너가 여기에 삽입됨 (네이티브 앱에서만 동작) -->
+    <!-- 웹 테스트용 더미 -->
+    <div id="adDummy" style="width:320px;height:50px;background:var(--line-soft);display:flex;align-items:center;justify-content:center;font-size:0.72rem;color:var(--ink-mute);border-radius:4px;">광고 영역</div>
+  </div>
+  <button id="adRemoveBtn" onclick="openAdRemoveModal()">광고 제거</button>
+</div>
+
+<!-- 광고 제거 모달 -->
+<div id="adRemoveModal" class="modal-overlay hidden" onclick="if(event.target===this)closeModal('adRemoveModal')">
+  <div class="modal-box" onclick="event.stopPropagation()" style="text-align:center">
+    <div style="font-size:2rem;margin-bottom:10px">📢</div>
+    <h3 id="adRemoveTitle">광고 제거</h3>
+    <div id="adRemoveContent" style="margin-top:12px"></div>
+    <div class="modal-btns" id="adRemoveBtns"></div>
   </div>
 </div>
 
@@ -470,6 +518,7 @@ let currentUser = null;
 let students = [], counsels = [], editingId = null, editingOrigDate = null;
 let calYear = new Date().getFullYear(), calMonth = new Date().getMonth(), calData = [];
 let statsAllData = [];
+let isSubmitting = false;
 const TYPE_COLORS = {'학업':'#0ea5e9','생활':'#22c55e','진로':'#f97316','심리':'#f43f5e','기타':'#9494b0'};
 const TYPES = ['학업','생활','진로','심리','기타'];
 
@@ -557,6 +606,8 @@ onAuthStateChanged(auth, async function(user) {
     });
     await loadStudents();
     await loadCounselsByDate();
+    initAd();
+    initOfflineDetection();
   } else {
     currentUser = null;
     document.getElementById('loginScreen').classList.remove('hidden');
@@ -644,13 +695,25 @@ window.addStudent = async function() {
 };
 
 window.deleteStudent = async function(num, name) {
-  const ok = await showConfirm(name + ' 학생을 삭제할까요?', '상담 기록은 유지됩니다.', '삭제');
+  const ok = await showConfirm(
+    name + ' 학생을 삭제할까요?',
+    '해당 학생의 상담 기록도 함께 삭제됩니다.\n되돌릴 수 없습니다.',
+    '삭제'
+  );
   if (!ok) return;
+  showLoading();
   try {
-    await deleteDoc(doc(studentsCol(), num));
+    // 상담 기록 먼저 일괄 삭제
+    const snap = await getDocs(query(counselsCol(), where('num','==',num)));
+    const batch = writeBatch(db);
+    snap.docs.forEach(function(d){ batch.delete(d.ref); });
+    batch.delete(doc(studentsCol(), num));
+    await batch.commit();
     showToast(name + ' 삭제됨');
     await loadStudents();
+    await loadCounselsByDate();
   } catch(e) { showToast('삭제 실패: ' + e.message); }
+  finally { hideLoading(); }
 };
 
 /* ── 탭 전환 ── */
@@ -734,6 +797,7 @@ window.filterCounsels = function() {
 
 /* ── 상담 입력/수정/삭제 ── */
 window.submitCounsel = async function() {
+  if (isSubmitting) return;
   const num     = document.getElementById('studentSelect').value;
   const date    = document.getElementById('writeDateInput').value;
   const type    = document.getElementById('typeSelect').value;
@@ -742,6 +806,9 @@ window.submitCounsel = async function() {
   if (!num)     { showToast('학생을 선택하세요'); return; }
   if (!date)    { showToast('날짜를 선택하세요'); return; }
   if (!content) { showToast('상담 내용을 입력하세요'); return; }
+  isSubmitting = true;
+  const submitBtn = document.getElementById('submitBtn');
+  submitBtn.disabled = true;
   const student = students.find(function(s){return s.num===num;})||{num:num,name:''};
   const isEdit  = editingId !== null;
   const savedId = editingId;
@@ -763,6 +830,9 @@ window.submitCounsel = async function() {
   } catch(e) {
     setBg('error', '✕ 저장 실패');
     showToast('저장 실패: ' + e.message);
+  } finally {
+    isSubmitting = false;
+    submitBtn.disabled = false;
   }
 };
 
@@ -927,6 +997,8 @@ window.goStudentHistory = async function(num, name) {
     var all  = snap.docs.map(function(d){return Object.assign({id:d.id},d.data());})
       .sort(function(a,b){return b.date.localeCompare(a.date);});
     document.getElementById('sModalCount').textContent = all.length ? all.length+'건' : '기록 없음';
+    document.getElementById('sModalExportBtn').style.display = all.length ? '' : 'none';
+    window._exportData = all.length ? {name: document.getElementById('sModalName').textContent, num: document.getElementById('sModalNum').textContent, records: all} : null;
     if (!all.length) {
       document.getElementById('sModalBody').innerHTML = '<div class="empty"><span class="empty-icon">\uD83D\uDCCB</span>상담 기록이 없습니다</div>';
       return;
@@ -945,7 +1017,45 @@ window.goStudentHistory = async function(num, name) {
 };
 window.closeStudentHistory = function() {
   document.getElementById('studentHistoryModal').classList.remove('open');
+  window._exportData = null;
 };
+
+window.exportStudentHistory = function() {
+  var data = window._exportData;
+  if (!data) return;
+  var lines = [];
+  lines.push('[ ' + data.name + ' (' + data.num + ') 상담 기록 ]');
+  lines.push('총 ' + data.records.length + '건  |  내보내기: ' + fmt(new Date()));
+  lines.push('');
+  data.records.forEach(function(c, i) {
+    lines.push((i+1) + '. ' + c.date + '  [' + (c.type||'기타') + ']');
+    lines.push(c.content||'');
+    if (c.memo) lines.push('📝 ' + c.memo);
+    lines.push('');
+  });
+  var text = lines.join('\n');
+  // 클립보드 복사 시도
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function() {
+      showToast('클립보드에 복사되었습니다');
+    }).catch(function() {
+      exportAsFile(text, data.name);
+    });
+  } else {
+    exportAsFile(text, data.name);
+  }
+};
+
+function exportAsFile(text, name) {
+  var blob = new Blob([text], {type: 'text/plain;charset=utf-8'});
+  var url  = URL.createObjectURL(blob);
+  var a    = document.createElement('a');
+  a.href = url;
+  a.download = name + '_상담기록.txt';
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('파일로 저장되었습니다');
+}
 
 /* ── 통계 ── */
 window.renderStats = async function() {
@@ -981,6 +1091,11 @@ window.renderStats = async function() {
       var k=s.num+'|'+s.name; return {num:s.num,name:s.name,count:stuMap[k]||0};
     }).sort(function(a,b){return a.count-b.count;}).slice(0,5);
     var maxB = bottom.reduce(function(m,s){return Math.max(m,s.count);},0)||1;
+
+    // 미상담 학생 (해당 연도 기준)
+    var counseledNums = new Set(yData.map(function(c){return c.num;}).filter(Boolean));
+    var neverCounseled = students.filter(function(s){return !counseledNums.has(s.num);});
+
     area.innerHTML =
       '<div class="stat-summary">'
       +'<div class="stat-num-card"><div class="num">'+total+'</div><div class="num-label">총 상담 건수</div></div>'
@@ -990,7 +1105,21 @@ window.renderStats = async function() {
       +'<div class="stat-card"><div class="stat-card-title">월별 상담 건수</div><div class="bar-chart-wrap"><canvas id="barCanvas"></canvas></div></div>'
       +'<div class="stat-card"><div class="stat-card-title">유형별 분포</div><div class="donut-wrap"><canvas id="donutCanvas" width="130" height="130" style="flex-shrink:0"></canvas><div class="donut-legend" id="donutLegend"></div></div></div>'
       +(top.length?'<div class="stat-card"><div class="stat-card-title">상담 횟수 상위 학생</div><div id="topList"></div></div>':'')
-      +(students.length&&bottom.length?'<div class="stat-card"><div class="stat-card-title">상담 횟수 하위 학생</div><div id="bottomList"></div></div>':'');
+      +(students.length&&bottom.length?'<div class="stat-card"><div class="stat-card-title">상담 횟수 하위 학생</div><div id="bottomList"></div></div>':'')
+      +(students.length?'<div class="stat-card" style="border-color:'+(neverCounseled.length?'var(--rose)':'var(--green)')+'">'
+        +'<div class="stat-card-title" style="display:flex;align-items:center;justify-content:space-between">'
+        +'<span>미상담 학생 ('+year+'년)</span>'
+        +'<span style="font-size:0.9rem;font-weight:700;color:'+(neverCounseled.length?'var(--rose)':'var(--green)')+';">'
+        +(neverCounseled.length?neverCounseled.length+'명':'전원 완료 ✓')+'</span></div>'
+        +(neverCounseled.length===0
+          ?'<div style="text-align:center;padding:10px 0;font-size:0.85rem;color:var(--green)">🎉 모든 학생과 상담을 완료했어요!</div>'
+          :'<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px">'
+          +neverCounseled.map(function(s){
+            return '<span onclick="goStudentHistory(\''+esc(s.num)+'\',\''+esc(s.name)+'\')" '
+              +'style="background:var(--rose-soft);color:var(--rose);font-size:0.78rem;font-weight:600;padding:4px 11px;border-radius:20px;cursor:pointer;">'
+              +esc(s.name)+'</span>';
+          }).join('')+'</div>')
+        +'</div>':'');
     drawBarChart(monthly, year);
     drawDonut(typeCounts, total);
     if (top.length) {
@@ -1067,32 +1196,6 @@ function drawDonut(typeCounts, total) {
   ctx.fillStyle='#9494b0';ctx.font='10px Pretendard,sans-serif';ctx.fillText('건',cx,cy+10);
 }
 
-/* ── GAS 마이그레이션 ── */
-window.importFromGas = async function() {
-  var url = document.getElementById('gasImportUrl').value.trim();
-  if (!url) { showToast('GAS URL을 입력하세요'); return; }
-  showLoading();
-  try {
-    var r1 = await fetch(url, {method:'POST', mode:'cors', body:JSON.stringify({action:'getStudents'})});
-    var j1 = await r1.json();
-    var gasStudents = (j1.data&&j1.data.students?j1.data.students:[]).map(function(s){return {num:s.num,name:s.name};});
-    var r2 = await fetch(url, {method:'POST', mode:'cors', body:JSON.stringify({action:'getAllCounsels'})});
-    var j2 = await r2.json();
-    var gasCounsels = (j2.data&&j2.data.counsels?j2.data.counsels:[]).map(function(c){
-      return {num:c.num,name:c.name,date:c.date,type:c.type||'기타',content:c.content||'',memo:c.memo||''};
-    });
-    var batch = writeBatch(db);
-    gasStudents.forEach(function(s){ batch.set(doc(studentsCol(),s.num),Object.assign({createdAt:serverTimestamp()},s)); });
-    gasCounsels.forEach(function(c){ batch.set(doc(counselsCol()), c); });
-    await batch.commit();
-    await loadStudents();
-    await loadCounselsByDate();
-    closeModal('settingsModal');
-    showToast('가져오기 완료: 학생 '+gasStudents.length+'명, 상담 '+gasCounsels.length+'건');
-  } catch(e) { showToast('가져오기 실패: ' + e.message); }
-  finally { hideLoading(); }
-};
-
 /* ── 초기화 ── */
 window.clearAllCounsels = async function() {
   var ok = await showConfirm('상담 기록을 모두 삭제할까요?', '학생 명단은 유지됩니다.\n되돌릴 수 없습니다.');
@@ -1129,6 +1232,7 @@ window.clearAllData = async function() {
 
 /* ── 설정 모달 ── */
 window.openSettings = function() {
+  updateAdStatus();
   if (currentUser) {
     var photoHtml = currentUser.photoURL
       ? '<img src="' + esc(currentUser.photoURL) + '" style="width:40px;height:40px;border-radius:50%;object-fit:cover;">'
@@ -1142,6 +1246,146 @@ window.openSettings = function() {
 };
 
 /* ── 공통 유틸 ── */
+/* ── 광고 관리 ── */
+const AD_APP_ID    = 'ca-app-pub-7418287954060066~5382739093';
+const AD_UNIT_ID   = 'ca-app-pub-7418287954060066/8599095225';
+const AD_REMOVED_KEY = 'counsel_ad_removed';
+
+function isAdRemoved() { return localStorage.getItem(AD_REMOVED_KEY) === '1'; }
+
+function initAd() {
+  if (isAdRemoved()) {
+    document.getElementById('adBannerWrap').classList.add('hidden');
+    document.body.classList.remove('has-ad');
+    updateAdStatus();
+    return;
+  }
+  document.getElementById('adBannerWrap').classList.remove('hidden');
+  document.body.classList.add('has-ad');
+  updateAdStatus();
+  // Capacitor 네이티브 환경에서만 AdMob 초기화
+  if (window.Capacitor && window.Capacitor.isNativePlatform()) {
+    document.getElementById('adDummy').style.display = 'none';
+    // deviceready 이후 실행 보장
+    function startAdMob() {
+      if (window.AdMob) {
+        window.AdMob.initialize({ requestTrackingAuthorization: true })
+          .then(function() {
+            return window.AdMob.showBanner({
+              adId: AD_UNIT_ID,
+              adSize: 'BANNER',
+              position: 'BOTTOM_CENTER',
+              margin: 0,
+              isTesting: false
+            });
+          })
+          .catch(function(e) { console.warn('AdMob 초기화 실패:', e); });
+      }
+    }
+    if (document.readyState === 'complete') {
+      // 이미 로드 완료된 경우
+      setTimeout(startAdMob, 500);
+    } else {
+      document.addEventListener('deviceready', startAdMob, false);
+      // deviceready가 안 오는 경우 fallback
+      window.addEventListener('load', function() { setTimeout(startAdMob, 1000); });
+    }
+  }
+}
+
+function updateAdStatus() {
+  const el = document.getElementById('adStatusInfo');
+  const btn = document.getElementById('adRemoveSettingBtn');
+  if (!el) return;
+  if (isAdRemoved()) {
+    el.textContent = '✅ 광고가 제거된 상태입니다.';
+    if (btn) btn.style.display = 'none';
+  } else {
+    el.textContent = '현재 하단 배너 광고가 표시되고 있습니다.\n광고 제거 시 더 쾌적하게 사용할 수 있습니다.';
+    if (btn) btn.style.display = '';
+  }
+}
+
+window.openAdRemoveModal = function() {
+  const title   = document.getElementById('adRemoveTitle');
+  const content = document.getElementById('adRemoveContent');
+  const btns    = document.getElementById('adRemoveBtns');
+  if (isAdRemoved()) {
+    title.textContent = '광고가 이미 제거되었습니다';
+    content.innerHTML = '<p style="color:var(--ink-mute);font-size:0.85rem;line-height:1.7">광고 없이 쾌적하게 사용 중입니다. 감사합니다 😊</p>';
+    btns.innerHTML = '<button class="btn btn-outline" onclick="closeModal(\'adRemoveModal\')" style="margin-top:0">닫기</button>';
+  } else {
+    title.textContent = '광고 제거';
+    content.innerHTML = '<p style="color:var(--ink-mute);font-size:0.85rem;line-height:1.7;margin-bottom:14px">광고 수익은 앱 유지 및 개발에 사용됩니다.<br>광고를 제거하면 이 기기에서 더 이상 광고가 표시되지 않습니다.</p>';
+    btns.innerHTML =
+      '<button class="btn btn-outline" onclick="closeModal(\'adRemoveModal\')" style="margin-top:0">취소</button>'
+      + '<button class="btn btn-green" onclick="removeAd()" style="margin-top:0">제거하기</button>';
+  }
+  closeModal('settingsModal');
+  document.getElementById('adRemoveModal').classList.remove('hidden');
+};
+
+window.removeAd = function() {
+  localStorage.setItem(AD_REMOVED_KEY, '1');
+  if (window.Capacitor && window.Capacitor.isNativePlatform() && window.AdMob) {
+    window.AdMob.hideBanner();
+  }
+  document.getElementById('adBannerWrap').classList.add('hidden');
+  document.body.classList.remove('has-ad');
+  closeModal('adRemoveModal');
+  updateAdStatus();
+  showToast('광고가 제거되었습니다 🎉');
+};
+
+/* ── 오프라인 감지 ── */
+function initOfflineDetection() {
+  function updateOnlineStatus() {
+    var banner = document.getElementById('offlineBanner');
+    if (navigator.onLine) {
+      banner.classList.remove('show');
+    } else {
+      banner.classList.add('show');
+    }
+  }
+  window.addEventListener('online',  updateOnlineStatus);
+  window.addEventListener('offline', updateOnlineStatus);
+  updateOnlineStatus();
+}
+
+/* ── 학생 선택 시 오늘 날짜 자동 설정 ── */
+window.onStudentSelectChange = function() {
+  var sel = document.getElementById('studentSelect');
+  var dateInp = document.getElementById('writeDateInput');
+  var isEditMode = !document.getElementById('edit-banner').classList.contains('hidden');
+  // 학생 선택 + 수정 모드가 아닐 때만 오늘 날짜로 자동 설정
+  if (sel.value && !isEditMode) {
+    dateInp.value = fmt(new Date());
+  }
+};
+
+/* ── 학년도 초기화 ── */
+window.resetSchoolYear = async function() {
+  var ok = await showConfirm(
+    '학생 명단을 초기화할까요?',
+    '모든 학생이 삭제됩니다.\n상담 기록은 유지됩니다.\n새 학년도 학생을 다시 추가해주세요.',
+    '초기화'
+  );
+  if (!ok) return;
+  showLoading();
+  try {
+    var snap = await getDocs(studentsCol());
+    var batch = writeBatch(db);
+    snap.docs.forEach(function(d){ batch.delete(d.ref); });
+    await batch.commit();
+    students = [];
+    renderStudentList();
+    renderSelects();
+    closeModal('settingsModal');
+    showToast('학생 명단이 초기화되었습니다');
+  } catch(e) { showToast('초기화 실패: ' + e.message); }
+  finally { hideLoading(); }
+};
+
 function fmt(d) { return d.toISOString().slice(0,10); }
 function genId() { return Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
 
