@@ -328,6 +328,10 @@ section.hidden{display:none !important;}
 .settings-section{margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--line);}
 .settings-section:last-of-type{border-bottom:none;margin-bottom:0;}
 .settings-section h4{font-size:0.75rem;font-weight:700;color:var(--ink-mute);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px;}
+.web-url-box{display:flex;align-items:center;gap:8px;background:var(--line-soft);border:1.5px solid var(--line);border-radius:var(--radius-sm);padding:8px 8px 8px 13px;margin-bottom:10px;}
+.web-url-text{flex:1;font-size:0.8rem;color:var(--ink-soft);font-family:'Menlo','Courier New',monospace;word-break:break-all;line-height:1.4;}
+.web-url-copy{flex:0 0 auto;border:none;background:var(--accent);color:#fff;font-family:inherit;font-size:0.78rem;font-weight:600;padding:8px 13px;border-radius:7px;cursor:pointer;transition:background 0.15s;}
+.web-url-copy:hover{background:var(--accent-hover);}
 .settings-row{display:flex;gap:8px;margin-bottom:8px;}
 .settings-row button{flex:1;margin-top:0;}
 .user-info-row{display:flex;align-items:center;gap:12px;padding:12px;background:var(--line-soft);border-radius:var(--radius-sm);margin-bottom:12px;}
@@ -451,7 +455,7 @@ body.has-ad #sec-cal{padding-bottom:64px;}
 .time-clear-btn{flex:0 0 auto;border:1.5px solid var(--line);background:var(--line-soft);color:var(--ink-soft);font-family:inherit;font-size:0.82rem;font-weight:600;padding:10px 14px;border-radius:8px;cursor:pointer;transition:all 0.15s;}
 .time-clear-btn:hover{border-color:var(--rose);color:var(--rose);}
 </style>
-  <script type="module" crossorigin src="./assets/index-CpTe3tdT.js"></script>
+  <script type="module" crossorigin src="./assets/index-CzLp4Z5H.js"></script>
 </head>
 <body>
 <div id="loading"><div class="loading-inner"><div class="spinner"></div>시작하는 중…</div></div>
@@ -708,6 +712,15 @@ body.has-ad #sec-cal{padding-bottom:64px;}
       <div id="settingsUserInfo"></div>
       <button class="btn btn-outline" onclick="signOut()" style="margin-top:0">로그아웃</button>
       <button class="btn btn-outline" onclick="deleteAccount()" style="margin-top:8px;color:var(--rose);border-color:var(--rose);">계정 삭제</button>
+    </div>
+    <div class="settings-section">
+      <h4 style="display:flex;align-items:center;gap:6px;"><span class="ico-slot" data-ico="laptop" data-sz="16" style="color:var(--sky)"></span>PC · 태블릿에서도 사용</h4>
+      <p style="font-size:0.8rem;color:var(--ink-mute);line-height:1.6;margin-bottom:10px">같은 계정으로 로그인하면 <b>컴퓨터·태블릿 등 어느 기기에서든 같은 상담 기록</b>을 이어서 쓸 수 있어요. 아래 주소를 PC 브라우저에 입력하세요.</p>
+      <div class="web-url-box">
+        <span class="web-url-text">tjddlf0224-sudo.github.io/student-counseling</span>
+        <button type="button" class="web-url-copy" onclick="copyWebUrl()">복사</button>
+      </div>
+      <button class="btn btn-outline btn-sm" onclick="openWebApp()" style="width:100%;display:inline-flex;align-items:center;justify-content:center;gap:6px;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.15em"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.7 2.6 15.3 0 18M12 3c-2.6 2.7-2.6 15.3 0 18"/></svg>웹에서 열기</button>
     </div>
     <div class="settings-section">
       <h4 style="display:flex;align-items:center;gap:6px;"><span class="ico-slot" data-ico="moon" data-sz="16" style="color:#6366f1"></span>화면</h4>
