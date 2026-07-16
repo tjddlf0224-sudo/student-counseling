@@ -309,7 +309,10 @@ h4 .ico,h3 .ico{vertical-align:-0.18em;margin-right:3px;}
 #bg-status.hide{opacity:0;}
 
 #loading{position:fixed;inset:0;background:rgba(26,26,46,0.3);backdrop-filter:blur(2px);display:flex;align-items:center;justify-content:center;z-index:9998;}
-.loading-inner{background:white;color:var(--ink);padding:18px 32px;border-radius:14px;box-shadow:var(--shadow-md);display:flex;align-items:center;gap:12px;font-size:0.9rem;}
+.loading-inner{background:var(--surface);color:var(--ink);padding:18px 32px;border-radius:14px;box-shadow:var(--shadow-md);display:flex;flex-direction:column;align-items:center;gap:12px;font-size:0.9rem;}
+.loading-row{display:flex;align-items:center;gap:12px;}
+#loadingCancelBtn{border:1.5px solid var(--line);background:var(--line-soft);color:var(--ink-soft);font-family:inherit;font-size:0.82rem;font-weight:600;padding:8px 20px;border-radius:8px;cursor:pointer;transition:all 0.15s;}
+#loadingCancelBtn:hover{border-color:var(--rose);color:var(--rose);}
 .spinner{width:18px;height:18px;border:2.5px solid var(--line);border-top-color:var(--accent);border-radius:50%;animation:spin 0.7s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
 
@@ -460,10 +463,10 @@ body.has-ad #toast{bottom:calc(24px + 64px + var(--safe-bottom,0px));}
 .time-clear-btn{flex:0 0 auto;border:1.5px solid var(--line);background:var(--line-soft);color:var(--ink-soft);font-family:inherit;font-size:0.82rem;font-weight:600;padding:10px 14px;border-radius:8px;cursor:pointer;transition:all 0.15s;}
 .time-clear-btn:hover{border-color:var(--rose);color:var(--rose);}
 </style>
-  <script type="module" crossorigin src="./assets/index-DsOiGnOR.js"></script>
+  <script type="module" crossorigin src="./assets/index-C2cTfGWB.js"></script>
 </head>
 <body>
-<div id="loading"><div class="loading-inner"><div class="spinner"></div><span id="loadingText">시작하는 중…</span></div></div>
+<div id="loading"><div class="loading-inner"><div class="loading-row"><div class="spinner"></div><span id="loadingText">시작하는 중…</span></div><button type="button" id="loadingCancelBtn" class="hidden" onclick="cancelLoading()">취소</button></div></div>
 <div id="toast"></div>
 <div id="bg-status"></div>
 
