@@ -716,47 +716,6 @@ body.has-ad #toast{bottom:calc(24px + 64px + var(--safe-bottom,0px));}
   <div class="modal-box" onclick="event.stopPropagation()" style="max-height:88vh;overflow-y:auto;">
     <h3 style="margin-bottom:18px;display:flex;align-items:center;gap:7px;"><span class="ico-slot" data-ico="gear" data-sz="20" style="color:var(--accent)"></span>설정</h3>
     <div class="settings-section">
-      <h4>계정</h4>
-      <div id="settingsUserInfo"></div>
-      <button class="btn btn-outline" onclick="signOut()" style="margin-top:0">로그아웃</button>
-      <button class="btn btn-outline" onclick="deleteAccount()" style="margin-top:8px;color:var(--rose);border-color:var(--rose);">계정 삭제</button>
-    </div>
-    <div class="settings-section">
-      <h4 style="display:flex;align-items:center;gap:6px;"><span class="ico-slot" data-ico="laptop" data-sz="16" style="color:var(--ink-mute)"></span>PC · 태블릿에서도 사용</h4>
-      <p style="font-size:0.8rem;color:var(--ink-mute);line-height:1.6;margin-bottom:10px">같은 계정으로 로그인하면 <b>컴퓨터·태블릿 등 어느 기기에서든 같은 상담 기록</b>을 이어서 쓸 수 있어요. 아래 주소를 PC 브라우저에 입력하세요.</p>
-      <div class="web-url-box">
-        <span class="web-url-text">tjddlf0224-sudo.github.io/student-counseling</span>
-        <button type="button" class="web-url-copy" onclick="copyWebUrl()">복사</button>
-      </div>
-      <button class="btn btn-outline btn-sm" onclick="openWebApp()" style="width:100%;display:inline-flex;align-items:center;justify-content:center;gap:6px;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.15em"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.7 2.6 15.3 0 18M12 3c-2.6 2.7-2.6 15.3 0 18"/></svg>웹에서 열기</button>
-    </div>
-    <div class="settings-section">
-      <h4 style="display:flex;align-items:center;gap:6px;"><span class="ico-slot" data-ico="moon" data-sz="16" style="color:var(--ink-mute)"></span>화면</h4>
-      <p style="font-size:0.8rem;color:var(--ink-mute);line-height:1.6;margin-bottom:10px">기기 설정을 따르거나 다크모드를 직접 선택할 수 있어요.</p>
-      <select id="themeModeSelect" onchange="onThemeModeChange()">
-        <option value="system">기기 설정 따르기</option>
-        <option value="light">항상 라이트 모드</option>
-        <option value="dark">항상 다크 모드</option>
-      </select>
-    </div>
-    <div class="settings-section">
-      <h4 style="display:flex;align-items:center;gap:6px;"><span class="ico-slot" data-ico="bell" data-sz="16" style="color:var(--ink-mute)"></span>알림</h4>
-      <p style="font-size:0.8rem;color:var(--ink-mute);line-height:1.6;margin-bottom:10px">평일(월~금) 정해진 시간에 상담일지 작성 알림을 받습니다. 주말에는 오지 않아요.</p>
-      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-        <label style="display:flex;align-items:center;gap:8px;font-size:0.86rem;color:var(--ink-soft);cursor:pointer;width:auto;">
-          <input type="checkbox" id="notifyEnabled" onchange="onNotifyChange()" style="width:18px;height:18px;cursor:pointer;">
-          평일 알림 켜기
-        </label>
-        <input type="time" id="notifyTime" value="16:00" onchange="onNotifyChange()" style="width:auto;flex:0 0 auto;">
-      </div>
-      <div id="notifyStatus" style="font-size:0.74rem;color:var(--ink-mute);margin-top:8px;"></div>
-    </div>
-    <div class="settings-section">
-      <h4 style="display:flex;align-items:center;gap:6px;"><span class="ico-slot" data-ico="bulb" data-sz="16" style="color:var(--ink-mute)"></span>앱 평가</h4>
-      <p style="font-size:0.8rem;color:var(--ink-mute);line-height:1.6;margin-bottom:10px">이 앱이 도움이 되셨다면 스토어에 한 줄 남겨주세요. 다른 선생님들이 앱을 찾는 데 큰 도움이 됩니다.</p>
-      <button class="btn btn-outline" onclick="openStoreListing()" style="width:auto;">스토어에서 평가하기</button>
-    </div>
-    <div class="settings-section">
       <h4 style="display:flex;align-items:center;gap:6px;"><span class="ico-slot" data-ico="upload" data-sz="16" style="color:var(--ink-mute)"></span>내보내기 / 백업</h4>
       <p style="font-size:0.8rem;color:var(--ink-mute);line-height:1.6;margin-bottom:10px">현재 <b id="exportYearLabel"></b>학년도의 모든 상담 기록을 <b>나이스(NEIS) 상담관리 업로드 서식</b>의 엑셀(.xlsx)로 내보냅니다. 나이스에 바로 업로드하거나 백업용으로 활용하세요.</p>
       <div class="settings-row" style="margin-bottom:8px;">
@@ -789,6 +748,36 @@ body.has-ad #toast{bottom:calc(24px + 64px + var(--safe-bottom,0px));}
       <button class="btn btn-outline btn-sm" onclick="exportAllStudentsReport()" style="display:inline-flex;align-items:center;justify-content:center;gap:6px;"><span class="ico-slot" data-ico="doc" data-sz="15" style="color:var(--sky)"></span>전체 학생 기록 내보내기</button>
     </div>
     <div class="settings-section">
+      <h4 style="display:flex;align-items:center;gap:6px;"><span class="ico-slot" data-ico="laptop" data-sz="16" style="color:var(--ink-mute)"></span>PC · 태블릿에서도 사용</h4>
+      <p style="font-size:0.8rem;color:var(--ink-mute);line-height:1.6;margin-bottom:10px">같은 계정으로 로그인하면 <b>컴퓨터·태블릿 등 어느 기기에서든 같은 상담 기록</b>을 이어서 쓸 수 있어요. 아래 주소를 PC 브라우저에 입력하세요.</p>
+      <div class="web-url-box">
+        <span class="web-url-text">tjddlf0224-sudo.github.io/student-counseling</span>
+        <button type="button" class="web-url-copy" onclick="copyWebUrl()">복사</button>
+      </div>
+      <button class="btn btn-outline btn-sm" onclick="openWebApp()" style="width:100%;display:inline-flex;align-items:center;justify-content:center;gap:6px;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.15em"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.7 2.6 15.3 0 18M12 3c-2.6 2.7-2.6 15.3 0 18"/></svg>웹에서 열기</button>
+    </div>
+    <div class="settings-section">
+      <h4 style="display:flex;align-items:center;gap:6px;"><span class="ico-slot" data-ico="moon" data-sz="16" style="color:var(--ink-mute)"></span>화면</h4>
+      <p style="font-size:0.8rem;color:var(--ink-mute);line-height:1.6;margin-bottom:10px">기기 설정을 따르거나 다크모드를 직접 선택할 수 있어요.</p>
+      <select id="themeModeSelect" onchange="onThemeModeChange()">
+        <option value="system">기기 설정 따르기</option>
+        <option value="light">항상 라이트 모드</option>
+        <option value="dark">항상 다크 모드</option>
+      </select>
+    </div>
+    <div class="settings-section">
+      <h4 style="display:flex;align-items:center;gap:6px;"><span class="ico-slot" data-ico="bell" data-sz="16" style="color:var(--ink-mute)"></span>알림</h4>
+      <p style="font-size:0.8rem;color:var(--ink-mute);line-height:1.6;margin-bottom:10px">평일(월~금) 정해진 시간에 상담일지 작성 알림을 받습니다. 주말에는 오지 않아요.</p>
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+        <label style="display:flex;align-items:center;gap:8px;font-size:0.86rem;color:var(--ink-soft);cursor:pointer;width:auto;">
+          <input type="checkbox" id="notifyEnabled" onchange="onNotifyChange()" style="width:18px;height:18px;cursor:pointer;">
+          평일 알림 켜기
+        </label>
+        <input type="time" id="notifyTime" value="16:00" onchange="onNotifyChange()" style="width:auto;flex:0 0 auto;">
+      </div>
+      <div id="notifyStatus" style="font-size:0.74rem;color:var(--ink-mute);margin-top:8px;"></div>
+    </div>
+    <div class="settings-section">
       <h4 style="display:flex;align-items:center;gap:6px;"><span class="ico-slot" data-ico="cap" data-sz="16" style="color:var(--ink-mute)"></span>학년도 관리</h4>
       <p style="font-size:0.8rem;color:var(--ink-mute);line-height:1.6;margin-bottom:10px">상단의 <b>학년도 선택</b>에서 새 학년도를 고르면 빈 명단으로 새로 시작합니다.<br>과거 학년도의 명단·상담 기록은 그대로 보존돼요.<br>아래 버튼은 현재 학년도 명단만 비웁니다.</p>
       <button class="btn btn-outline btn-sm" onclick="resetSchoolYear()">현재 학년도 명단 비우기</button>
@@ -799,6 +788,17 @@ body.has-ad #toast{bottom:calc(24px + 64px + var(--safe-bottom,0px));}
         <button class="btn btn-outline btn-sm" onclick="clearAllCounsels()">상담기록만 삭제</button>
         <button class="btn btn-danger btn-sm" onclick="clearAllData()">전체 초기화</button>
       </div>
+    </div>
+    <div class="settings-section">
+      <h4 style="display:flex;align-items:center;gap:6px;"><span class="ico-slot" data-ico="bulb" data-sz="16" style="color:var(--ink-mute)"></span>앱 평가</h4>
+      <p style="font-size:0.8rem;color:var(--ink-mute);line-height:1.6;margin-bottom:10px">이 앱이 도움이 되셨다면 스토어에 한 줄 남겨주세요. 다른 선생님들이 앱을 찾는 데 큰 도움이 됩니다.</p>
+      <button class="btn btn-outline" onclick="openStoreListing()" style="width:auto;">스토어에서 평가하기</button>
+    </div>
+    <div class="settings-section">
+      <h4>계정</h4>
+      <div id="settingsUserInfo"></div>
+      <button class="btn btn-outline" onclick="signOut()" style="margin-top:0">로그아웃</button>
+      <button class="btn btn-outline" onclick="deleteAccount()" style="margin-top:8px;color:var(--rose);border-color:var(--rose);">계정 삭제</button>
     </div>
     <button class="btn btn-outline" onclick="closeModal('settingsModal')" style="margin-top:4px">닫기</button>
   </div>
