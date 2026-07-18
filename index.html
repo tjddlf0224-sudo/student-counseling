@@ -293,7 +293,8 @@ h4 .ico,h3 .ico{vertical-align:-0.18em;margin-right:3px;}
 
 .edit-banner{background:#fff8e1;border:1px solid #ffd54f;border-radius:var(--radius-sm);padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;font-size:0.84rem;color:#7b5800;}
 
-.modal-overlay{position:fixed;inset:0;background:rgba(26,26,46,0.45);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:9990;padding:20px;}
+/* 상단 패딩에 노치·상태바 높이를 더한다. 설정처럼 긴 모달은 화면을 꽉 채워서 안 그러면 상태바에 가린다. */
+.modal-overlay{position:fixed;inset:0;background:rgba(26,26,46,0.45);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:9990;padding:20px;padding-top:calc(20px + var(--safe-top,0px));}
 .modal-box{background:var(--surface);border-radius:18px;padding:26px;width:100%;max-width:380px;box-shadow:0 20px 60px rgba(26,26,46,0.2);}
 .modal-box h3{font-size:1.05rem;font-weight:700;margin-bottom:10px;}
 .modal-box p{font-size:0.82rem;color:var(--ink-mute);line-height:1.7;margin-bottom:14px;}
@@ -464,7 +465,7 @@ body.has-ad #toast{bottom:calc(24px + 64px + var(--safe-bottom,0px));}
 .time-clear-btn{flex:0 0 auto;border:1.5px solid var(--line);background:var(--line-soft);color:var(--ink-soft);font-family:inherit;font-size:0.82rem;font-weight:600;padding:10px 14px;border-radius:8px;cursor:pointer;transition:all 0.15s;}
 .time-clear-btn:hover{border-color:var(--rose);color:var(--rose);}
 </style>
-  <script type="module" crossorigin src="./assets/index-mjz5CT9R.js"></script>
+  <script type="module" crossorigin src="./assets/index-By2rqCCe.js"></script>
 </head>
 <body>
 <div id="loading"><div class="loading-inner"><div class="loading-row"><div class="spinner"></div><span id="loadingText">시작하는 중…</span></div><button type="button" id="loadingCancelBtn" class="hidden" onclick="cancelLoading()">취소</button></div></div>
@@ -714,7 +715,8 @@ body.has-ad #toast{bottom:calc(24px + 64px + var(--safe-bottom,0px));}
 
 <!-- 설정 모달 -->
 <div id="settingsModal" class="modal-overlay hidden" onclick="if(event.target===this)closeModal('settingsModal')">
-  <div class="modal-box" onclick="event.stopPropagation()" style="max-height:88vh;overflow-y:auto;">
+  <!-- 100%는 오버레이의 패딩(노치·배너)을 뺀 높이라, 88vh와 달리 상태바에 안 가린다 -->
+  <div class="modal-box" onclick="event.stopPropagation()" style="max-height:100%;overflow-y:auto;">
     <h3 style="margin-bottom:18px;display:flex;align-items:center;gap:7px;"><span class="ico-slot" data-ico="gear" data-sz="20" style="color:var(--accent)"></span>설정</h3>
     <div class="settings-section">
       <h4 style="display:flex;align-items:center;gap:6px;"><span class="ico-slot" data-ico="upload" data-sz="16" style="color:var(--ink-mute)"></span>내보내기 / 백업</h4>
