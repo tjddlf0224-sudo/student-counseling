@@ -24,6 +24,8 @@
   --rose:#f43f5e;--rose-bg:#fff1f2;--rose-soft:#ffe4e6;
   --sky:#0ea5e9;--sky-soft:#e0f2fe;
   --safe-top:env(safe-area-inset-top,0px);--safe-bottom:env(safe-area-inset-bottom,0px);
+  /* --ad-h는 배너 로드 시 SizeChanged 실측값으로 덮어쓴다(50px은 로드 전 임시값). 15px는 '광고' 라벨 줄. */
+  --ad-h:50px;--ad-reserve:calc(15px + var(--ad-h) + var(--safe-bottom,0px));
   --radius:14px;--radius-sm:8px;
   --shadow:0 2px 12px rgba(26,26,46,0.07);--shadow-md:0 4px 24px rgba(26,26,46,0.1);
 }
@@ -379,10 +381,20 @@ section.hidden{display:none !important;}
 canvas{display:block;}
 /* 하단 배너(네이티브 오버레이) 세이프티: 배너 표시 중엔 앱 콘텐츠 전체와 모달 하단에
    여백을 둬서 마지막 항목/버튼이 배너에 가리지 않게 한다. (모든 탭 공통) */
-body.has-ad #app{padding-bottom:calc(64px + var(--safe-bottom,0px));}
-body.has-ad .modal-overlay{padding-bottom:calc(20px + 64px + var(--safe-bottom,0px));}
-body.has-ad .s-modal-body{padding-bottom:calc(16px + 64px + var(--safe-bottom,0px));}
-body.has-ad #toast{bottom:calc(24px + 64px + var(--safe-bottom,0px));}
+/* --ad-h는 SizeChanged로 받은 '실제' 배너 높이. 예전엔 64px로 추측해서, 실제보다 크면 마지막 항목이
+   잘리고 작으면 배너 위에 빈 띠가 남았다. 선반(라벨 15px)까지 합친 --ad-reserve 하나에서 전부 파생시킨다. */
+body.has-ad #app{padding-bottom:var(--ad-reserve);}
+body.has-ad .modal-overlay{padding-bottom:calc(20px + var(--ad-reserve));}
+body.has-ad .s-modal-body{padding-bottom:calc(16px + var(--ad-reserve));}
+body.has-ad #toast{bottom:calc(24px + var(--ad-reserve));}
+/* 광고 선반 — 배너가 '떠 있는' 게 아니라 앱의 하단 바에 '얹힌' 것으로 보이게 한다.
+   스펙은 #fmtToolbar(입력 탭 서식 툴바)에서 가져와, 앱이 원래 쓰던 하단 크롬 언어를 그대로 따른다. */
+#adShelf{position:fixed;left:0;right:0;bottom:0;z-index:9400;height:var(--ad-reserve);
+  background:var(--surface);border-top:1px solid var(--line);
+  box-shadow:0 -2px 12px rgba(26,26,46,0.07);display:none;pointer-events:none;}
+body.has-ad #adShelf{display:block;}
+#adShelf .ad-label{font-size:0.6rem;line-height:15px;height:15px;color:var(--ink-mute);
+  padding-left:14px;letter-spacing:0.2px;}
 .donut-wrap{display:flex;align-items:center;gap:16px;}
 .donut-legend{flex:1;display:flex;flex-direction:column;gap:8px;}
 .legend-row{display:flex;align-items:center;gap:8px;font-size:0.8rem;}
@@ -485,11 +497,13 @@ body.has-ad #toast{bottom:calc(24px + 64px + var(--safe-bottom,0px));}
 .time-clear-btn{flex:0 0 auto;border:1.5px solid var(--line);background:var(--line-soft);color:var(--ink-soft);font-family:inherit;font-size:0.82rem;font-weight:600;padding:10px 14px;border-radius:8px;cursor:pointer;transition:all 0.15s;}
 .time-clear-btn:hover{border-color:var(--rose);color:var(--rose);}
 </style>
-  <script type="module" crossorigin src="./assets/index-ArEX6U-W.js"></script>
+  <script type="module" crossorigin src="./assets/index-DO644VwG.js"></script>
 </head>
 <body>
 <div id="loading"><div class="loading-inner"><div class="loading-row"><div class="spinner"></div><span id="loadingText">시작하는 중…</span></div><button type="button" id="loadingCancelBtn" class="hidden" onclick="cancelLoading()">취소</button></div></div>
 <div id="toast"></div>
+<!-- 광고 선반: 네이티브 배너가 이 위에 그려져 '앱의 하단 바에 얹힌' 모양이 된다 -->
+<div id="adShelf"><div class="ad-label">광고</div></div>
 <div id="bg-status"></div>
 
 <!-- 로그인 화면 -->
