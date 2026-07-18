@@ -99,12 +99,13 @@ body{display:flex;justify-content:center;width:100%;max-width:100vw;}
 
 .tab-bar{display:flex;gap:0;}
 .tab-btn{flex:1;padding:12px 2px 10px;background:transparent;border:none;border-bottom:2.5px solid transparent;font-family:inherit;font-size:0.7rem;font-weight:500;color:var(--ink-mute);cursor:pointer;transition:all 0.2s;display:flex;flex-direction:column;align-items:center;gap:3px;}
-/* 아이콘은 currentColor라 버튼 색(비활성 --ink-mute / 활성 --accent)을 그대로 상속한다.
-   opacity로 흐리게 하던 방식은 다크모드에서 대비가 무너져 뺐다. */
-.tab-btn .tab-icon{display:flex;align-items:center;justify-content:center;height:23px;margin-bottom:1px;}
+.tab-btn .tab-icon{display:flex;align-items:center;justify-content:center;height:23px;margin-bottom:1px;transition:opacity 0.2s ease;}
 .tab-btn .tab-icon svg{width:23px;height:23px;display:block;transition:transform 0.2s ease;}
+.tab-btn:not(.active) .tab-icon{opacity:0.62;}
+.tab-btn.active .tab-icon{opacity:1;}
 .tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:600;}
 .tab-btn.active .tab-icon svg{transform:translateY(-1px) scale(1.08);}
+.tab-btn:hover:not(.active) .tab-icon{opacity:0.75;}
 .tab-btn:hover:not(.active){color:var(--ink-soft);}
 
 .container{padding:16px;}
@@ -508,11 +509,11 @@ body.has-ad #toast{bottom:calc(24px + 64px + var(--safe-bottom,0px));}
       </div>
     </div>
     <div class="tab-bar">
-      <button class="tab-btn active" id="tab-daily"    onclick="switchTab('daily')"><span class="tab-icon ico-slot" data-ico="clipboard" data-sz="23"></span>일별</button>
-      <button class="tab-btn"        id="tab-cal"      onclick="switchTab('cal')"><span class="tab-icon ico-slot" data-ico="calendar" data-sz="23"></span>달력</button>
-      <button class="tab-btn"        id="tab-write"    onclick="switchTab('write')"><span class="tab-icon ico-slot" data-ico="pencil" data-sz="23"></span>입력</button>
-      <button class="tab-btn"        id="tab-students" onclick="switchTab('students')"><span class="tab-icon ico-slot" data-ico="people" data-sz="23"></span>학생</button>
-      <button class="tab-btn"        id="tab-stats"    onclick="switchTab('stats')"><span class="tab-icon ico-slot" data-ico="chart" data-sz="23"></span>통계</button>
+      <button class="tab-btn active" id="tab-daily"    onclick="switchTab('daily')"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="4.5" width="18" height="15" rx="3.4" fill="#e8ebff"/><circle cx="7.3" cy="9" r="1.35" fill="#5b6af0"/><circle cx="7.3" cy="14.5" r="1.35" fill="#5b6af0"/><rect x="10.6" y="7.85" width="7.2" height="2.3" rx="1.15" fill="#5b6af0"/><rect x="10.6" y="13.35" width="5.2" height="2.3" rx="1.15" fill="#9aa4f7"/></svg></span>일별</button>
+      <button class="tab-btn"        id="tab-cal"      onclick="switchTab('cal')"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="3.2" y="5.5" width="17.6" height="15" rx="3" fill="#ffe4e6"/><path d="M3.2 8.6a3 3 0 0 1 3-3h11.6a3 3 0 0 1 3 3v.9H3.2z" fill="#f43f5e"/><line x1="7.5" y1="3.4" x2="7.5" y2="7.2" stroke="#f43f5e" stroke-width="2" stroke-linecap="round"/><line x1="16.5" y1="3.4" x2="16.5" y2="7.2" stroke="#f43f5e" stroke-width="2" stroke-linecap="round"/><circle cx="8" cy="13.2" r="1.15" fill="#f43f5e"/><circle cx="12" cy="13.2" r="1.15" fill="#fb7185"/><circle cx="16" cy="13.2" r="1.15" fill="#fb7185"/><circle cx="8" cy="16.9" r="1.15" fill="#fb7185"/><circle cx="12" cy="16.9" r="1.15" fill="#f43f5e"/></svg></span>달력</button>
+      <button class="tab-btn"        id="tab-write"    onclick="switchTab('write')"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M14.8 5.2l4 4L9.2 18.8 5 20l1.2-4.2L14.8 5.2z" fill="#dcfce7" stroke="#22c55e" stroke-width="1.7" stroke-linejoin="round"/><path d="M5 20l1.2-4.2 3 3L5 20z" fill="#22c55e"/><path d="M12.9 7.1l4 4" stroke="#22c55e" stroke-width="1.7" stroke-linecap="round"/></svg></span>입력</button>
+      <button class="tab-btn"        id="tab-students" onclick="switchTab('students')"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none"><circle cx="16.4" cy="8.2" r="2.8" fill="#f97316"/><path d="M16.4 13.4c2.5 0 4.1 1.9 4.1 4.3" stroke="#f97316" stroke-width="1.7" stroke-linecap="round"/><circle cx="9" cy="8.4" r="3.6" fill="#ffedd5" stroke="#f97316" stroke-width="1.7"/><path d="M3.5 19.6c0-3.2 2.5-5.6 5.5-5.6s5.5 2.4 5.5 5.6z" fill="#ffedd5" stroke="#f97316" stroke-width="1.7" stroke-linejoin="round"/></svg></span>학생</button>
+      <button class="tab-btn"        id="tab-stats"    onclick="switchTab('stats')"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="4.3" y="10.5" width="4" height="8.5" rx="1.5" fill="#7dd3fc"/><rect x="10" y="5.5" width="4" height="13.5" rx="1.5" fill="#0ea5e9"/><rect x="15.7" y="13" width="4" height="6" rx="1.5" fill="#38bdf8"/></svg></span>통계</button>
     </div>
   </div>
 
