@@ -10,10 +10,17 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="상담일지">
 <link rel="apple-touch-icon" href="icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+/* Pretendard 가변 폰트를 앱에 번들(약 2MB). CDN 미로드 시 폰트 깨짐/지연을 없앤다.
+   가변폰트 하나로 45~920 전 굵기 커버. 경로는 슬래시 없는 상대경로(하위경로·네이티브 안전). */
+@font-face{
+  font-family:'Pretendard';
+  src:url('fonts/PretendardVariable.woff2') format('woff2');
+  font-weight:45 920;
+  font-style:normal;
+  font-display:swap;
+}
+</style>
 <style>
 :root {
   --ink:#1a1a2e;--ink-soft:#4a4a6a;--ink-mute:#9494b0;
@@ -55,7 +62,7 @@
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 input,select,textarea{font-size:16px;}
-html,body{min-height:100vh;background:var(--bg);font-family:'Pretendard','Gowun Dodum',sans-serif;color:var(--ink);width:100%;max-width:100%;overflow-x:clip;}
+html,body{min-height:100vh;background:var(--bg);font-family:'Pretendard',sans-serif;color:var(--ink);width:100%;max-width:100%;overflow-x:clip;}
 body{display:flex;justify-content:center;width:100%;max-width:100vw;}
 #app{width:100%;max-width:430px;background:var(--bg);min-height:100vh;position:relative;overflow-x:clip;}
 
@@ -227,7 +234,7 @@ h4 .ico,h3 .ico{vertical-align:-0.18em;margin-right:3px;}
 @media print{
   body{background:#fff;}
   #app,#loginScreen,#studentHistoryModal,.modal-overlay,#adBanner{display:none !important;}
-  #printArea{display:block !important;position:static;padding:0;margin:0;color:#000;font-family:'Pretendard','Gowun Dodum',sans-serif;}
+  #printArea{display:block !important;position:static;padding:0;margin:0;color:#000;font-family:'Pretendard',sans-serif;}
   .pr-head{text-align:center;border-bottom:2px solid #000;padding-bottom:10px;margin-bottom:6px;}
   .pr-title{font-size:20px;font-weight:800;margin-bottom:8px;}
   .pr-meta{font-size:12px;color:#333;display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;}
@@ -248,7 +255,7 @@ h4 .ico,h3 .ico{vertical-align:-0.18em;margin-right:3px;}
   @page{margin:14mm 12mm;}
 }
 /* ── PDF 생성용 오프스크린 렌더 (네이티브 내보내기: html2canvas가 이 영역을 이미지로 캡처) ── */
-#pdfRender{position:fixed;left:-10000px;top:0;width:794px;background:#fff;color:#000;font-family:-apple-system,'Pretendard','Gowun Dodum',sans-serif;}
+#pdfRender{position:fixed;left:-10000px;top:0;width:794px;background:#fff;color:#000;font-family:-apple-system,'Pretendard',sans-serif;}
 #pdfRender .pr-head{text-align:center;border-bottom:2px solid #000;padding-bottom:10px;margin-bottom:6px;}
 #pdfRender .pr-title{font-size:20px;font-weight:800;margin-bottom:8px;}
 #pdfRender .pr-meta{font-size:12px;color:#333;display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;}
@@ -342,6 +349,8 @@ h4 .ico,h3 .ico{vertical-align:-0.18em;margin-right:3px;}
 
 .hidden{display:none !important;}
 section.hidden{display:none !important;}
+/* 나이스(NEIS)는 한국 학교 전산 시스템 전용 — 다른 로케일에서는 의미 없으므로 숨긴다 */
+body.locale-en .ko-only{display:none !important;}
 #confirmModal .modal-box{text-align:center;}
 #confirmModal .modal-icon{margin-bottom:10px;display:flex;justify-content:center;color:var(--rose);}
 .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
@@ -497,10 +506,10 @@ body.has-ad #adShelf{display:block;}
 .time-clear-btn{flex:0 0 auto;border:1.5px solid var(--line);background:var(--line-soft);color:var(--ink-soft);font-family:inherit;font-size:0.82rem;font-weight:600;padding:10px 14px;border-radius:8px;cursor:pointer;transition:all 0.15s;}
 .time-clear-btn:hover{border-color:var(--rose);color:var(--rose);}
 </style>
-  <script type="module" crossorigin src="./assets/index-DO644VwG.js"></script>
+  <script type="module" crossorigin src="./assets/index-C6KPtrn_.js"></script>
 </head>
 <body>
-<div id="loading"><div class="loading-inner"><div class="loading-row"><div class="spinner"></div><span id="loadingText">시작하는 중…</span></div><button type="button" id="loadingCancelBtn" class="hidden" onclick="cancelLoading()">취소</button></div></div>
+<div id="loading"><div class="loading-inner"><div class="loading-row"><div class="spinner"></div><span id="loadingText" data-i18n="loading.starting">시작하는 중…</span></div><button type="button" id="loadingCancelBtn" class="hidden" onclick="cancelLoading()" data-i18n="common.cancel">취소</button></div></div>
 <div id="toast"></div>
 <!-- 광고 선반: 네이티브 배너가 이 위에 그려져 '앱의 하단 바에 얹힌' 모양이 된다 -->
 <div id="adShelf"><div class="ad-label">광고</div></div>
@@ -509,27 +518,27 @@ body.has-ad #adShelf{display:block;}
 <!-- 로그인 화면 -->
 <div id="loginScreen" class="hidden">
   <div class="login-logo" style="color:#fff"><span class="ico-slot" data-ico="clipboard" data-sz="36"></span></div>
-  <h1>학생 상담일지</h1>
-  <p>로그인하면 모든 기기에서<br>데이터가 동기화됩니다</p>
+  <h1 data-i18n="app.title">학생 상담일지</h1>
+  <p data-i18n-html="login.subtitle">로그인하면 모든 기기에서<br>데이터가 동기화됩니다</p>
   <button class="google-btn" onclick="signIn()">
     <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-    구글 계정으로 로그인
+    <span data-i18n="login.google">구글 계정으로 로그인</span>
   </button>
   <button class="apple-btn" onclick="signInApple()">
     <svg viewBox="0 0 24 24"><path fill="currentColor" d="M17.05 12.04c-.03-3.02 2.47-4.47 2.58-4.54-1.41-2.06-3.6-2.34-4.38-2.37-1.86-.19-3.64 1.1-4.58 1.1-.95 0-2.4-1.08-3.95-1.05-2.03.03-3.91 1.18-4.95 3-2.12 3.67-.54 9.1 1.51 12.08 1.01 1.46 2.21 3.1 3.78 3.04 1.52-.06 2.09-.98 3.93-.98 1.83 0 2.35.98 3.95.95 1.63-.03 2.66-1.49 3.66-2.96 1.15-1.7 1.62-3.34 1.65-3.43-.04-.02-3.17-1.22-3.2-4.83zM14.13 3.25c.84-1.02 1.41-2.43 1.25-3.84-1.21.05-2.68.81-3.55 1.82-.78.9-1.46 2.34-1.28 3.72 1.35.1 2.73-.69 3.58-1.7z"/></svg>
-    Apple로 로그인
+    <span data-i18n="login.apple">Apple로 로그인</span>
   </button>
-  <div class="login-divider"><span>또는 이메일로</span></div>
+  <div class="login-divider"><span data-i18n="login.or">또는 이메일로</span></div>
   <div class="email-form">
-    <input type="email"    id="loginEmail"    placeholder="이메일 주소" autocomplete="email">
-    <input type="password" id="loginPassword" placeholder="비밀번호" autocomplete="current-password">
+    <input type="email"    id="loginEmail"    data-i18n-placeholder="login.email" placeholder="이메일 주소" autocomplete="email">
+    <input type="password" id="loginPassword" data-i18n-placeholder="login.password" placeholder="비밀번호" autocomplete="current-password">
     <div class="login-error" id="loginError"></div>
     <div class="email-form-btns">
-      <button class="email-login-btn"  onclick="signInEmail()">로그인</button>
-      <button class="email-signup-btn" onclick="signUpEmail()">회원가입</button>
+      <button class="email-login-btn"  onclick="signInEmail()" data-i18n="login.signin">로그인</button>
+      <button class="email-signup-btn" onclick="signUpEmail()" data-i18n="login.signup">회원가입</button>
     </div>
     <div style="text-align:center;margin-top:4px">
-      <button onclick="resetPassword()" style="background:none;border:none;cursor:pointer;font-family:inherit;font-size:0.78rem;color:var(--ink-mute);text-decoration:underline;">비밀번호를 잊으셨나요?</button>
+      <button onclick="resetPassword()" style="background:none;border:none;cursor:pointer;font-family:inherit;font-size:0.78rem;color:var(--ink-mute);text-decoration:underline;" data-i18n="login.forgot">비밀번호를 잊으셨나요?</button>
     </div>
   </div>
 </div>
@@ -537,18 +546,18 @@ body.has-ad #adShelf{display:block;}
 <div id="app" class="hidden">
   <div class="header">
     <div class="header-top">
-      <div class="title"><span class="title-dot"></span>학생 상담일지</div>
+      <div class="title"><span class="title-dot"></span><span data-i18n="app.title">학생 상담일지</span></div>
       <div class="header-right">
         <select id="viewYearSelect" class="year-select" onchange="onViewYearChange()"></select>
         <button class="gear-btn" onclick="openSettings()"><span class="ico-slot" data-ico="gear" data-sz="19"></span></button>
       </div>
     </div>
     <div class="tab-bar">
-      <button class="tab-btn active" id="tab-daily"    onclick="switchTab('daily')"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="4.5" width="18" height="15" rx="3.4" fill="#e8ebff"/><circle cx="7.3" cy="9" r="1.35" fill="#5b6af0"/><circle cx="7.3" cy="14.5" r="1.35" fill="#5b6af0"/><rect x="10.6" y="7.85" width="7.2" height="2.3" rx="1.15" fill="#5b6af0"/><rect x="10.6" y="13.35" width="5.2" height="2.3" rx="1.15" fill="#9aa4f7"/></svg></span>일별</button>
-      <button class="tab-btn"        id="tab-cal"      onclick="switchTab('cal')"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="3.2" y="5.5" width="17.6" height="15" rx="3" fill="#ffe4e6"/><path d="M3.2 8.6a3 3 0 0 1 3-3h11.6a3 3 0 0 1 3 3v.9H3.2z" fill="#f43f5e"/><line x1="7.5" y1="3.4" x2="7.5" y2="7.2" stroke="#f43f5e" stroke-width="2" stroke-linecap="round"/><line x1="16.5" y1="3.4" x2="16.5" y2="7.2" stroke="#f43f5e" stroke-width="2" stroke-linecap="round"/><circle cx="8" cy="13.2" r="1.15" fill="#f43f5e"/><circle cx="12" cy="13.2" r="1.15" fill="#fb7185"/><circle cx="16" cy="13.2" r="1.15" fill="#fb7185"/><circle cx="8" cy="16.9" r="1.15" fill="#fb7185"/><circle cx="12" cy="16.9" r="1.15" fill="#f43f5e"/></svg></span>달력</button>
-      <button class="tab-btn"        id="tab-write"    onclick="switchTab('write')"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M14.8 5.2l4 4L9.2 18.8 5 20l1.2-4.2L14.8 5.2z" fill="#dcfce7" stroke="#22c55e" stroke-width="1.7" stroke-linejoin="round"/><path d="M5 20l1.2-4.2 3 3L5 20z" fill="#22c55e"/><path d="M12.9 7.1l4 4" stroke="#22c55e" stroke-width="1.7" stroke-linecap="round"/></svg></span>입력</button>
-      <button class="tab-btn"        id="tab-students" onclick="switchTab('students')"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none"><circle cx="16.4" cy="8.2" r="2.8" fill="#f97316"/><path d="M16.4 13.4c2.5 0 4.1 1.9 4.1 4.3" stroke="#f97316" stroke-width="1.7" stroke-linecap="round"/><circle cx="9" cy="8.4" r="3.6" fill="#ffedd5" stroke="#f97316" stroke-width="1.7"/><path d="M3.5 19.6c0-3.2 2.5-5.6 5.5-5.6s5.5 2.4 5.5 5.6z" fill="#ffedd5" stroke="#f97316" stroke-width="1.7" stroke-linejoin="round"/></svg></span>학생</button>
-      <button class="tab-btn"        id="tab-stats"    onclick="switchTab('stats')"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="4.3" y="10.5" width="4" height="8.5" rx="1.5" fill="#7dd3fc"/><rect x="10" y="5.5" width="4" height="13.5" rx="1.5" fill="#0ea5e9"/><rect x="15.7" y="13" width="4" height="6" rx="1.5" fill="#38bdf8"/></svg></span>통계</button>
+      <button class="tab-btn active" id="tab-daily"    onclick="switchTab('daily')"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="4.5" width="18" height="15" rx="3.4" fill="#e8ebff"/><circle cx="7.3" cy="9" r="1.35" fill="#5b6af0"/><circle cx="7.3" cy="14.5" r="1.35" fill="#5b6af0"/><rect x="10.6" y="7.85" width="7.2" height="2.3" rx="1.15" fill="#5b6af0"/><rect x="10.6" y="13.35" width="5.2" height="2.3" rx="1.15" fill="#9aa4f7"/></svg></span><span data-i18n="tab.daily">일별</span></button>
+      <button class="tab-btn"        id="tab-cal"      onclick="switchTab('cal')"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="3.2" y="5.5" width="17.6" height="15" rx="3" fill="#ffe4e6"/><path d="M3.2 8.6a3 3 0 0 1 3-3h11.6a3 3 0 0 1 3 3v.9H3.2z" fill="#f43f5e"/><line x1="7.5" y1="3.4" x2="7.5" y2="7.2" stroke="#f43f5e" stroke-width="2" stroke-linecap="round"/><line x1="16.5" y1="3.4" x2="16.5" y2="7.2" stroke="#f43f5e" stroke-width="2" stroke-linecap="round"/><circle cx="8" cy="13.2" r="1.15" fill="#f43f5e"/><circle cx="12" cy="13.2" r="1.15" fill="#fb7185"/><circle cx="16" cy="13.2" r="1.15" fill="#fb7185"/><circle cx="8" cy="16.9" r="1.15" fill="#fb7185"/><circle cx="12" cy="16.9" r="1.15" fill="#f43f5e"/></svg></span><span data-i18n="tab.cal">달력</span></button>
+      <button class="tab-btn"        id="tab-write"    onclick="switchTab('write')"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M14.8 5.2l4 4L9.2 18.8 5 20l1.2-4.2L14.8 5.2z" fill="#dcfce7" stroke="#22c55e" stroke-width="1.7" stroke-linejoin="round"/><path d="M5 20l1.2-4.2 3 3L5 20z" fill="#22c55e"/><path d="M12.9 7.1l4 4" stroke="#22c55e" stroke-width="1.7" stroke-linecap="round"/></svg></span><span data-i18n="tab.write">입력</span></button>
+      <button class="tab-btn"        id="tab-students" onclick="switchTab('students')"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none"><circle cx="16.4" cy="8.2" r="2.8" fill="#f97316"/><path d="M16.4 13.4c2.5 0 4.1 1.9 4.1 4.3" stroke="#f97316" stroke-width="1.7" stroke-linecap="round"/><circle cx="9" cy="8.4" r="3.6" fill="#ffedd5" stroke="#f97316" stroke-width="1.7"/><path d="M3.5 19.6c0-3.2 2.5-5.6 5.5-5.6s5.5 2.4 5.5 5.6z" fill="#ffedd5" stroke="#f97316" stroke-width="1.7" stroke-linejoin="round"/></svg></span><span data-i18n="tab.students">학생</span></button>
+      <button class="tab-btn"        id="tab-stats"    onclick="switchTab('stats')"><span class="tab-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="4.3" y="10.5" width="4" height="8.5" rx="1.5" fill="#7dd3fc"/><rect x="10" y="5.5" width="4" height="13.5" rx="1.5" fill="#0ea5e9"/><rect x="15.7" y="13" width="4" height="6" rx="1.5" fill="#38bdf8"/></svg></span><span data-i18n="tab.stats">통계</span></button>
     </div>
   </div>
 
@@ -558,30 +567,30 @@ body.has-ad #adShelf{display:block;}
       <button class="dnav-btn" onclick="shiftDate(-1)">&#8249;</button>
       <input type="date" id="dateInput" onchange="loadCounselsByDate()">
       <button class="dnav-btn" onclick="shiftDate(1)">&#8250;</button>
-      <button class="today-btn" onclick="goToday()">오늘</button>
+      <button class="today-btn" onclick="goToday()" data-i18n="daily.today">오늘</button>
     </div>
     <div class="search-wrap" style="display:flex;align-items:center;gap:8px;">
-      <input type="search" class="search-input" id="searchInput" placeholder="전체 검색 (이름·내용·태그·유형)…" oninput="filterCounsels()" style="flex:1;">
-      <select id="dailySort" onchange="onDailySortChange()" title="정렬" style="flex:0 0 auto;padding:8px 10px;border:1.5px solid var(--line);border-radius:14px;font-family:inherit;font-size:0.78rem;color:var(--ink-soft);background:var(--line-soft);outline:none;-webkit-appearance:none;appearance:none;">
-        <option value="created">작성순</option>
-        <option value="recent">최근순</option>
-        <option value="name">이름순</option>
-        <option value="type">유형순</option>
+      <input type="search" class="search-input" id="searchInput" data-i18n-placeholder="daily.search.ph" placeholder="전체 검색 (이름·내용·태그·유형)…" oninput="filterCounsels()" style="flex:1;">
+      <select id="dailySort" onchange="onDailySortChange()" data-i18n-title="daily.sort.title" title="정렬" style="flex:0 0 auto;padding:8px 10px;border:1.5px solid var(--line);border-radius:14px;font-family:inherit;font-size:0.78rem;color:var(--ink-soft);background:var(--line-soft);outline:none;-webkit-appearance:none;appearance:none;">
+        <option value="created" data-i18n="daily.sort.created">작성순</option>
+        <option value="recent" data-i18n="daily.sort.recent">최근순</option>
+        <option value="name" data-i18n="daily.sort.name">이름순</option>
+        <option value="type" data-i18n="daily.sort.type">유형순</option>
       </select>
     </div>
     <div id="searchFilterChips" class="search-filter-chips"></div>
     <div class="container" id="counselArea">
-      <div class="empty"><span class="empty-icon ico-slot" data-ico="clipboard" data-sz="44" style="color:var(--accent)"></span>날짜를 선택하고<br>상담 기록을 확인하세요</div>
+      <div class="empty"><span class="empty-icon ico-slot" data-ico="clipboard" data-sz="44" style="color:var(--accent)"></span><span data-i18n-html="daily.empty">날짜를 선택하고<br>상담 기록을 확인하세요</span></div>
     </div>
   </section>
 
   <!-- TAB 2: 달력 -->
   <section id="sec-cal" class="hidden">
     <div class="container">
-      <label>학생 선택</label>
+      <label data-i18n="cal.selectStudent">학생 선택</label>
       <select id="calStudentSelect" onchange="loadCalendar()">
-        <option value="">— 학생을 선택하세요 —</option>
-        <option value="__ALL__">학생 전체</option>
+        <option value="" data-i18n="cal.selectStudent.ph">— 학생을 선택하세요 —</option>
+        <option value="__ALL__" data-i18n="cal.allStudents">학생 전체</option>
       </select>
       <div id="calArea"></div>
     </div>
@@ -591,73 +600,73 @@ body.has-ad #adShelf{display:block;}
   <section id="sec-write" class="hidden">
     <div class="container">
       <div id="edit-banner" class="edit-banner hidden">
-        <span><span class="ico-slot" data-ico="pencil" data-sz="15" style="margin-right:4px"></span>수정 모드</span>
-        <button onclick="cancelEdit()" class="btn btn-outline btn-sm">취소</button>
+        <span><span class="ico-slot" data-ico="pencil" data-sz="15" style="margin-right:4px"></span><span data-i18n="write.editMode">수정 모드</span></span>
+        <button onclick="cancelEdit()" class="btn btn-outline btn-sm" data-i18n="common.cancel">취소</button>
       </div>
       <div id="draft-banner" class="edit-banner hidden">
-        <span><span class="ico-slot" data-ico="memo" data-sz="15" style="margin-right:4px"></span>작성 중이던 내용이 있어요</span>
+        <span><span class="ico-slot" data-ico="memo" data-sz="15" style="margin-right:4px"></span><span data-i18n="write.draftBanner">작성 중이던 내용이 있어요</span></span>
         <span style="display:flex;gap:6px;flex:0 0 auto;">
-          <button onclick="restoreDraft()" class="btn btn-sm">이어쓰기</button>
-          <button onclick="discardDraft()" class="btn btn-outline btn-sm">지우기</button>
+          <button onclick="restoreDraft()" class="btn btn-sm" data-i18n="write.draftResume">이어쓰기</button>
+          <button onclick="discardDraft()" class="btn btn-outline btn-sm" data-i18n="write.draftDiscard">지우기</button>
         </span>
       </div>
-      <label>학생</label>
-      <select id="studentSelect"><option value="">학생을 선택하세요</option></select>
-      <label>상담 날짜</label>
+      <label data-i18n="write.labelStudent">학생</label>
+      <select id="studentSelect"><option value="" data-i18n="write.selectStudent">학생을 선택하세요</option></select>
+      <label data-i18n="write.labelDate">상담 날짜</label>
       <input type="date" id="writeDateInput">
       <div class="time-btn-row">
-        <button type="button" id="addTimeBtn" class="time-toggle-btn" onclick="toggleTimeInput()"><span class="ico-slot" data-ico="clock" data-sz="15"></span>시간 추가</button>
-        <button type="button" id="addDurBtn" class="time-toggle-btn" onclick="toggleDurInput()"><span class="ico-slot" data-ico="timer" data-sz="15"></span>소요시간 추가</button>
-        <button type="button" id="addMediumBtn" class="time-toggle-btn" onclick="toggleMediumInput()"><span class="ico-slot" data-ico="chat" data-sz="15"></span>상담매체 추가</button>
+        <button type="button" id="addTimeBtn" class="time-toggle-btn" onclick="toggleTimeInput()"><span class="ico-slot" data-ico="clock" data-sz="15"></span><span data-i18n="write.addTime">시간 추가</span></button>
+        <button type="button" id="addDurBtn" class="time-toggle-btn" onclick="toggleDurInput()"><span class="ico-slot" data-ico="timer" data-sz="15"></span><span data-i18n="write.addDuration">소요시간 추가</span></button>
+        <button type="button" id="addMediumBtn" class="time-toggle-btn" onclick="toggleMediumInput()"><span class="ico-slot" data-ico="chat" data-sz="15"></span><span data-i18n="write.addMedium">상담매체 추가</span></button>
       </div>
       <div id="timeRow" class="time-row hidden">
         <input type="time" id="writeTimeInput">
-        <button type="button" class="time-clear-btn" onclick="removeTimeInput()">제거</button>
+        <button type="button" class="time-clear-btn" onclick="removeTimeInput()" data-i18n="common.remove">제거</button>
       </div>
       <div id="durRow" class="time-row hidden">
         <select id="writeDurSelect">
-          <option value="5">5분</option>
-          <option value="10" selected>10분</option>
-          <option value="15">15분</option>
-          <option value="20">20분</option>
-          <option value="30">30분</option>
-          <option value="40">40분</option>
-          <option value="50">50분</option>
-          <option value="60">1시간</option>
-          <option value="90">1시간 30분</option>
-          <option value="120">2시간</option>
+          <option value="5" data-i18n="write.dur.5">5분</option>
+          <option value="10" selected data-i18n="write.dur.10">10분</option>
+          <option value="15" data-i18n="write.dur.15">15분</option>
+          <option value="20" data-i18n="write.dur.20">20분</option>
+          <option value="30" data-i18n="write.dur.30">30분</option>
+          <option value="40" data-i18n="write.dur.40">40분</option>
+          <option value="50" data-i18n="write.dur.50">50분</option>
+          <option value="60" data-i18n="write.dur.60">1시간</option>
+          <option value="90" data-i18n="write.dur.90">1시간 30분</option>
+          <option value="120" data-i18n="write.dur.120">2시간</option>
         </select>
-        <button type="button" class="time-clear-btn" onclick="removeDurInput()">제거</button>
+        <button type="button" class="time-clear-btn" onclick="removeDurInput()" data-i18n="common.remove">제거</button>
       </div>
       <div id="mediumRow" class="time-row hidden">
         <select id="writeMediumSelect">
-          <option value="면담" selected>면담</option>
-          <option value="전화상담">전화상담</option>
-          <option value="사이버상담">사이버상담</option>
+          <option value="면담" selected data-i18n="write.medium.inperson">면담</option>
+          <option value="전화상담" data-i18n="write.medium.phone">전화상담</option>
+          <option value="사이버상담" data-i18n="write.medium.cyber">사이버상담</option>
         </select>
-        <button type="button" class="time-clear-btn" onclick="removeMediumInput()">제거</button>
+        <button type="button" class="time-clear-btn" onclick="removeMediumInput()" data-i18n="common.remove">제거</button>
       </div>
-      <label>유형</label>
+      <label data-i18n="write.labelType">유형</label>
       <select id="typeSelect">
-        <option value="학업">학업</option><option value="생활">생활</option>
-        <option value="진로">진로</option><option value="심리">심리</option><option value="기타">기타</option>
+        <option value="학업" data-i18n="write.type.academic">학업</option><option value="생활" data-i18n="write.type.life">생활</option>
+        <option value="진로" data-i18n="write.type.career">진로</option><option value="심리" data-i18n="write.type.psych">심리</option><option value="기타" data-i18n="write.type.etc">기타</option>
       </select>
-      <label>상담 내용</label>
+      <label data-i18n="write.labelContent">상담 내용</label>
 
-      <div id="contentInput" class="rich-editor" contenteditable="true" data-placeholder="상담 내용을 입력하세요…"></div>
-      <label>비고 / 메모</label>
-      <div id="memoInput" class="rich-editor" contenteditable="true" data-placeholder="추가 메모…" style="min-height:64px;"></div>
+      <div id="contentInput" class="rich-editor" contenteditable="true" data-i18n-dph="write.contentPh" data-placeholder="상담 내용을 입력하세요…"></div>
+      <label data-i18n="write.labelMemo">비고 / 메모</label>
+      <div id="memoInput" class="rich-editor" contenteditable="true" data-i18n-dph="write.memoPh" data-placeholder="추가 메모…" style="min-height:64px;"></div>
       <div class="tag-section">
-        <label>태그</label>
+        <label data-i18n="write.labelTags">태그</label>
         <div class="tag-chips" id="selectedTagsArea"></div>
         <div class="tag-input-row">
-          <input type="text" id="tagTextInput" placeholder="직접 입력 후 Enter…" onkeydown="onTagKey(event)" maxlength="20">
-          <button type="button" class="excel-btn" onclick="openTagPicker()">＋ 추천</button>
+          <input type="text" id="tagTextInput" data-i18n-placeholder="write.tagPh" placeholder="직접 입력 후 Enter…" onkeydown="onTagKey(event)" maxlength="20">
+          <button type="button" class="excel-btn" onclick="openTagPicker()" data-i18n="write.tagSuggest">＋ 추천</button>
         </div>
       </div>
       <div class="write-actions">
-        <button class="btn btn-outline" id="cancelWriteBtn" onclick="cancelWrite()">작성 취소</button>
-        <button class="btn" id="submitBtn" onclick="submitCounsel()">저장하기</button>
+        <button class="btn btn-outline" id="cancelWriteBtn" onclick="cancelWrite()" data-i18n="write.cancelWrite">작성 취소</button>
+        <button class="btn" id="submitBtn" onclick="submitCounsel()" data-i18n="write.save">저장하기</button>
       </div>
     </div>
   </section>
@@ -666,29 +675,29 @@ body.has-ad #adShelf{display:block;}
   <section id="sec-students" class="hidden">
     <div class="container">
       <div class="section-header">
-        <span class="section-title">학생 명단</span>
-        <button onclick="toggleAddForm()" class="btn btn-sm" id="addToggleBtn">+ 추가</button>
+        <span class="section-title" data-i18n="students.title">학생 명단</span>
+        <button onclick="toggleAddForm()" class="btn btn-sm" id="addToggleBtn" data-i18n="students.addToggle">+ 추가</button>
       </div>
       <div id="addStudentForm" class="add-student-form hidden">
-        <div style="font-size:0.8rem;font-weight:600;color:var(--accent);">새 학생 추가</div>
+        <div style="font-size:0.8rem;font-weight:600;color:var(--accent);" data-i18n="students.addNew">새 학생 추가</div>
         <div class="form-row">
-          <input type="text" id="newNum"  class="num-input"  placeholder="학번" maxlength="20">
-          <input type="text" id="newName" class="name-input" placeholder="이름" maxlength="10">
-          <select id="newGender" title="성별 (선택)" style="flex:0 0 auto;width:auto;min-width:78px;padding:10px 30px 10px 12px;font-size:0.85rem;background-position:right 10px center;">
-            <option value="">성별</option>
-            <option value="남">남</option>
-            <option value="여">여</option>
+          <input type="text" id="newNum"  class="num-input"  data-i18n-placeholder="students.numPh" placeholder="학번" maxlength="20">
+          <input type="text" id="newName" class="name-input" data-i18n-placeholder="students.namePh" placeholder="이름" maxlength="10">
+          <select id="newGender" data-i18n-title="students.genderTitle" title="성별 (선택)" style="flex:0 0 auto;width:auto;min-width:78px;padding:10px 30px 10px 12px;font-size:0.85rem;background-position:right 10px center;">
+            <option value="" data-i18n="students.genderPh">성별</option>
+            <option value="남" data-i18n="students.genderMale">남</option>
+            <option value="여" data-i18n="students.genderFemale">여</option>
           </select>
-          <button class="add-btn" onclick="addStudent()">추가</button>
+          <button class="add-btn" onclick="addStudent()" data-i18n="common.add">추가</button>
         </div>
         <div style="display:flex;align-items:center;gap:8px;margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);">
-          <button class="excel-btn" onclick="document.getElementById('excelInput').click()" style="display:inline-flex;align-items:center;gap:5px;"><span class="ico-slot" data-ico="clipboard" data-sz="14"></span>엑셀/CSV로 한번에 추가</button>
-          <span style="font-size:0.7rem;color:var(--ink-mute);line-height:1.4;">1열=학번, 2열=이름, 3열=성별(선택)<br>(첫 줄 제목은 자동 인식)</span>
+          <button class="excel-btn" onclick="document.getElementById('excelInput').click()" style="display:inline-flex;align-items:center;gap:5px;"><span class="ico-slot" data-ico="clipboard" data-sz="14"></span><span data-i18n="students.bulkImport">엑셀/CSV로 한번에 추가</span></button>
+          <span style="font-size:0.7rem;color:var(--ink-mute);line-height:1.4;" data-i18n-html="students.bulkHelp">1열=학번, 2열=이름, 3열=성별(선택)<br>(첫 줄 제목은 자동 인식)</span>
         </div>
         <input type="file" id="excelInput" accept=".xlsx,.xls,.csv" style="display:none" onchange="importStudentsFromFile(this.files[0])">
       </div>
       <div id="studentList">
-        <div class="empty"><span class="empty-icon ico-slot" data-ico="person" data-sz="44" style="color:var(--orange)"></span>학생을 추가해주세요</div>
+        <div class="empty"><span class="empty-icon ico-slot" data-ico="person" data-sz="44" style="color:var(--orange)"></span><span data-i18n="students.empty">학생을 추가해주세요</span></div>
       </div>
     </div>
   </section>
@@ -697,10 +706,10 @@ body.has-ad #adShelf{display:block;}
   <section id="sec-stats" class="hidden">
     <div class="stat-nav">
       <span id="statYearLabel" style="font-size:0.95rem;font-weight:700;color:var(--ink)"></span>
-      <button class="stat-refresh-btn" onclick="renderStats()" style="display:inline-flex;align-items:center;gap:4px;"><span class="ico-slot" data-ico="refresh" data-sz="14"></span>새로고침</button>
+      <button class="stat-refresh-btn" onclick="renderStats()" style="display:inline-flex;align-items:center;gap:4px;"><span class="ico-slot" data-ico="refresh" data-sz="14"></span><span data-i18n="stats.refresh">새로고침</span></button>
     </div>
     <div class="container" id="statsArea">
-      <div class="empty"><span class="empty-icon ico-slot" data-ico="chart" data-sz="44" style="color:var(--sky)"></span>상담 기록이 쌓이면<br>통계가 표시됩니다</div>
+      <div class="empty"><span class="empty-icon ico-slot" data-ico="chart" data-sz="44" style="color:var(--sky)"></span><span data-i18n-html="stats.empty">상담 기록이 쌓이면<br>통계가 표시됩니다</span></div>
     </div>
   </section>
 </div>
@@ -714,25 +723,25 @@ body.has-ad #adShelf{display:block;}
       <div class="s-modal-num"  id="sModalNum"></div>
     </div>
     <span class="s-modal-count" id="sModalCount"></span>
-    <button class="s-modal-export hidden" id="sModalExport" onclick="exportStudentHistory()" title="상담 기록 내보내기/공유"><span class="ico-slot" data-ico="doc" data-sz="13"></span>내보내기</button>
+    <button class="s-modal-export hidden" id="sModalExport" onclick="exportStudentHistory()" data-i18n-title="hist.exportTitle" title="상담 기록 내보내기/공유"><span class="ico-slot" data-ico="doc" data-sz="13"></span><span data-i18n="hist.export">내보내기</span></button>
   </div>
   <div class="s-modal-body" id="sModalBody"></div>
 </div>
 
 <!-- 서식 툴바 (입력 탭 활성 시 항상 표시) -->
-<div id="fmtToolbar" aria-label="텍스트 서식">
-  <button class="stb-btn" data-stb="larger" title="글자 크게">
+<div id="fmtToolbar" data-i18n-title="fmt.aria" aria-label="텍스트 서식">
+  <button class="stb-btn" data-stb="larger" data-i18n-title="fmt.larger" title="글자 크게">
     <span class="stb-sz-icon">A<span class="stb-sz-sup">+</span></span>
   </button>
-  <button class="stb-btn" data-stb="smaller" title="글자 작게">
+  <button class="stb-btn" data-stb="smaller" data-i18n-title="fmt.smaller" title="글자 작게">
     <span class="stb-sz-icon sm">A<span class="stb-sz-sup">−</span></span>
   </button>
   <div class="stb-sep"></div>
-  <button class="stb-btn stb-b" data-stb="bold" title="굵게">B</button>
-  <button class="stb-btn stb-i" data-stb="italic" title="이탤릭">I</button>
-  <button class="stb-btn stb-u" data-stb="underline" title="밑줄">U</button>
-  <button class="stb-btn stb-s" data-stb="strikeThrough" title="취소선">S</button>
-  <button class="stb-btn" data-stb="highlight" title="형광펜">
+  <button class="stb-btn stb-b" data-stb="bold" data-i18n-title="fmt.bold" title="굵게">B</button>
+  <button class="stb-btn stb-i" data-stb="italic" data-i18n-title="fmt.italic" title="이탤릭">I</button>
+  <button class="stb-btn stb-u" data-stb="underline" data-i18n-title="fmt.underline" title="밑줄">U</button>
+  <button class="stb-btn stb-s" data-stb="strikeThrough" data-i18n-title="fmt.strike" title="취소선">S</button>
+  <button class="stb-btn" data-stb="highlight" data-i18n-title="fmt.highlight" title="형광펜">
     <svg width="21" height="21" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
       <!-- 마커 본체 (형광 노랑) -->
       <path d="M8 4.2h6v4.1l-1 7.2H9l-1-7.2z" fill="#fde047" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
@@ -751,93 +760,103 @@ body.has-ad #adShelf{display:block;}
 <div id="settingsModal" class="modal-overlay hidden" onclick="if(event.target===this)closeModal('settingsModal')">
   <!-- 100%는 오버레이의 패딩(노치·배너)을 뺀 높이라, 88vh와 달리 상태바에 안 가린다 -->
   <div class="modal-box" onclick="event.stopPropagation()" style="max-height:100%;overflow-y:auto;">
-    <h3 style="margin-bottom:18px;display:flex;align-items:center;gap:7px;"><span class="ico-slot" data-ico="gear" data-sz="20" style="color:var(--accent)"></span>설정</h3>
+    <h3 style="margin-bottom:18px;display:flex;align-items:center;gap:7px;"><span class="ico-slot" data-ico="gear" data-sz="20" style="color:var(--accent)"></span><span data-i18n="settings.title">설정</span></h3>
     <div class="settings-section">
-      <h4 style="display:flex;align-items:center;gap:6px;"><span class="ico-slot" data-ico="upload" data-sz="16" style="color:var(--ink-mute)"></span>내보내기 / 백업</h4>
-      <p style="font-size:0.8rem;color:var(--ink-mute);line-height:1.6;margin-bottom:10px">현재 <b id="exportYearLabel"></b>학년도의 모든 상담 기록을 <b>나이스(NEIS) 상담관리 업로드 서식</b>의 엑셀(.xlsx)로 내보냅니다. 나이스에 바로 업로드하거나 백업용으로 활용하세요.</p>
-      <div class="settings-row" style="margin-bottom:8px;">
-        <label style="display:flex;align-items:center;gap:8px;font-size:0.82rem;cursor:pointer;">
-          <input type="checkbox" id="exportMemoChk" style="width:17px;height:17px;cursor:pointer;">
-          비고/메모 포함 (상담내용 뒤에 덧붙임)
-        </label>
+      <h4 style="display:flex;align-items:center;gap:6px;"><span class="ico-slot" data-ico="upload" data-sz="16" style="color:var(--ink-mute)"></span><span data-i18n="settings.export.title">내보내기 / 백업</span></h4>
+      <div class="ko-only">
+        <p style="font-size:0.8rem;color:var(--ink-mute);line-height:1.6;margin-bottom:10px" data-i18n-html="settings.export.desc">현재 <b id="exportYearLabel"></b>학년도의 모든 상담 기록을 <b>나이스(NEIS) 상담관리 업로드 서식</b>의 엑셀(.xlsx)로 내보냅니다. 나이스에 바로 업로드하거나 백업용으로 활용하세요.</p>
+        <div class="settings-row" style="margin-bottom:8px;">
+          <label style="display:flex;align-items:center;gap:8px;font-size:0.82rem;cursor:pointer;">
+            <input type="checkbox" id="exportMemoChk" style="width:17px;height:17px;cursor:pointer;">
+            <span data-i18n="settings.export.memoChk">비고/메모 포함 (상담내용 뒤에 덧붙임)</span>
+          </label>
+        </div>
+        <div class="settings-row" style="margin-bottom:10px;display:flex;align-items:center;gap:8px;">
+          <span style="font-size:0.82rem;"><span data-i18n="settings.export.durDefault">소요시간 기본값</span> <span style="color:var(--ink-mute);font-size:0.72rem;" data-i18n="settings.export.durDefaultNote">(기록에 없을 때)</span></span>
+          <select id="exportDurSel" style="width:auto;flex:0 0 auto;padding:7px 10px;font-size:0.82rem;">
+            <option value="" data-i18n="settings.export.durBlank">빈칸 (직접 입력)</option>
+            <option value="5" data-i18n="write.dur.5">5분</option>
+            <option value="10" selected data-i18n="write.dur.10">10분</option>
+            <option value="15" data-i18n="write.dur.15">15분</option>
+            <option value="20" data-i18n="write.dur.20">20분</option>
+            <option value="30" data-i18n="write.dur.30">30분</option>
+            <option value="40" data-i18n="write.dur.40">40분</option>
+            <option value="50" data-i18n="write.dur.50">50분</option>
+            <option value="60" data-i18n="write.dur.60">1시간</option>
+          </select>
+        </div>
+        <div style="display:flex;gap:8px;align-items:flex-start;background:var(--accent-soft);border-radius:10px;padding:10px 12px;margin-bottom:10px;">
+          <span style="flex:0 0 auto;color:var(--accent);"><span class="ico-slot" data-ico="bulb" data-sz="17"></span></span>
+          <span style="font-size:0.78rem;color:var(--accent);line-height:1.55;font-weight:600;" data-i18n-html="settings.export.callout">내보낸 엑셀은 나이스(NEIS) 상담관리의 업로드 서식과 동일합니다. 나이스 <b>상담관리 → 엑셀 업로드</b>에서 그대로 업로드할 수 있어요.</span>
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="exportAllExcel()" style="display:inline-flex;align-items:center;justify-content:center;gap:6px;"><span class="ico-slot" data-ico="chart" data-sz="15" style="color:var(--green)"></span><span data-i18n="settings.export.neisBtn">나이스 서식으로 내보내기</span></button>
+        <p id="exportAdNote" class="hidden" style="font-size:0.74rem;color:var(--ink-mute);line-height:1.5;margin-top:7px;display:flex;align-items:flex-start;gap:5px;"><span style="flex:0 0 auto;color:var(--orange);"><span class="ico-slot" data-ico="bulb" data-sz="13"></span></span><span data-i18n-html="settings.export.adNote">짧은 <b>광고를 본 뒤</b> 파일이 만들어집니다. 광고 수익은 앱을 무료로 운영하는 데 쓰입니다.</span></p>
       </div>
-      <div class="settings-row" style="margin-bottom:10px;display:flex;align-items:center;gap:8px;">
-        <span style="font-size:0.82rem;">소요시간 기본값 <span style="color:var(--ink-mute);font-size:0.72rem;">(기록에 없을 때)</span></span>
-        <select id="exportDurSel" style="width:auto;flex:0 0 auto;padding:7px 10px;font-size:0.82rem;">
-          <option value="">빈칸 (직접 입력)</option>
-          <option value="5">5분</option>
-          <option value="10" selected>10분</option>
-          <option value="15">15분</option>
-          <option value="20">20분</option>
-          <option value="30">30분</option>
-          <option value="40">40분</option>
-          <option value="50">50분</option>
-          <option value="60">1시간</option>
-        </select>
-      </div>
-      <div style="display:flex;gap:8px;align-items:flex-start;background:var(--accent-soft);border-radius:10px;padding:10px 12px;margin-bottom:10px;">
-        <span style="flex:0 0 auto;color:var(--accent);"><span class="ico-slot" data-ico="bulb" data-sz="17"></span></span>
-        <span style="font-size:0.78rem;color:var(--accent);line-height:1.55;font-weight:600;">내보낸 엑셀은 나이스(NEIS) 상담관리의 업로드 서식과 동일합니다. 나이스 <b>상담관리 → 엑셀 업로드</b>에서 그대로 업로드할 수 있어요.</span>
-      </div>
-      <button class="btn btn-outline btn-sm" onclick="exportAllExcel()" style="display:inline-flex;align-items:center;justify-content:center;gap:6px;"><span class="ico-slot" data-ico="chart" data-sz="15" style="color:var(--green)"></span>나이스 서식으로 내보내기</button>
-      <p id="exportAdNote" class="hidden" style="font-size:0.74rem;color:var(--ink-mute);line-height:1.5;margin-top:7px;display:flex;align-items:flex-start;gap:5px;"><span style="flex:0 0 auto;color:var(--orange);"><span class="ico-slot" data-ico="bulb" data-sz="13"></span></span><span>짧은 <b>광고를 본 뒤</b> 파일이 만들어집니다. 광고 수익은 앱을 무료로 운영하는 데 쓰입니다.</span></p>
-      <p style="font-size:0.8rem;color:var(--ink-mute);line-height:1.6;margin:14px 0 10px">현재 학년도 <b>전체 학생</b>의 상담 기록을 학생별로 묶은 보고서로 내보냅니다. 인쇄(PDF 저장)·인수인계에 활용하세요.</p>
-      <button class="btn btn-outline btn-sm" onclick="exportAllStudentsReport()" style="display:inline-flex;align-items:center;justify-content:center;gap:6px;"><span class="ico-slot" data-ico="doc" data-sz="15" style="color:var(--sky)"></span>전체 학생 기록 내보내기</button>
+      <p style="font-size:0.8rem;color:var(--ink-mute);line-height:1.6;margin:14px 0 10px" data-i18n-html="settings.export.allDesc">현재 학년도 <b>전체 학생</b>의 상담 기록을 학생별로 묶은 보고서로 내보냅니다. 인쇄(PDF 저장)·인수인계에 활용하세요.</p>
+      <button class="btn btn-outline btn-sm" onclick="exportAllStudentsReport()" style="display:inline-flex;align-items:center;justify-content:center;gap:6px;"><span class="ico-slot" data-ico="doc" data-sz="15" style="color:var(--sky)"></span><span data-i18n="settings.export.allBtn">전체 학생 기록 내보내기</span></button>
     </div>
     <div class="settings-section">
-      <h4 style="display:flex;align-items:center;gap:6px;"><span class="ico-slot" data-ico="laptop" data-sz="16" style="color:var(--ink-mute)"></span>PC · 태블릿에서도 사용</h4>
-      <p style="font-size:0.8rem;color:var(--ink-mute);line-height:1.6;margin-bottom:10px">같은 계정으로 로그인하면 <b>컴퓨터·태블릿 등 어느 기기에서든 같은 상담 기록</b>을 이어서 쓸 수 있어요. 아래 주소를 PC 브라우저에 입력하세요.</p>
+      <h4 style="display:flex;align-items:center;gap:6px;"><span class="ico-slot" data-ico="laptop" data-sz="16" style="color:var(--ink-mute)"></span><span data-i18n="settings.pc.title">PC · 태블릿에서도 사용</span></h4>
+      <p style="font-size:0.8rem;color:var(--ink-mute);line-height:1.6;margin-bottom:10px" data-i18n-html="settings.pc.desc">같은 계정으로 로그인하면 <b>컴퓨터·태블릿 등 어느 기기에서든 같은 상담 기록</b>을 이어서 쓸 수 있어요. 아래 주소를 PC 브라우저에 입력하세요.</p>
       <div class="web-url-box">
         <span class="web-url-text">tjddlf0224-sudo.github.io/student-counseling</span>
-        <button type="button" class="web-url-copy" onclick="copyWebUrl()">복사</button>
+        <button type="button" class="web-url-copy" onclick="copyWebUrl()" data-i18n="common.copy">복사</button>
       </div>
-      <button class="btn btn-outline btn-sm" onclick="openWebApp()" style="width:100%;display:inline-flex;align-items:center;justify-content:center;gap:6px;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.15em"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.7 2.6 15.3 0 18M12 3c-2.6 2.7-2.6 15.3 0 18"/></svg>웹에서 열기</button>
+      <button class="btn btn-outline btn-sm" onclick="openWebApp()" style="width:100%;display:inline-flex;align-items:center;justify-content:center;gap:6px;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-0.15em"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.7 2.6 15.3 0 18M12 3c-2.6 2.7-2.6 15.3 0 18"/></svg><span data-i18n="settings.pc.openWeb">웹에서 열기</span></button>
     </div>
     <div class="settings-section">
-      <h4 style="display:flex;align-items:center;gap:6px;"><span class="ico-slot" data-ico="moon" data-sz="16" style="color:var(--ink-mute)"></span>화면</h4>
-      <p style="font-size:0.8rem;color:var(--ink-mute);line-height:1.6;margin-bottom:10px">기기 설정을 따르거나 다크모드를 직접 선택할 수 있어요.</p>
-      <select id="themeModeSelect" onchange="onThemeModeChange()">
-        <option value="system">기기 설정 따르기</option>
-        <option value="light">항상 라이트 모드</option>
-        <option value="dark">항상 다크 모드</option>
+      <h4 style="display:flex;align-items:center;gap:6px;"><span class="ico-slot" data-ico="globe" data-sz="16" style="color:var(--ink-mute)"></span><span data-i18n="settings.language">언어</span></h4>
+      <p style="font-size:0.8rem;color:var(--ink-mute);line-height:1.6;margin-bottom:10px" data-i18n="settings.language.desc">앱에서 사용할 언어를 선택하세요.</p>
+      <select id="localeSelect" onchange="setLocale(this.value)">
+        <option value="ko">한국어</option>
+        <option value="en">English</option>
       </select>
     </div>
     <div class="settings-section">
-      <h4 style="display:flex;align-items:center;gap:6px;"><span class="ico-slot" data-ico="bell" data-sz="16" style="color:var(--ink-mute)"></span>알림</h4>
-      <p style="font-size:0.8rem;color:var(--ink-mute);line-height:1.6;margin-bottom:10px">평일(월~금) 정해진 시간에 상담일지 작성 알림을 받습니다. 주말에는 오지 않아요.</p>
+      <h4 style="display:flex;align-items:center;gap:6px;"><span class="ico-slot" data-ico="moon" data-sz="16" style="color:var(--ink-mute)"></span><span data-i18n="settings.theme.title">화면</span></h4>
+      <p style="font-size:0.8rem;color:var(--ink-mute);line-height:1.6;margin-bottom:10px" data-i18n="settings.theme.desc">기기 설정을 따르거나 다크모드를 직접 선택할 수 있어요.</p>
+      <select id="themeModeSelect" onchange="onThemeModeChange()">
+        <option value="system" data-i18n="settings.theme.system">기기 설정 따르기</option>
+        <option value="light" data-i18n="settings.theme.light">항상 라이트 모드</option>
+        <option value="dark" data-i18n="settings.theme.dark">항상 다크 모드</option>
+      </select>
+    </div>
+    <div class="settings-section">
+      <h4 style="display:flex;align-items:center;gap:6px;"><span class="ico-slot" data-ico="bell" data-sz="16" style="color:var(--ink-mute)"></span><span data-i18n="settings.notify.title">알림</span></h4>
+      <p style="font-size:0.8rem;color:var(--ink-mute);line-height:1.6;margin-bottom:10px" data-i18n="settings.notify.desc">평일(월~금) 정해진 시간에 상담일지 작성 알림을 받습니다. 주말에는 오지 않아요.</p>
       <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
         <label style="display:flex;align-items:center;gap:8px;font-size:0.86rem;color:var(--ink-soft);cursor:pointer;width:auto;">
           <input type="checkbox" id="notifyEnabled" onchange="onNotifyChange()" style="width:18px;height:18px;cursor:pointer;">
-          평일 알림 켜기
+          <span data-i18n="settings.notify.enable">평일 알림 켜기</span>
         </label>
         <input type="time" id="notifyTime" value="16:00" onchange="onNotifyChange()" style="width:auto;flex:0 0 auto;">
       </div>
       <div id="notifyStatus" style="font-size:0.74rem;color:var(--ink-mute);margin-top:8px;"></div>
     </div>
     <div class="settings-section">
-      <h4 style="display:flex;align-items:center;gap:6px;"><span class="ico-slot" data-ico="cap" data-sz="16" style="color:var(--ink-mute)"></span>학년도 관리</h4>
-      <p style="font-size:0.8rem;color:var(--ink-mute);line-height:1.6;margin-bottom:10px">상단의 <b>학년도 선택</b>에서 새 학년도를 고르면 빈 명단으로 새로 시작합니다.<br>과거 학년도의 명단·상담 기록은 그대로 보존돼요.<br>아래 버튼은 현재 학년도 명단만 비웁니다.</p>
-      <button class="btn btn-outline btn-sm" onclick="resetSchoolYear()">현재 학년도 명단 비우기</button>
+      <h4 style="display:flex;align-items:center;gap:6px;"><span class="ico-slot" data-ico="cap" data-sz="16" style="color:var(--ink-mute)"></span><span data-i18n="settings.schoolyear.title">학년도 관리</span></h4>
+      <p style="font-size:0.8rem;color:var(--ink-mute);line-height:1.6;margin-bottom:10px" data-i18n-html="settings.schoolyear.desc">상단의 <b>학년도 선택</b>에서 새 학년도를 고르면 빈 명단으로 새로 시작합니다.<br>과거 학년도의 명단·상담 기록은 그대로 보존돼요.<br>아래 버튼은 현재 학년도 명단만 비웁니다.</p>
+      <button class="btn btn-outline btn-sm" onclick="resetSchoolYear()" data-i18n="settings.schoolyear.resetBtn">현재 학년도 명단 비우기</button>
     </div>
     <div class="settings-section">
-      <h4 style="display:flex;align-items:center;gap:6px;"><span class="ico-slot" data-ico="bulb" data-sz="16" style="color:var(--ink-mute)"></span>앱 평가</h4>
-      <p style="font-size:0.8rem;color:var(--ink-mute);line-height:1.6;margin-bottom:10px">이 앱이 도움이 되셨다면 스토어에 한 줄 남겨주세요. 다른 선생님들이 앱을 찾는 데 큰 도움이 됩니다.</p>
-      <button class="btn btn-outline" onclick="openStoreListing()" style="width:auto;">스토어에서 평가하기</button>
+      <h4 style="display:flex;align-items:center;gap:6px;"><span class="ico-slot" data-ico="bulb" data-sz="16" style="color:var(--ink-mute)"></span><span data-i18n="settings.rate.title">앱 평가</span></h4>
+      <p style="font-size:0.8rem;color:var(--ink-mute);line-height:1.6;margin-bottom:10px" data-i18n="settings.rate.desc">이 앱이 도움이 되셨다면 스토어에 한 줄 남겨주세요. 다른 선생님들이 앱을 찾는 데 큰 도움이 됩니다.</p>
+      <button class="btn btn-outline" onclick="openStoreListing()" style="width:auto;" data-i18n="settings.rate.btn">스토어에서 평가하기</button>
     </div>
     <div class="settings-section">
-      <h4 style="display:flex;align-items:center;gap:6px;"><span class="ico-slot" data-ico="trash" data-sz="16" style="color:var(--rose)"></span>데이터 초기화</h4>
+      <h4 style="display:flex;align-items:center;gap:6px;"><span class="ico-slot" data-ico="trash" data-sz="16" style="color:var(--rose)"></span><span data-i18n="settings.reset.title">데이터 초기화</span></h4>
       <div class="settings-row">
-        <button class="btn btn-outline btn-sm" onclick="clearAllCounsels()">상담기록만 삭제</button>
-        <button class="btn btn-danger btn-sm" onclick="clearAllData()">전체 초기화</button>
+        <button class="btn btn-outline btn-sm" onclick="clearAllCounsels()" data-i18n="settings.reset.counselsBtn">상담기록만 삭제</button>
+        <button class="btn btn-danger btn-sm" onclick="clearAllData()" data-i18n="settings.reset.allBtn">전체 초기화</button>
       </div>
     </div>
     <div class="settings-section">
-      <h4>계정</h4>
+      <h4 data-i18n="settings.account.title">계정</h4>
       <div id="settingsUserInfo"></div>
-      <button class="btn btn-outline" onclick="signOut()" style="margin-top:0">로그아웃</button>
-      <button class="btn btn-outline" onclick="deleteAccount()" style="margin-top:8px;color:var(--rose);border-color:var(--rose);">계정 삭제</button>
+      <button class="btn btn-outline" onclick="signOut()" style="margin-top:0" data-i18n="settings.account.signout">로그아웃</button>
+      <button class="btn btn-outline" onclick="deleteAccount()" style="margin-top:8px;color:var(--rose);border-color:var(--rose);" data-i18n="settings.account.delete">계정 삭제</button>
     </div>
-    <button class="btn btn-outline" onclick="closeModal('settingsModal')" style="margin-top:4px">닫기</button>
+    <button class="btn btn-outline" onclick="closeModal('settingsModal')" style="margin-top:4px" data-i18n="common.close">닫기</button>
   </div>
 </div>
 
@@ -845,12 +864,12 @@ body.has-ad #adShelf{display:block;}
 <div id="confirmModal" class="modal-overlay hidden" onclick="if(event.target===this)resolveConfirm(false)">
   <div class="modal-box" onclick="event.stopPropagation()" style="text-align:center">
     <div class="modal-icon"><span class="ico-slot" data-ico="warn" data-sz="34"></span></div>
-    <h3 id="confirmTitle">삭제할까요?</h3>
+    <h3 id="confirmTitle" data-i18n="confirm.defaultTitle">삭제할까요?</h3>
     <p id="confirmMsg" style="color:var(--ink-mute);font-size:0.82rem;line-height:1.7;margin:10px 0 0;white-space:pre-line"></p>
     <input id="confirmTypeInput" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" style="display:none;width:100%;margin:14px 0 0;padding:11px 13px;border:1.5px solid var(--line);border-radius:var(--radius-sm);font-family:inherit;font-size:0.95rem;text-align:center;color:var(--ink);background:var(--surface);outline:none;-webkit-appearance:none;appearance:none;">
     <div class="modal-btns">
-      <button class="btn btn-outline" onclick="resolveConfirm(false)">취소</button>
-      <button class="btn btn-danger" id="confirmOkBtn" onclick="resolveConfirm(true)">삭제</button>
+      <button class="btn btn-outline" onclick="resolveConfirm(false)" data-i18n="common.cancel">취소</button>
+      <button class="btn btn-danger" id="confirmOkBtn" onclick="resolveConfirm(true)" data-i18n="common.delete">삭제</button>
     </div>
   </div>
 </div>
@@ -858,21 +877,21 @@ body.has-ad #adShelf{display:block;}
 <!-- 학생 정보 수정 모달 -->
 <div id="studentEditModal" class="modal-overlay hidden" onclick="if(event.target===this)closeModal('studentEditModal')">
   <div class="modal-box" onclick="event.stopPropagation()">
-    <h3 style="margin-bottom:6px;display:flex;align-items:center;gap:7px;"><span class="ico-slot" data-ico="pencil" data-sz="18"></span>학생 정보 수정</h3>
-    <p style="font-size:0.78rem;color:var(--ink-mute);margin-bottom:14px">학번을 바꾸면 이 학생의 상담 기록도 함께 갱신됩니다.</p>
-    <label style="font-size:0.78rem;font-weight:600;color:var(--ink-soft);display:block;margin-bottom:4px">학번</label>
+    <h3 style="margin-bottom:6px;display:flex;align-items:center;gap:7px;"><span class="ico-slot" data-ico="pencil" data-sz="18"></span><span data-i18n="edit.title">학생 정보 수정</span></h3>
+    <p style="font-size:0.78rem;color:var(--ink-mute);margin-bottom:14px" data-i18n="edit.desc">학번을 바꾸면 이 학생의 상담 기록도 함께 갱신됩니다.</p>
+    <label style="font-size:0.78rem;font-weight:600;color:var(--ink-soft);display:block;margin-bottom:4px" data-i18n="edit.labelNum">학번</label>
     <input type="text" id="editNum" maxlength="20" style="width:100%;margin-bottom:12px;padding:11px 13px;border:1.5px solid var(--line);border-radius:var(--radius-sm);font-family:inherit;font-size:0.95rem;color:var(--ink);background:var(--surface);outline:none;-webkit-appearance:none;appearance:none;">
-    <label style="font-size:0.78rem;font-weight:600;color:var(--ink-soft);display:block;margin-bottom:4px">이름</label>
+    <label style="font-size:0.78rem;font-weight:600;color:var(--ink-soft);display:block;margin-bottom:4px" data-i18n="edit.labelName">이름</label>
     <input type="text" id="editName" maxlength="10" style="width:100%;margin-bottom:12px;padding:11px 13px;border:1.5px solid var(--line);border-radius:var(--radius-sm);font-family:inherit;font-size:0.95rem;color:var(--ink);background:var(--surface);outline:none;-webkit-appearance:none;appearance:none;">
-    <label style="font-size:0.78rem;font-weight:600;color:var(--ink-soft);display:block;margin-bottom:4px">성별 <span style="font-weight:400;color:var(--ink-mute);">(선택)</span></label>
+    <label style="font-size:0.78rem;font-weight:600;color:var(--ink-soft);display:block;margin-bottom:4px"><span data-i18n="edit.labelGender">성별</span> <span style="font-weight:400;color:var(--ink-mute);" data-i18n="edit.genderOptional">(선택)</span></label>
     <select id="editGender" style="width:100%;margin-bottom:4px;">
-      <option value="">선택 안 함</option>
-      <option value="남">남</option>
-      <option value="여">여</option>
+      <option value="" data-i18n="edit.genderNone">선택 안 함</option>
+      <option value="남" data-i18n="students.genderMale">남</option>
+      <option value="여" data-i18n="students.genderFemale">여</option>
     </select>
     <div class="modal-btns" style="margin-top:18px">
-      <button class="btn btn-outline" onclick="closeModal('studentEditModal')">취소</button>
-      <button class="btn" id="studentEditSaveBtn" onclick="saveStudentEdit()">저장</button>
+      <button class="btn btn-outline" onclick="closeModal('studentEditModal')" data-i18n="common.cancel">취소</button>
+      <button class="btn" id="studentEditSaveBtn" onclick="saveStudentEdit()" data-i18n="common.save">저장</button>
     </div>
   </div>
 </div>
@@ -880,11 +899,11 @@ body.has-ad #adShelf{display:block;}
 <!-- 추천 태그 모달 -->
 <div id="tagPickerModal" class="modal-overlay hidden" onclick="if(event.target===this)closeTagPicker()">
   <div class="modal-box" onclick="event.stopPropagation()">
-    <h3 style="margin-bottom:6px;display:flex;align-items:center;gap:7px;"><span class="ico-slot" data-ico="tag" data-sz="18"></span>추천 태그</h3>
-    <p style="font-size:0.78rem;color:var(--ink-mute);margin-bottom:14px">태그를 눌러 추가하거나 다시 눌러 해제하세요.</p>
+    <h3 style="margin-bottom:6px;display:flex;align-items:center;gap:7px;"><span class="ico-slot" data-ico="tag" data-sz="18"></span><span data-i18n="tagpick.title">추천 태그</span></h3>
+    <p style="font-size:0.78rem;color:var(--ink-mute);margin-bottom:14px" data-i18n="tagpick.desc">태그를 눌러 추가하거나 다시 눌러 해제하세요.</p>
     <div class="tag-picker-list" id="tagPickerList"></div>
     <div class="modal-btns" style="margin-top:18px">
-      <button class="btn" onclick="closeTagPicker()">완료</button>
+      <button class="btn" onclick="closeTagPicker()" data-i18n="tagpick.done">완료</button>
     </div>
   </div>
 </div>
