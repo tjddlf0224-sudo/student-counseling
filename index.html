@@ -65,6 +65,8 @@ input,select,textarea{font-size:16px;}
 html,body{min-height:100vh;background:var(--bg);font-family:'Pretendard',sans-serif;color:var(--ink);width:100%;max-width:100%;overflow-x:clip;}
 body{display:flex;justify-content:center;width:100%;max-width:100vw;}
 #app{width:100%;max-width:430px;background:var(--bg);min-height:100vh;position:relative;overflow-x:clip;}
+/* 아이패드 등 넓은 화면 — 컬럼 구조는 그대로, 폭만 넓혀서 여백을 줄인다 */
+@media (min-width:900px){ #app{max-width:760px;} }
 
 /* 로그인 화면 */
 #loginScreen{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:99999;padding:40px 32px;overflow-x:hidden;overflow-y:auto;max-width:100vw;}
