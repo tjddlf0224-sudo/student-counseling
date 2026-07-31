@@ -230,6 +230,8 @@ h4 .ico,h3 .ico{vertical-align:-0.18em;margin-right:3px;}
 .s-modal-count{background:rgba(255,255,255,0.2);color:white;font-size:0.72rem;font-weight:700;padding:3px 10px;border-radius:20px;flex-shrink:0;}
 .s-modal-export{background:rgba(255,255,255,0.95);color:var(--accent);border:none;font-size:0.74rem;font-weight:700;padding:6px 11px;border-radius:20px;cursor:pointer;flex-shrink:0;font-family:inherit;display:flex;align-items:center;gap:3px;}
 .s-modal-export:active{background:white;}
+/* 퀵애드는 분할 뷰(넓은 화면)에서만 — 폰에선 이력이 전체화면이라 입력 탭으로 가는 동선이 이미 있다 */
+#sModalQuickAdd{display:none;}
 
 /* ── 인쇄(PDF 내보내기) ── */
 #printArea{display:none;}
@@ -531,13 +533,31 @@ body.has-ad #adShelf{display:block;}
   .tab-btn.active{background:var(--accent-soft);border-bottom-color:transparent;}
   .tab-btn:hover:not(.active){background:var(--line-soft);}
   #app > section{grid-column:2;grid-row:1;min-width:0;}
-  /* 화면에 고정되는 요소들은 사이드바를 덮지 않게 본문 컬럼 왼쪽 끝에 맞춘다 (이력 분할 뷰는 B단계) */
-  :root{--content-left:calc(max(0px, (100vw - 1180px) / 2) + 236px);}
+  /* 화면에 고정되는 요소들을 본문 컬럼에 맞추기 위한 기준값 */
+  :root{
+    --app-gutter:max(0px, (100vw - 1180px) / 2);
+    --content-left:calc(var(--app-gutter) + 236px);
+    --hist-list-w:360px;
+  }
   #studentHistoryModal{left:var(--content-left);}
   #fmtToolbar{left:var(--content-left);}
+
+  /* 학생 탭: 좌측 명단 | 우측 이력 — 이력이 화면을 덮는 대신 나란히 선다.
+     transform:none으로 .open과 무관하게 항상 보이게 하고, 선택 전에는 안내 문구를 채운다. */
+  body.tab-students #sec-students{max-width:var(--hist-list-w);min-height:100vh;border-right:1px solid var(--line);}
+  body.tab-students #studentHistoryModal{
+    left:calc(var(--content-left) + var(--hist-list-w));
+    right:var(--app-gutter);
+    /* 분할 뷰에선 늘 제자리에 있는 패널이므로 슬라이드 인 애니메이션을 끈다 */
+    transform:none;transition:none;z-index:90;
+  }
+  body.tab-students #studentHistoryModal .s-modal-back{display:none;}
+  /* 학생 선택 전에는 이름·건수가 빈 헤더만 남아 어색하므로 통째로 감춘다 */
+  body.tab-students #studentHistoryModal.no-selection .s-modal-header{display:none;}
+  body.tab-students #sModalQuickAdd{display:flex;}
 }
 </style>
-  <script type="module" crossorigin src="./assets/index-C1o-3u_F.js"></script>
+  <script type="module" crossorigin src="./assets/index-B7J6BpXc.js"></script>
 </head>
 <body>
 <div id="loading"><div class="loading-inner"><div class="loading-row"><div class="spinner"></div><span id="loadingText" data-i18n="loading.starting">시작하는 중…</span></div><button type="button" id="loadingCancelBtn" class="hidden" onclick="cancelLoading()" data-i18n="common.cancel">취소</button></div></div>
@@ -754,6 +774,7 @@ body.has-ad #adShelf{display:block;}
       <div class="s-modal-num"  id="sModalNum"></div>
     </div>
     <span class="s-modal-count" id="sModalCount"></span>
+    <button class="s-modal-export hidden" id="sModalQuickAdd" onclick="quickWriteForStudent()" data-i18n="hist.quickAdd">＋ 기록 추가</button>
     <button class="s-modal-export hidden" id="sModalExport" onclick="exportStudentHistory()" data-i18n-title="hist.exportTitle" title="상담 기록 내보내기/공유"><span class="ico-slot" data-ico="doc" data-sz="13"></span><span data-i18n="hist.export">내보내기</span></button>
   </div>
   <div class="s-modal-body" id="sModalBody"></div>
