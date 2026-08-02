@@ -530,7 +530,12 @@ body.has-ad #adShelf{display:block;}
 /* ── 태블릿·데스크톱 레이아웃: 상단 탭바를 좌측 사이드바로 ──
    높이 조건(600px)은 폰 가로모드(높이 ~430)를 걸러내기 위한 것 — 폰은 어떤 방향에서도 기존 레이아웃 유지.
    조건을 바꾸려면 JS의 WIDE_MQ도 같이 바꿔야 한다(--header-h 계산이 이 조건에 묶여 있음). */
-@media (min-width:820px) and (min-height:600px){
+/* 900px: 아이패드 10.9/Air 세로(820x1180)를 일부러 제외한다. 820에서 분할뷰를 켜면
+   본문 584px에서 명단 360을 뺀 이력 패널이 224px — 아이폰 SE(375)보다 좁아 헤더가 3줄로
+   깨지고 본문 한 줄에 몇 글자 안 들어간다. 세로는 단일 컬럼, 가로(1180)에서만 분할한다.
+   12.9" 세로(1024)는 패널 428px가 나오므로 그대로 분할뷰가 켜진다.
+   바꿀 때는 아래 JS의 WIDE_MQ도 반드시 같이 바꿔야 한다(--header-h 계산이 이 조건에 묶임). */
+@media (min-width:900px) and (min-height:600px){
   #app{max-width:1180px;display:grid;grid-template-columns:236px minmax(0,1fr);align-items:start;}
   .header{
     grid-column:1;grid-row:1;height:100vh;gap:18px;
@@ -592,7 +597,7 @@ body.has-ad #adShelf{display:block;}
   #calArea > #calDetail .cal-detail{margin-top:0;}
 }
 </style>
-  <script type="module" crossorigin src="./assets/index-B5-p8puj.js"></script>
+  <script type="module" crossorigin src="./assets/index-Bxm8rYdz.js"></script>
 </head>
 <body>
 <div id="loading"><div class="loading-inner"><div class="loading-row"><div class="spinner"></div><span id="loadingText" data-i18n="loading.starting">시작하는 중…</span></div><button type="button" id="loadingCancelBtn" class="hidden" onclick="cancelLoading()" data-i18n="common.cancel">취소</button></div></div>
@@ -897,6 +902,14 @@ body.has-ad #adShelf{display:block;}
       <select id="localeSelect" onchange="setLocale(this.value)">
         <option value="ko">한국어</option>
         <option value="en">English</option>
+      </select>
+    </div>
+    <div class="settings-section">
+      <h4 style="display:flex;align-items:center;gap:6px;"><span class="ico-slot" data-ico="calendar" data-sz="16" style="color:var(--ink-mute)"></span><span data-i18n="settings.schoolYear.title">학년도 시작월</span></h4>
+      <p style="font-size:0.8rem;color:var(--ink-mute);line-height:1.6;margin-bottom:10px" data-i18n="settings.schoolYear.desc">기록을 어느 달부터 한 학년도로 묶을지 정합니다. 계정에 저장되어 모든 기기에서 같게 적용됩니다.</p>
+      <select id="schoolYearStartSel" onchange="setSchoolYearStart(this.value)">
+        <option value="3" data-i18n="settings.schoolYear.march">3월 시작 (한국)</option>
+        <option value="9" data-i18n="settings.schoolYear.september">9월 시작</option>
       </select>
     </div>
     <div class="settings-section">
