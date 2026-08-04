@@ -610,7 +610,7 @@ body.has-ad #adShelf{display:block;}
   #calArea > #calDetail .cal-detail{margin-top:0;}
 }
 </style>
-  <script type="module" crossorigin src="./assets/index-D92MOfWg.js"></script>
+  <script type="module" crossorigin src="./assets/index-C4YIqGVD.js"></script>
 </head>
 <body>
 <div id="loading"><div class="loading-inner"><div class="loading-row"><div class="spinner"></div><span id="loadingText" data-i18n="loading.starting">시작하는 중…</span></div><button type="button" id="loadingCancelBtn" class="hidden" onclick="cancelLoading()" data-i18n="common.cancel">취소</button></div></div>
@@ -674,7 +674,7 @@ body.has-ad #adShelf{display:block;}
       <button class="today-btn" onclick="goToday()" data-i18n="daily.today">오늘</button>
     </div>
     <div class="search-wrap" style="display:flex;align-items:center;gap:8px;">
-      <input type="search" class="search-input" id="searchInput" data-i18n-placeholder="daily.search.ph" placeholder="전체 검색 (이름·내용·태그·유형)…" oninput="filterCounsels()" style="flex:1;">
+      <input type="search" class="search-input" id="searchInput" data-i18n-placeholder="daily.search.ph" placeholder="전체 검색 (이름·내용·태그·유형)…" oninput="queueFilterCounsels()" style="flex:1;">
       <select id="dailySort" onchange="onDailySortChange()" data-i18n-title="daily.sort.title" title="정렬" style="flex:0 0 auto;width:auto;padding:8px 10px;border:1.5px solid var(--line);border-radius:14px;font-family:inherit;font-size:0.78rem;color:var(--ink-soft);background:var(--line-soft);outline:none;-webkit-appearance:none;appearance:none;">
         <option value="created" data-i18n="daily.sort.created">작성순</option>
         <option value="recent" data-i18n="daily.sort.recent">최근순</option>
@@ -792,7 +792,7 @@ body.has-ad #adShelf{display:block;}
             <option value="남" data-i18n="students.genderMale">남</option>
             <option value="여" data-i18n="students.genderFemale">여</option>
           </select>
-          <button class="add-btn" onclick="addStudent()" data-i18n="common.add">추가</button>
+          <button class="add-btn" id="addStudentBtn" onclick="addStudent()" data-i18n="common.add">추가</button>
         </div>
         <div style="display:flex;align-items:center;gap:8px;margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);">
           <button class="excel-btn" onclick="document.getElementById('excelInput').click()" style="display:inline-flex;align-items:center;gap:5px;"><span class="ico-slot" data-ico="clipboard" data-sz="14"></span><span data-i18n="students.bulkImport">엑셀/CSV로 한번에 추가</span></button>
