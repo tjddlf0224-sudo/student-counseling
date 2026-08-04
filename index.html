@@ -610,7 +610,7 @@ body.has-ad #adShelf{display:block;}
   #calArea > #calDetail .cal-detail{margin-top:0;}
 }
 </style>
-  <script type="module" crossorigin src="./assets/index-cOExKjnl.js"></script>
+  <script type="module" crossorigin src="./assets/index-Cfi7LnYJ.js"></script>
 </head>
 <body>
 <div id="loading"><div class="loading-inner"><div class="loading-row"><div class="spinner"></div><span id="loadingText" data-i18n="loading.starting">시작하는 중…</span></div><button type="button" id="loadingCancelBtn" class="hidden" onclick="cancelLoading()" data-i18n="common.cancel">취소</button></div></div>
@@ -821,7 +821,7 @@ body.has-ad #adShelf{display:block;}
 <!-- 학생 기록 모달 -->
 <div id="studentHistoryModal">
   <div class="s-modal-header">
-    <button class="s-modal-back" onclick="closeStudentHistory()">&#8592;</button>
+    <button class="s-modal-back" onclick="closeStudentHistory()" data-i18n-aria="common.back" aria-label="뒤로">&#8592;</button>
     <div class="s-modal-title">
       <div class="s-modal-name" id="sModalName"></div>
       <div class="s-modal-num"  id="sModalNum"></div>
@@ -835,18 +835,18 @@ body.has-ad #adShelf{display:block;}
 
 <!-- 서식 툴바 (입력 탭 활성 시 항상 표시) -->
 <div id="fmtToolbar" data-i18n-title="fmt.aria" aria-label="텍스트 서식">
-  <button class="stb-btn" data-stb="larger" data-i18n-title="fmt.larger" title="글자 크게">
+  <button class="stb-btn" data-stb="larger" data-i18n-title="fmt.larger" title="글자 크게" data-i18n-aria="fmt.larger" aria-label="글자 크게">
     <span class="stb-sz-icon">A<span class="stb-sz-sup">+</span></span>
   </button>
-  <button class="stb-btn" data-stb="smaller" data-i18n-title="fmt.smaller" title="글자 작게">
+  <button class="stb-btn" data-stb="smaller" data-i18n-title="fmt.smaller" title="글자 작게" data-i18n-aria="fmt.smaller" aria-label="글자 작게">
     <span class="stb-sz-icon sm">A<span class="stb-sz-sup">−</span></span>
   </button>
   <div class="stb-sep"></div>
-  <button class="stb-btn stb-b" data-stb="bold" data-i18n-title="fmt.bold" title="굵게">B</button>
-  <button class="stb-btn stb-i" data-stb="italic" data-i18n-title="fmt.italic" title="이탤릭">I</button>
-  <button class="stb-btn stb-u" data-stb="underline" data-i18n-title="fmt.underline" title="밑줄">U</button>
-  <button class="stb-btn stb-s" data-stb="strikeThrough" data-i18n-title="fmt.strike" title="취소선">S</button>
-  <button class="stb-btn" data-stb="highlight" data-i18n-title="fmt.highlight" title="형광펜">
+  <button class="stb-btn stb-b" data-stb="bold" data-i18n-title="fmt.bold" title="굵게" data-i18n-aria="fmt.bold" aria-label="굵게">B</button>
+  <button class="stb-btn stb-i" data-stb="italic" data-i18n-title="fmt.italic" title="이탤릭" data-i18n-aria="fmt.italic" aria-label="이탤릭">I</button>
+  <button class="stb-btn stb-u" data-stb="underline" data-i18n-title="fmt.underline" title="밑줄" data-i18n-aria="fmt.underline" aria-label="밑줄">U</button>
+  <button class="stb-btn stb-s" data-stb="strikeThrough" data-i18n-title="fmt.strike" title="취소선" data-i18n-aria="fmt.strike" aria-label="취소선">S</button>
+  <button class="stb-btn" data-stb="highlight" data-i18n-title="fmt.highlight" title="형광펜" data-i18n-aria="fmt.highlight" aria-label="형광펜">
     <svg width="21" height="21" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
       <!-- 마커 본체 (형광 노랑) -->
       <path d="M8 4.2h6v4.1l-1 7.2H9l-1-7.2z" fill="#fde047" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
