@@ -231,6 +231,12 @@ h4 .ico,h3 .ico{vertical-align:-0.18em;margin-right:3px;}
 /* 학생 기록 모달 */
 #studentHistoryModal{position:fixed;inset:0;z-index:9980;display:flex;flex-direction:column;background:var(--bg);transform:translateX(100%);transition:transform 0.28s cubic-bezier(.4,0,.2,1);}
 #studentHistoryModal.open{transform:translateX(0);}
+/* 닫힌 상태는 '자기 폭'(translateX(100%))만큼만 밀려나는데, 이 패널은 좌우가 앱 컬럼에 맞춰
+   가둬져 있어(아래 max-width / 분할뷰의 left·right) 폭이 화면보다 좁다. 그래서 100%만 밀면
+   앱 컬럼 오른쪽 여백만큼이 화면에 그대로 남아, 파란 헤더가 오른쪽 끝에 띠처럼 보인다
+   (1440px에서 130px 실측). 여백(--app-gutter)만큼 더 밀어 완전히 내보낸다.
+   body.tab-students의 transform:none 규칙이 특정도(1,1,1)로 이보다 높아 분할뷰 학생 탭은 그대로다. */
+#studentHistoryModal:not(.open){transform:translateX(calc(100% + var(--app-gutter)));}
 /* 전체화면 모드에서도 #app 폭을 넘지 않게 가둔다. inset:0만 두면 뷰포트가 #app보다 넓은 구간
    (예: 아이패드 Air 11" 세로 820x1180 → #app 760, 좌우 여백 30px씩)에서 파란 헤더와 본문이
    앱 컬럼 밖으로 삐져나와 다른 탭과 폭이 안 맞는다. 분할뷰(900px+)에선 아래에서 left/right를
@@ -604,21 +610,23 @@ body.has-ad #adShelf{display:block;}
   body.tab-students .s-modal-title{flex:1 1 100%;}
 
   /* 달력 탭: 좌측 달력 | 우측 그날 상세 (기존 세로 배치를 2단으로 재배치).
-     #calDetail을 그리드 행(row)으로 같이 묶으면(예전 방식) 오른쪽 상세 패널이 길어질 때마다
-     CSS 그리드가 그 높이를 맞추려고 왼쪽 칸(달력 머리말/달력 몸통/범례)의 행 트랙까지 늘려서,
-     정작 내용은 작은 달력이 위아래로 헐렁하게 벌어져 화면 중앙에 붕 뜬 것처럼 보인다.
-     오른쪽 패널을 그리드 흐름에서 빼 절대 위치로 옮기면 왼쪽 칸은 자기 내용 높이만큼만 차지해
-     맨 위에 붙는다(같은 폭 배치는 grid-template-columns로 그대로 유지). */
+     #calDetail을 왼쪽 세 칸과 같은 행 트랙에 묶으면(맨 처음 방식) 상세 패널이 길어질 때마다
+     그리드가 그 높이를 맞추려고 왼쪽 행 트랙까지 늘려서, 작은 달력이 위아래로 헐렁하게 벌어졌다.
+     그래서 한때 absolute로 뺐는데 그건 더 나빴다 — 상세 패널이 높이 계산에서 통째로 빠지는 바람에
+     #app이 안 자라서 (실측: #app 359px인데 패널은 1580px까지) 하단 광고 예약 여백이 안 걸려
+     패널 끝이 배너에 영영 가리고, 스크롤하면 100vh에서 끝나는 좌측 사이드바도 사라졌다.
+     정답은 '빈 스페이서 행(1fr)을 하나 두고 상세를 전 행에 걸치는 것'이다 — 남는 높이를 그 빈 행이
+     흡수하므로 왼쪽 세 칸은 위에 딱 붙고(실측: 칸 사이 간격 0px), 상세는 흐름 안에 남아 높이에 반영된다. */
   #sec-cal .container > select{max-width:440px;}
-  #sec-cal #calArea{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:20px;align-items:start;}
-  #calArea > .cal-head{grid-column:1;}
-  #calArea > .cal-grid{grid-column:1;}
-  #calArea > .cal-legend{grid-column:1;}
-  #calArea > #calDetail{position:absolute;top:0;left:calc(50% + 10px);right:0;margin-top:0;}
+  #sec-cal #calArea{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:20px;grid-template-rows:auto auto auto 1fr;align-items:start;}
+  #calArea > .cal-head{grid-column:1;grid-row:1;}
+  #calArea > .cal-grid{grid-column:1;grid-row:2;}
+  #calArea > .cal-legend{grid-column:1;grid-row:3;}
+  #calArea > #calDetail{grid-column:2;grid-row:1 / -1;align-self:start;margin-top:0;}
   #calArea > #calDetail .cal-detail{margin-top:0;}
 }
 </style>
-  <script type="module" crossorigin src="./assets/index-BVH7yePT.js"></script>
+  <script type="module" crossorigin src="./assets/index-CDHjlGFw.js"></script>
 </head>
 <body>
 <div id="loading"><div class="loading-inner"><div class="loading-row"><div class="spinner"></div><span id="loadingText" data-i18n="loading.starting">시작하는 중…</span></div><button type="button" id="loadingCancelBtn" class="hidden" onclick="cancelLoading()" data-i18n="common.cancel">취소</button></div></div>
@@ -713,7 +721,7 @@ body.has-ad #adShelf{display:block;}
     <div class="container">
       <div id="edit-banner" class="edit-banner hidden">
         <span><span class="ico-slot" data-ico="pencil" data-sz="15" style="margin-right:4px"></span><span data-i18n="write.editMode">수정 모드</span></span>
-        <button onclick="cancelEdit()" class="btn btn-outline btn-sm" data-i18n="common.cancel">취소</button>
+        <button onclick="cancelEditDiscardDraft()" class="btn btn-outline btn-sm" data-i18n="common.cancel">취소</button>
       </div>
       <div id="draft-banner" class="edit-banner hidden">
         <span><span class="ico-slot" data-ico="memo" data-sz="15" style="margin-right:4px"></span><span data-i18n="write.draftBanner">작성 중이던 내용이 있어요</span></span>
