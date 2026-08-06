@@ -603,6 +603,10 @@ body.has-ad #adShelf{display:block;}
      left만 주고 right를 0인 채로 두면 화면이 1180px보다 넓을 때 툴바만 화면 끝까지 뻗는다. */
   #fmtToolbar{left:var(--content-left);right:var(--app-gutter);max-width:none;margin:0;}
   /* #bg-status는 base 규칙(위쪽, --app-gutter 사용)이 이 폭 단계에도 그대로 맞아 여기서 재정의할 필요 없음 */
+  /* 광고 선반도 같은 이유로 좌우를 본문 컬럼에 맞춘다 — left:0;right:0(기본값) 그대로 두면 실제
+     배너(아이패드는 아이폰과 같은 고정 크기라 좁음)는 가운데 작게 뜨는데 그 밑 선반 배경만
+     화면 전체 폭으로 넓게 깔려, "좁은 광고 + 그 주변 텅 빈 넓은 띠"처럼 보인다. */
+  #adShelf{left:var(--content-left);right:var(--app-gutter);}
 
   /* 학생 탭: 좌측 명단 | 우측 이력 — 이력이 화면을 덮는 대신 나란히 선다.
      transform:none으로 .open과 무관하게 항상 보이게 하고, 선택 전에는 안내 문구를 채운다. */
