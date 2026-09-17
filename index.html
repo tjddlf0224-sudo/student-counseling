@@ -35,6 +35,8 @@
   --orange:#f97316;--orange-soft:#ffedd5;
   --rose:#f43f5e;--rose-bg:#fff1f2;--rose-soft:#ffe4e6;
   --sky:#0ea5e9;--sky-soft:#e0f2fe;
+  --violet:#7c3aed;--violet-soft:#ede9fe;
+  --teal:#0d9488;--teal-soft:#ccfbf1;
   --safe-top:env(safe-area-inset-top,0px);--safe-bottom:env(safe-area-inset-bottom,0px);
   /* --ad-h는 배너 로드 시 SizeChanged 실측값으로 덮어쓴다(50px은 로드 전 임시값). 15px는 '광고' 라벨 줄. */
   --ad-h:50px;--ad-reserve:calc(15px + var(--ad-h) + var(--safe-bottom,0px));
@@ -51,6 +53,8 @@
     --orange:#f97316;--orange-soft:#3a2712;
     --rose:#f43f5e;--rose-bg:#3a1620;--rose-soft:#3a1620;
     --sky:#0ea5e9;--sky-soft:#0e2636;
+    --violet:#a78bfa;--violet-soft:#2a2145;
+    --teal:#2dd4bf;--teal-soft:#0f2e2b;
     --shadow:0 2px 12px rgba(0,0,0,0.35);--shadow-md:0 4px 24px rgba(0,0,0,0.45);
   }
 }
@@ -63,6 +67,8 @@
   --orange:#f97316;--orange-soft:#3a2712;
   --rose:#f43f5e;--rose-bg:#3a1620;--rose-soft:#3a1620;
   --sky:#0ea5e9;--sky-soft:#0e2636;
+  --violet:#a78bfa;--violet-soft:#2a2145;
+  --teal:#2dd4bf;--teal-soft:#0f2e2b;
   --shadow:0 2px 12px rgba(0,0,0,0.35);--shadow-md:0 4px 24px rgba(0,0,0,0.45);
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
@@ -192,6 +198,8 @@ textarea{resize:vertical;min-height:90px;line-height:1.6;}
 .type-생활{background:var(--green-soft);color:#16a34a;}
 .type-진로{background:var(--orange-soft);color:var(--orange);}
 .type-심리{background:var(--rose-soft);color:var(--rose);}
+.type-학부모상담{background:var(--violet-soft);color:var(--violet);}
+.type-관찰{background:var(--teal-soft);color:var(--teal);}
 .type-기타{background:var(--line-soft);color:var(--ink-mute);}
 
 .counsel-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:15px 16px;margin-bottom:10px;box-shadow:var(--shadow);transition:box-shadow 0.2s;}
@@ -650,7 +658,7 @@ body.has-ad #adShelf{display:block;}
   #calArea > #calDetail .cal-detail{margin-top:0;}
 }
 </style>
-  <script type="module" crossorigin src="./assets/index-BDsunbzk.js"></script>
+  <script type="module" crossorigin src="./assets/index-DmfUEb0D.js"></script>
 </head>
 <body>
 <div id="loading"><div class="loading-inner"><div class="loading-row"><div class="spinner"></div><span id="loadingText" data-i18n="loading.starting">시작하는 중…</span></div><button type="button" id="loadingCancelBtn" class="hidden" onclick="cancelLoading()" data-i18n="common.cancel">취소</button></div></div>
@@ -797,7 +805,8 @@ body.has-ad #adShelf{display:block;}
       <select id="typeSelect">
         <option value="학업" data-i18n="write.type.academic">학업</option><option value="생활" data-i18n="write.type.life">생활</option>
         <option value="진로" data-i18n="write.type.career">진로</option><option value="심리" data-i18n="write.type.psych">심리</option>
-        <option value="학부모상담" data-i18n="write.type.parent">학부모상담</option><option value="기타" data-i18n="write.type.etc">기타</option>
+        <option value="학부모상담" data-i18n="write.type.parent">학부모상담</option><option value="관찰" data-i18n="write.type.observe">관찰</option>
+        <option value="기타" data-i18n="write.type.etc">기타</option>
       </select>
       <!-- contenteditable div는 <label for=>로 연결되지 않는다(폼 컨트롤이 아니다).
            role=textbox + aria-labelledby로 접근명을 준다 — 없으면 스크린리더가 이 앱의
@@ -939,7 +948,7 @@ body.has-ad #adShelf{display:block;}
         </div>
         <div style="display:flex;gap:8px;align-items:flex-start;background:var(--accent-soft);border-radius:10px;padding:10px 12px;margin-bottom:10px;">
           <span style="flex:0 0 auto;color:var(--accent);"><span class="ico-slot" data-ico="bulb" data-sz="17"></span></span>
-          <span style="font-size:0.78rem;color:var(--accent);line-height:1.55;font-weight:600;" data-i18n-html="settings.export.callout">내보낸 엑셀은 나이스(NEIS) 상담관리의 업로드 서식과 동일합니다. 나이스 <b>상담관리 → 엑셀 업로드</b>에서 그대로 업로드할 수 있어요.</span>
+          <span style="font-size:0.78rem;color:var(--accent);line-height:1.55;font-weight:600;" data-i18n-html="settings.export.callout">내보낸 엑셀은 나이스(NEIS) 상담관리의 업로드 서식과 동일합니다. 나이스 <b>상담관리 → 엑셀 업로드</b>에서 그대로 업로드할 수 있어요. <b>관찰</b> 유형은 상담이 아니라서 제외됩니다.</span>
         </div>
         <button class="btn btn-outline btn-sm" onclick="exportAllExcel()" style="display:inline-flex;align-items:center;justify-content:center;gap:6px;"><span class="ico-slot" data-ico="chart" data-sz="15" style="color:var(--green)"></span><span data-i18n="settings.export.neisBtn">나이스 서식으로 내보내기</span></button>
         <p id="exportAdNote" class="hidden" style="font-size:0.74rem;color:var(--ink-mute);line-height:1.5;margin-top:7px;display:flex;align-items:flex-start;gap:5px;"><span style="flex:0 0 auto;color:var(--orange);"><span class="ico-slot" data-ico="bulb" data-sz="13"></span></span><span data-i18n-html="settings.export.adNote">짧은 <b>광고를 본 뒤</b> 파일이 만들어집니다. 광고 수익은 앱을 무료로 운영하는 데 쓰입니다.</span></p>
