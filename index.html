@@ -536,8 +536,12 @@ body.has-ad #adShelf{display:block;}
 
 /* ── 태그 ── */
 .tag-section{margin-top:4px;}
-.tag-input-row{display:flex;gap:6px;margin:6px 0;}
-.tag-input-row input{flex:1;}
+.tag-input-row{display:flex;gap:6px;margin:6px 0;align-items:stretch;}
+/* 태그 입력칸엔 전용 스타일이 없어 브라우저 기본(검은 네모 테두리)이 그대로 나왔고, min-width:auto라
+   좁은 화면·영어(+ Suggested)에서 버튼을 화면 밖으로 밀어냈다(360dp 에뮬레이터 확인). 다른 입력칸과
+   같은 모양으로 맞추고, 칸이 줄어들고 버튼은 한 줄을 유지하게 한다. */
+.tag-input-row input{flex:1 1 auto;min-width:0;padding:9px 12px;border:1.5px solid var(--line);border-radius:var(--radius-sm);font-family:inherit;font-size:0.9rem;color:var(--ink);background:var(--surface);outline:none;-webkit-appearance:none;appearance:none;}
+.tag-input-row .excel-btn{flex:0 0 auto;white-space:nowrap;height:auto;min-height:34px;}
 .tag-chips{display:flex;gap:6px;flex-wrap:wrap;min-height:4px;margin-bottom:6px;}
 .tag-chip{display:inline-flex;align-items:center;gap:3px;font-size:0.74rem;font-weight:600;padding:3px 9px;border-radius:20px;background:var(--accent-soft);color:var(--accent);white-space:nowrap;}
 .tag-chip.rec{background:var(--line-soft);color:var(--ink-soft);cursor:pointer;border:1px solid var(--line);}
@@ -658,7 +662,7 @@ body.has-ad #adShelf{display:block;}
   #calArea > #calDetail .cal-detail{margin-top:0;}
 }
 </style>
-  <script type="module" crossorigin src="./assets/index-DmfUEb0D.js"></script>
+  <script type="module" crossorigin src="./assets/index-DRlkXY6q.js"></script>
 </head>
 <body>
 <div id="loading"><div class="loading-inner"><div class="loading-row"><div class="spinner"></div><span id="loadingText" data-i18n="loading.starting">시작하는 중…</span></div><button type="button" id="loadingCancelBtn" class="hidden" onclick="cancelLoading()" data-i18n="common.cancel">취소</button></div></div>
