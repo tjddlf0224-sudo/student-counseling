@@ -698,7 +698,7 @@ body.has-ad #adShelf{display:block;}
   #calArea > #calDetail .cal-detail{margin-top:0;}
 }
 </style>
-  <script type="module" crossorigin src="./assets/index-DFV2OPED.js"></script>
+  <script type="module" crossorigin src="./assets/index-C3F8ZNC-.js"></script>
 </head>
 <body>
 <div id="loading"><div class="loading-inner"><div class="loading-row"><div class="spinner"></div><span id="loadingText" data-i18n="loading.starting">시작하는 중…</span></div><button type="button" id="loadingCancelBtn" class="hidden" onclick="cancelLoading()" data-i18n="common.cancel">취소</button></div></div>
@@ -973,8 +973,6 @@ body.has-ad #adShelf{display:block;}
             <span data-i18n="settings.export.memoChk">비고/메모 포함 (상담내용 뒤에 덧붙임)</span>
           </label>
         </div>
-        <!-- 나이스로 보낼 때 가리기·빼기 선택 — renderNeisExcludeOpts()가 NEIS_EXCLUDE_RULES로 채운다 -->
-        <div id="neisExcludeOpts" style="margin:4px 0 10px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;"></div>
         <div class="settings-row" style="margin-bottom:10px;display:flex;align-items:center;gap:8px;">
           <span style="font-size:0.82rem;"><span data-i18n="settings.export.durDefault">소요시간 기본값</span> <span style="color:var(--ink-mute);font-size:0.72rem;" data-i18n="settings.export.durDefaultNote">(기록에 없을 때)</span></span>
           <select id="exportDurSel" style="width:auto;flex:0 0 auto;padding:7px 10px;font-size:0.82rem;">
@@ -991,9 +989,9 @@ body.has-ad #adShelf{display:block;}
         </div>
         <div style="display:flex;gap:8px;align-items:flex-start;background:var(--accent-soft);border-radius:10px;padding:10px 12px;margin-bottom:10px;">
           <span style="flex:0 0 auto;color:var(--accent);"><span class="ico-slot" data-ico="bulb" data-sz="17"></span></span>
-          <span style="font-size:0.78rem;color:var(--accent);line-height:1.55;font-weight:600;" data-i18n-html="settings.export.callout">내보낸 엑셀은 나이스(NEIS) 상담관리의 업로드 서식과 동일합니다. 나이스 <b>상담관리 → 엑셀 업로드</b>에서 그대로 업로드할 수 있어요. <b>관찰</b> 유형은 상담이 아니라서 제외됩니다. 개인 신상 정보는 위 ‘가리기·빼기’ 설정대로 처리됩니다.</span>
+          <span style="font-size:0.78rem;color:var(--accent);line-height:1.55;font-weight:600;" data-i18n-html="settings.export.callout">내보낸 엑셀은 나이스(NEIS) 상담관리의 업로드 서식과 동일합니다. 나이스 <b>상담관리 → 엑셀 업로드</b>에서 그대로 업로드할 수 있어요. <b>관찰</b> 유형은 상담이 아니라서 제외됩니다. 내보내기를 누르면 개인 신상 정보를 가리거나 뺄 기록을 고를 수 있어요.</span>
         </div>
-        <button class="btn btn-outline btn-sm" onclick="exportAllExcel()" style="display:inline-flex;align-items:center;justify-content:center;gap:6px;"><span class="ico-slot" data-ico="chart" data-sz="15" style="color:var(--green)"></span><span data-i18n="settings.export.neisBtn">나이스 서식으로 내보내기</span></button>
+        <button class="btn btn-outline btn-sm" onclick="openNeisExportOptions()" style="display:inline-flex;align-items:center;justify-content:center;gap:6px;"><span class="ico-slot" data-ico="chart" data-sz="15" style="color:var(--green)"></span><span data-i18n="settings.export.neisBtn">나이스 서식으로 내보내기</span></button>
         <p id="exportAdNote" class="hidden" style="font-size:0.74rem;color:var(--ink-mute);line-height:1.5;margin-top:7px;display:flex;align-items:flex-start;gap:5px;"><span style="flex:0 0 auto;color:var(--orange);"><span class="ico-slot" data-ico="bulb" data-sz="13"></span></span><span data-i18n-html="settings.export.adNote">짧은 <b>광고를 본 뒤</b> 파일이 만들어집니다. 광고 수익은 앱을 무료로 운영하는 데 쓰입니다.</span></p>
       </div>
       <p style="font-size:0.8rem;color:var(--ink-mute);line-height:1.6;margin:14px 0 10px" data-i18n-html="settings.export.allDesc">현재 학년도 <b>전체 학생</b>의 상담 기록을 학생별로 묶은 보고서로 내보냅니다. 인쇄(PDF 저장)·인수인계에 활용하세요.</p>
@@ -1107,6 +1105,19 @@ body.has-ad #adShelf{display:block;}
     <div class="modal-btns">
       <button class="btn btn-outline" onclick="resolveNeisPreview(false)">취소</button>
       <button class="btn" id="neisPreviewOk" onclick="resolveNeisPreview(true)" style="white-space:nowrap;font-size:0.86rem;padding-left:8px;padding-right:8px;">내보내기</button>
+    </div>
+  </div>
+</div>
+<!-- 나이스 내보내기 선택창 — '나이스 서식으로 내보내기'를 누르면 먼저 뜬다(가리기·빼기 고르기 → 광고 → 빼기 미리보기 → 파일).
+     설정 모달(9990) 위에 떠야 해서 z-index를 올린다 -->
+<div id="neisOptsModal" class="modal-overlay hidden" style="z-index:9995" onclick="if(event.target===this)closeNeisExportOptions(false)">
+  <div class="modal-box" onclick="event.stopPropagation()" role="dialog" aria-modal="true" aria-labelledby="neisOptsTitle"
+       style="max-height:100%;display:flex;flex-direction:column;max-width:520px;width:100%;">
+    <h3 id="neisOptsTitle">나이스 서식으로 내보내기</h3>
+    <div id="neisExcludeOpts" style="overflow-y:auto;min-height:0;flex:1 1 auto;margin-top:10px;"></div>
+    <div class="modal-btns">
+      <button class="btn btn-outline" onclick="closeNeisExportOptions(false)">취소</button>
+      <button class="btn" onclick="closeNeisExportOptions(true)">내보내기</button>
     </div>
   </div>
 </div>
