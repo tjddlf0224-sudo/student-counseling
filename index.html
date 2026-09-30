@@ -583,7 +583,9 @@ body.has-ad #adShelf{display:block;}
 .neis-pv-badge{display:inline-block;font-size:0.7rem;font-weight:600;padding:1px 7px;border-radius:10px;background:var(--rose-soft);color:var(--rose);margin-left:2px;}
 .neis-pv-snip{display:block;font-size:0.76rem;color:var(--ink-mute);line-height:1.5;margin-top:2px;word-break:break-all;}
 .neis-pv-snip mark{background:var(--orange-soft);color:var(--ink);border-radius:3px;padding:0 1px;}
-.neis-tag-pick{display:flex;flex-wrap:wrap;gap:5px;margin:6px 0 0 25px;}
+.neis-tag-pick{display:flex;flex-wrap:wrap;align-content:flex-start;gap:6px;margin:6px 0 0 25px;}
+.neis-tag-sum{margin:6px 0 0 25px;}
+.neis-tag-sum .tag-chip.on{background:var(--rose-soft);color:var(--rose);margin:1px 0;}
 .neis-tag-pick .tag-chip{cursor:pointer;border:1px solid var(--line);background:var(--line-soft);color:var(--ink-soft);}
 .neis-tag-pick .tag-chip.on{background:var(--rose-soft);color:var(--rose);border-color:var(--rose);}
 .tag-picker-list .tag-chip{font-size:0.82rem;padding:6px 12px;}
@@ -698,7 +700,7 @@ body.has-ad #adShelf{display:block;}
   #calArea > #calDetail .cal-detail{margin-top:0;}
 }
 </style>
-  <script type="module" crossorigin src="./assets/index-C3F8ZNC-.js"></script>
+  <script type="module" crossorigin src="./assets/index-GwlQ07J-.js"></script>
 </head>
 <body>
 <div id="loading"><div class="loading-inner"><div class="loading-row"><div class="spinner"></div><span id="loadingText" data-i18n="loading.starting">시작하는 중…</span></div><button type="button" id="loadingCancelBtn" class="hidden" onclick="cancelLoading()" data-i18n="common.cancel">취소</button></div></div>
@@ -1101,6 +1103,7 @@ body.has-ad #adShelf{display:block;}
        style="max-height:100%;display:flex;flex-direction:column;max-width:560px;width:100%;">
     <h3 id="neisPreviewTitle">나이스로 보내지 않을 기록</h3>
     <p id="neisPreviewMsg" style="color:var(--ink-mute);font-size:0.8rem;line-height:1.6;margin:8px 0 10px;"></p>
+    <button type="button" class="btn btn-outline btn-sm" id="neisPreviewMode" style="align-self:flex-start;margin-bottom:8px;">전체 기록 보기</button>
     <div id="neisPreviewList" style="overflow-y:auto;min-height:0;flex:1 1 auto;border-top:1px solid var(--line);"></div>
     <div class="modal-btns">
       <button class="btn btn-outline" onclick="resolveNeisPreview(false)">취소</button>
@@ -1119,6 +1122,16 @@ body.has-ad #adShelf{display:block;}
       <button class="btn btn-outline" onclick="closeNeisExportOptions(false)">취소</button>
       <button class="btn" onclick="closeNeisExportOptions(true)">내보내기</button>
     </div>
+  </div>
+</div>
+<!-- 나이스 내보내기: 뺄 태그 고르기 — 선택창(9995) 위에 뜬다 -->
+<div id="neisTagModal" class="modal-overlay hidden" style="z-index:9996" onclick="if(event.target===this)closeNeisTagPicker()">
+  <div class="modal-box" onclick="event.stopPropagation()" role="dialog" aria-modal="true" aria-labelledby="neisTagTitle"
+       style="max-height:100%;display:flex;flex-direction:column;max-width:520px;width:100%;">
+    <h3 id="neisTagTitle">뺄 태그 고르기</h3>
+    <p style="color:var(--ink-mute);font-size:0.78rem;line-height:1.6;margin:6px 0 10px;">누른 태그(빨간색)가 달린 기록은 나이스로 보내지 않아요. 숫자는 이번 학년도에 그 태그가 달린 기록 수예요.</p>
+    <div id="neisTagList" class="neis-tag-pick" style="overflow-y:auto;min-height:0;flex:1 1 auto;margin:0;"></div>
+    <div class="modal-btns"><button class="btn" onclick="closeNeisTagPicker()">완료</button></div>
   </div>
 </div>
 
