@@ -400,7 +400,8 @@ h4 .ico,h3 .ico{vertical-align:-0.18em;margin-right:3px;}
 .cal-detail{margin-top:14px;background:var(--surface);border-radius:var(--radius);padding:14px;border:1px solid var(--line);box-shadow:var(--shadow);}
 .cal-detail-date{font-weight:700;color:var(--ink);margin-bottom:10px;font-size:0.88rem;display:flex;align-items:center;justify-content:space-between;}
 .cal-item{padding:10px 12px;background:var(--line-soft);border-radius:8px;margin-bottom:7px;font-size:0.83rem;line-height:1.6;color:var(--ink-soft);}
-.cal-item-content{margin-top:6px;white-space:pre-wrap;word-break:break-word;}
+/* 상담 내용은 일별(.counsel-content)·학생 이력(.s-history-content)과 같은 1rem — 0.83rem(.cal-item)을 물려받아 달력에서만 작았다(2026-10-22 성일님 "글자 크기가 제각각") */
+.cal-item-content{margin-top:6px;white-space:pre-wrap;word-break:break-word;font-size:1rem;line-height:1.7;}
 
 .edit-banner{background:#fff8e1;border:1px solid #ffd54f;border-radius:var(--radius-sm);padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;font-size:0.84rem;color:#7b5800;}
 
@@ -744,13 +745,13 @@ html.on-mac{font-size:20.8px;-webkit-text-size-adjust:none;text-size-adjust:none
 
 /* ── 큰 화면(PC·노트북·맥 앱, 1280px 이상) (2026-10-22, 성일님 "맥북·윈도우 모니터에서도 잘 보이게") ──
    위 900px 배치는 앱 폭을 1180px로 묶어 두어 1920·2560 모니터에선 가운데 좁은 칸에 갇히고 글자도 작았다.
-   여기서는 ①기준 글자 크기를 화면 폭에 따라 16→20px로 키우고(글자 크기 대부분이 rem이라 같이 커진다)
+   여기서는 ①기준 글자 크기를 화면 폭에 따라 16→21px로 키우고(10/22 성일님 "맥에서 아직 작다"로 한 번 더 올림: 노트북 1470 약 17.8px·1920 약 20.5px)(글자 크기 대부분이 rem이라 같이 커진다)
    ②앱 폭 상한을 110rem으로 넓히고 ③일별 카드·통계 카드를 여러 칸으로, 입력 화면은 너무 퍼지지 않게 폭을 묶는다.
    휴대폰·태블릿은 위 규칙 그대로다 — pointer:fine(마우스·트랙패드가 주 입력)을 붙여 가로 1366px인 아이패드 Pro 13"도 빼낸다.
    사이드바·명단 폭도 rem으로 바꿔 글자와 함께 커지게 한다. */
 @media (min-width:1280px) and (min-height:600px) and (pointer:fine){
-  html{font-size:clamp(16px, calc(10.5px + 0.4vw), 20px);}
-  html.on-mac{font-size:clamp(20.8px, calc((10.5px + 0.4vw) * 1.3), 26px);}
+  html{font-size:clamp(16px, calc(9px + 0.6vw), 21px);}
+  html.on-mac{font-size:clamp(20.8px, calc((9px + 0.6vw) * 1.3), 27.3px);}
   :root{
     --side-w:15rem;
     --app-max:110rem;
