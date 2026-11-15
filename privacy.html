@@ -34,7 +34,7 @@
     </div>
   </header>
 
-  <p class="muted">Effective date: November 4, 2026</p>
+  <p class="muted">Effective date: November 15, 2026</p>
 
   <p>Counseling Log ("the app") is built for teachers, counselors, and advisors to record and organize conversations with students. This policy explains what information the app collects, how it's used, and the choices you have. The app is for use by adults managing their own professional records — it is not directed at children, and children are not expected to use it directly.</p>
 
@@ -50,6 +50,9 @@
   </div>
   <div class="card">
     <p><strong>Usage statistics and usage records.</strong> To understand how the app is actually used and where to improve it, the app uses Google Analytics for Firebase and our own Firebase project to record anonymous usage: which screens you open, when the app is opened or moved to the background, how many times you save a record, add a student, or run an export, and whether an ad was offered, shown, completed, or closed. Each usage record contains only the event name, simple values such as a screen name or a number of seconds, the time, the platform (iOS, Android, or web), and the app version — <strong>the text of your counseling records, student names, and student ID numbers are never included</strong>. Usage records are tied to a randomly generated number created on your device. This number is not linked to your account, your email address, your advertising identifier, or any student, and we do not use it to identify you. Usage records are deleted automatically after 13 months.</p>
+  </div>
+  <div class="card">
+    <p><strong>Install source statistics.</strong> When the Android app is launched for the first time, it records once to Supabase how the app was installed (e.g., Instagram, a blog, Google Play search): the source name, app version, and date. It contains no information that can identify your device or account and is used only to count installs per source.</p>
   </div>
   <div class="card">
     <p><strong>Notification preference.</strong> If you turn on weekday reminders, the on/off setting and reminder time are stored locally on your device only. They are not sent to our servers.</p>
@@ -85,6 +88,7 @@
     <ul>
       <li><strong>Google Firebase</strong> — authentication and data storage</li>
       <li><strong>Google AdMob</strong> — advertising</li>
+      <li><strong>Supabase</strong> — install source totals (Android, first launch only; no device or account identifiers)</li>
       <li><strong>Google Analytics for Firebase</strong> — anonymous usage statistics and usage events (which screens and features are used, how often, and how ads are used). Google Analytics keeps this data for up to 14 months. Your counseling records and student information are never sent to this service.</li>
     </ul>
   </div>
