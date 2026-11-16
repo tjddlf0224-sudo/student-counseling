@@ -77,6 +77,33 @@
     <p><strong>기기에 보관하는 그 밖의 정보.</strong> 앱을 편하게 쓰도록 몇 가지 작은 정보를 기기에만 저장하며 운영자의 서버로 보내지 않습니다. 검색할 때 최근 사용한 태그, 테마와 언어 설정, 그리고 학번 변경이 끝나기 전에 중단된 경우 다음에 마저 바꿀 수 있도록 남기는 그 학생의 학번·이름 짧은 메모입니다. 이 정보는 로그인한 계정마다 따로 저장되며 계정을 삭제하면 지워집니다.</p>
   </div>
 
+  <div class="card">
+    <p><strong>항목별 처리 근거(개인정보 보호법 제15조).</strong></p>
+    <div style="overflow-x:auto;margin-top:8px">
+    <table class="xfer" style="min-width:520px">
+      <tr><th>항목</th><th>처리 근거</th></tr>
+      <tr><td>계정 정보(이메일·계정 ID)</td><td>계약 이행(앱 회원 서비스 제공, 제15조 제1항 제4호)</td></tr>
+      <tr><td>이용자가 작성한 학생 명단·상담 기록</td><td>계약 이행(이용자가 입력한 기록의 저장·표시, 제15조 제1항 제4호). 학생 정보를 기록할 권한은 입력하는 이용자가 확인합니다.</td></tr>
+      <tr><td>기술 진단 기록</td><td>계약 이행(저장 기능 유지·오류 수정, 제15조 제1항 제4호)</td></tr>
+      <tr><td>익명 이용 기록·사용 통계</td><td>운영자의 정당한 이익(서비스 개선, 제15조 제1항 제6호) — 계정·학생 정보와 연결하지 않음</td></tr>
+      <tr><td>설치 경로 통계(Android)</td><td>운영자의 정당한 이익(경로별 설치 수 집계, 제15조 제1항 제6호) — 기기·계정 식별값 없음</td></tr>
+      <tr><td>광고 식별자(맞춤형 광고)</td><td>이용자 동의(iOS 추적 허용 창, Android 광고 ID 설정) — 거부해도 기능 이용 가능</td></tr>
+    </table>
+    </div>
+    <p style="margin-top:12px"><strong>앱에 들어 있는 외부 SDK.</strong></p>
+    <div style="overflow-x:auto;margin-top:8px">
+    <table class="xfer" style="min-width:520px">
+      <tr><th>SDK</th><th>보내는 정보</th><th>받는 곳</th></tr>
+      <tr><td>Firebase Authentication</td><td>이메일 주소, 계정 ID, 로그인 토큰</td><td>Google LLC</td></tr>
+      <tr><td>Cloud Firestore</td><td>학생 명단, 상담 기록, 설정, 기술 진단 기록, 익명 이용 기록</td><td>Google LLC(서울 리전)</td></tr>
+      <tr><td>Google Analytics for Firebase</td><td>익명 이용 사건, 앱 버전, 기기 종류·OS</td><td>Google LLC</td></tr>
+      <tr><td>Google Mobile Ads(AdMob)</td><td>광고 식별자(허용한 경우), 기기·광고 반응 정보</td><td>Google LLC</td></tr>
+      <tr><td>Google Play Install Referrer(Android)</td><td>설치 경로(앱 안에서 읽어 아래 Supabase 로 경로 이름만 보냄)</td><td>Supabase Pte. Ltd.(서울 서버)</td></tr>
+    </table>
+    </div>
+    <p class="muted" style="margin-top:8px">알림·앱 잠금(Face ID·지문)은 기기 안에서만 동작하며 외부로 정보를 보내지 않습니다.</p>
+  </div>
+
   <h2>정보의 이용 목적</h2>
   <div class="card">
     <ul>
@@ -98,6 +125,7 @@
   <h2>국외 이전</h2>
   <div class="card">
     <p class="muted">앱은 대한민국에서 운영됩니다. 다른 나라에서 앱을 사용하면 위에 적은 정보가 대한민국으로 전송되어 저장되고, 그중 일부(로그인, 사용 통계, 광고)는 Google이 미국 등 다른 나라에서 처리합니다. 이 나라들의 개인정보 법은 이용자가 사는 나라와 다를 수 있습니다. Google(Cloud Firestore·로그인)과 Supabase는 각자의 데이터 처리 약관과 보안 체계에 따라 운영자를 대신해 이 정보를 저장·처리합니다. Google AdMob과 Google Analytics for Firebase는 이와 달리, Google이 자체 개인정보처리방침에 따라 그 방침에 적힌 목적으로 정보를 처리합니다. 학생 정보를 입력하기 전에 학교 규정과 함께 이 점을 고려해 주세요.</p>
+    <p class="muted" style="margin-top:8px"><strong>국외 이전의 근거.</strong> Cloud Firestore·Firebase Authentication·Supabase 로의 이전은 앱 서비스 제공(계약 이행)에 필요한 처리위탁·보관으로서, 개인정보 보호법 제28조의8 제1항 제3호 가목에 따라 아래 사항을 이 처리방침에 공개하고 이전합니다. Google Analytics for Firebase·Google AdMob 은 Google 이 자체 개인정보처리방침에 따라 처리하며, 맞춤형 광고는 아래 '맞춤형 광고(행태정보)' 절의 동의·거부 설정을 따릅니다.</p>
     <div style="overflow-x:auto;margin-top:12px">
     <table class="xfer">
       <tr><th>이전받는 자(연락처)</th><th>이전 국가</th><th>이전 항목</th><th>이전 시기·방법</th><th>이용 목적</th><th>보유 기간</th><th>거부 방법·효과</th></tr>
@@ -173,7 +201,7 @@
 
   <h2>이용자의 권리와 행사 방법</h2>
   <div class="card">
-    <p class="muted">이용자는 언제든지 본인 개인정보의 열람, 정정·삭제, 처리 정지를 요구할 수 있습니다. 기록은 앱에서 직접 보고·고치고·지울 수 있고, 계정 삭제는 설정 → 계정 삭제에서 바로 할 수 있습니다. 그 밖의 요구는 아래 이메일로 보내 주시면 법령이 정한 기간 안에 지체 없이 처리하고 결과를 알려 드립니다. 법정대리인이나 위임을 받은 사람을 통해서도 요구할 수 있습니다.</p>
+    <p class="muted">이용자는 언제든지 본인 개인정보의 열람, 정정·삭제, 처리 정지를 요구할 수 있습니다. 기록은 앱에서 직접 보고·고치고·지울 수 있고, 계정 삭제는 설정 → 계정 삭제에서 바로 할 수 있습니다. 그 밖의 요구는 아래 이메일로 보내 주시면 받은 날부터 10일 이내에 처리하고 결과를 알려 드립니다(열람 등을 제한하거나 거절할 때는 그 사유를 알려 드립니다). 법정대리인이나 위임을 받은 사람을 통해서도 요구할 수 있습니다.</p>
   </div>
 
   <h2>권익침해 구제 방법</h2>
@@ -189,7 +217,8 @@
 
   <h2>방침의 변경</h2>
   <div class="card">
-    <p class="muted">이 방침이 바뀌면 위의 시행일을 고칩니다. 변경 후에도 앱을 계속 사용하면 바뀐 방침에 동의한 것으로 봅니다.</p>
+    <p class="muted">이 방침이 바뀌면 위의 시행일을 고치고, 바뀐 내용을 이 페이지와 아래 개정 이력에 알립니다.</p>
+    <p class="muted" style="margin-top:8px"><strong>개정 이력.</strong> 2026-11-17(국외 이전 표·파기·권리 행사·구제기관·보호책임자 등 보강) · 2026-11-15(설치 경로 통계 추가) · 2026-11-04(이용 기록 13개월·Google Analytics 14개월) · 2026-09-01(사용 통계) · 2026-08-18(광고 식별자). 이전 판 전문은 <a href="https://github.com/tjddlf0224-sudo/student-counseling/commits/main/privacy-ko.html">한국어판 변경 기록</a>·<a href="https://github.com/tjddlf0224-sudo/student-counseling/commits/main/privacy.html">영어판 변경 기록</a>에서 볼 수 있습니다.</p>
   </div>
 
   <h2>문의</h2>
