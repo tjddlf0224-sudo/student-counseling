@@ -22,6 +22,9 @@
   a:hover{text-decoration:underline;}
   .contact{font-size:1.05rem;font-weight:700;}
   .note{border-left:4px solid var(--accent);}
+  .xfer{border-collapse:collapse;width:100%;min-width:520px;font-size:.82rem;color:var(--mute);}
+  .xfer th,.xfer td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top;}
+  .xfer th{background:var(--bg);color:var(--ink);}
   .lang{text-align:right;font-size:.9rem;margin-bottom:12px;}
   footer{margin-top:48px;padding-top:20px;border-top:1px solid var(--line);color:var(--mute);font-size:.85rem;}
 </style>
@@ -42,7 +45,7 @@
   <p>Counseling Log ("the app") is built for teachers, counselors, and advisors to record and organize conversations with students. This policy explains what information the app collects, how it's used, and the choices you have. The app is for use by adults managing their own professional records — it is not directed at children, and children are not expected to use it directly.</p>
 
   <div class="card note">
-    <p><strong>A personal notebook, not an official school record system.</strong> Counseling Log is a personal tool for your own working notes. It is not a school's official student record or case-management system and is not approved by any school, school board, or education department. Before recording information about students, please check your school's or employer's policy on where student information may be kept, and keep what you enter to the minimum you need — for example, use initials or your own internal numbers instead of full names, and never enter government-issued student or health identification numbers.</p>
+    <p><strong>A personal notebook, not an official school record system.</strong> Counseling Log is a personal tool for your own working notes. It is not a school's official student record or case-management system and is not approved by any school, school board, or education department. Before recording information about students, please check your school's or employer's policy on where student information may be kept, and keep what you enter to the minimum you need — for example, use initials or your own internal numbers instead of full names, and never enter government-issued student or health identification numbers. You are responsible for making sure you are permitted to record the information you enter about students.</p>
   </div>
 
   <h2>Information We Collect</h2>
@@ -94,7 +97,17 @@
 
   <h2>International Transfers</h2>
   <div class="card">
-    <p class="muted">The app is operated from South Korea. If you use it from another country, the information described above is transferred to and stored in South Korea, and some of it (sign-in, usage statistics, advertising) is processed by Google in the United States and other countries. These countries' privacy laws may differ from those where you live. Our service providers (Google and Supabase) store and process this information on our behalf under their own data processing terms and security programs. Please consider this, together with your school's policy, before entering information about students.</p>
+    <p class="muted">The app is operated from South Korea. If you use it from another country, the information described above is transferred to and stored in South Korea, and some of it (sign-in, usage statistics, advertising) is processed by Google in the United States and other countries. These countries' privacy laws may differ from those where you live. Google (for Cloud Firestore and sign-in) and Supabase store and process this information on our behalf, under their data processing terms and security programs. Google AdMob and Google Analytics for Firebase are different: Google processes that information under its own privacy policy, for the purposes described in that policy. Please consider this, together with your school's policy, before entering information about students.</p>
+    <div style="overflow-x:auto;margin-top:12px">
+    <table class="xfer">
+      <tr><th>Recipient</th><th>Country</th><th>Information</th><th>Purpose</th><th>Kept for</th></tr>
+      <tr><td>Google LLC — Cloud Firestore</td><td>South Korea (Seoul)</td><td>Student roster, counseling records, settings, technical diagnostics, anonymous usage records</td><td>Storing and syncing your records on our behalf</td><td>Until you delete them or your account; anonymous usage records 13 months</td></tr>
+      <tr><td>Google LLC — Firebase Authentication</td><td>United States and other countries</td><td>Email address, account ID</td><td>Sign-in, on our behalf</td><td>Until you delete your account</td></tr>
+      <tr><td>Google LLC — Google Analytics for Firebase</td><td>United States and other countries</td><td>Anonymous usage events, device and app information</td><td>Usage statistics (Google's own privacy policy also applies)</td><td>Up to 14 months</td></tr>
+      <tr><td>Google LLC — Google AdMob</td><td>United States and other countries</td><td>Advertising identifier (with your permission), device and ad interaction data</td><td>Showing and measuring ads (under Google's own privacy policy)</td><td>Under Google's policy</td></tr>
+      <tr><td>Supabase Inc.</td><td>South Korea (Seoul)</td><td>Install source name, app version, date (Android, first launch)</td><td>Counting installs per source</td><td>No fixed period; contains no account or device identifiers</td></tr>
+    </table>
+    </div>
   </div>
 
   <h2>Security and Data Breaches</h2>
@@ -124,13 +137,13 @@
       <li>Confirm your identity (re-sign-in may be required).</li>
       <li>Your account and all student/counseling records are <strong>permanently deleted</strong>.</li>
     </ol>
-    <p class="muted">This is processed immediately and cannot be undone — no separate email request is needed. You can also email us to request deletion. If your school requires counseling notes to be kept for a period of time, export them before deleting your account.</p>
+    <p class="muted">Your records are removed from the app immediately and this cannot be undone — no separate email request is needed. Copies in Google's systems are then erased on Google's schedule, within a maximum of about 180 days under its data processing terms. You can also email us to request deletion. If your school requires counseling notes to be kept for a period of time, export them before deleting your account.</p>
     <p style="margin-top:10px"><strong>Access and correction.</strong> You can view, edit, and delete your own records in the app at any time. To ask what personal information we hold about you, or to have it corrected, email us at the address below.</p>
   </div>
 
   <h2>Information for Users in Canada, Australia, and New Zealand</h2>
   <div class="card">
-    <p><strong>Canada.</strong> Where Canadian privacy law applies to us (for example the Personal Information Protection and Electronic Documents Act, or a provincial law such as Québec's Act respecting the protection of personal information in the private sector), you may ask to access or correct your personal information and withdraw consent, subject to legal limits. Your information is stored outside Canada as described above and may be accessible to courts and authorities of those countries under their laws. Privacy questions can be sent to our privacy contact below. If you are not satisfied with our response, you may contact the Office of the Privacy Commissioner of Canada or your provincial privacy commissioner.</p>
+    <p><strong>Canada.</strong> Where Canadian privacy law applies to us (for example the Personal Information Protection and Electronic Documents Act, or a provincial law such as Québec's Act respecting the protection of personal information in the private sector), you may ask to access or correct your personal information and withdraw consent, subject to legal limits. Your information is stored outside Canada as described above and may be accessible to courts and authorities of those countries under their laws. Privacy questions — including questions about our service providers outside Canada and how they handle your information — can be sent to our privacy contact below, who will answer them. If you are not satisfied with our response, you may contact the Office of the Privacy Commissioner of Canada or your provincial privacy commissioner.</p>
     <p style="margin-top:10px"><strong>Australia.</strong> Where the Privacy Act 1988 and the Australian Privacy Principles apply to us, you may request access to and correction of your personal information. Your information is disclosed to and stored with overseas recipients — our service providers in South Korea and the United States — as described above. If you have a complaint, please contact us first; if you are not satisfied with our response, you may complain to the Office of the Australian Information Commissioner (OAIC).</p>
     <p style="margin-top:10px"><strong>New Zealand.</strong> Under the Privacy Act 2020 you may request access to and correction of your personal information. Your information is stored by our service providers in South Korea and the United States on our behalf, as described above. If you have a complaint, please contact us first; you may also contact the Office of the Privacy Commissioner (New Zealand).</p>
     <p class="muted" style="margin-top:10px">Schools and education authorities in these countries often have their own rules on recording student information in third-party apps. This app does not replace those rules — please follow your school's policy.</p>
@@ -155,6 +168,7 @@
   <div class="card">
     <p class="contact">📧 <a href="mailto:tjddlf0224@gmail.com">tjddlf0224@gmail.com</a></p>
     <p class="muted">Questions about this policy or your data, requests for access or correction, and privacy complaints: email us — we typically reply within 1–2 business days. This address is also our privacy contact.</p>
+    <p class="muted" style="margin-top:10px">Operator: the independent developer of Counseling Log (individual, Republic of Korea). Privacy contact: tjddlf0224@gmail.com. Our name and postal address will be provided without delay upon request.</p>
   </div>
 
   <footer>
