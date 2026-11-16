@@ -21,6 +21,7 @@
   a{color:var(--accent);text-decoration:none;font-weight:600;}
   a:hover{text-decoration:underline;}
   .contact{font-size:1.05rem;font-weight:700;}
+  .note{border-left:4px solid var(--accent);}
   .lang{text-align:right;font-size:.9rem;margin-bottom:12px;}
   footer{margin-top:48px;padding-top:20px;border-top:1px solid var(--line);color:var(--mute);font-size:.85rem;}
 </style>
@@ -36,9 +37,13 @@
     </div>
   </header>
 
-  <p class="muted">Effective date: November 15, 2026</p>
+  <p class="muted">Effective date: November 17, 2026</p>
 
   <p>Counseling Log ("the app") is built for teachers, counselors, and advisors to record and organize conversations with students. This policy explains what information the app collects, how it's used, and the choices you have. The app is for use by adults managing their own professional records — it is not directed at children, and children are not expected to use it directly.</p>
+
+  <div class="card note">
+    <p><strong>A personal notebook, not an official school record system.</strong> Counseling Log is a personal tool for your own working notes. It is not a school's official student record or case-management system and is not approved by any school, school board, or education department. Before recording information about students, please check your school's or employer's policy on where student information may be kept, and keep what you enter to the minimum you need — for example, use initials or your own internal numbers instead of full names, and never enter government-issued student or health identification numbers.</p>
+  </div>
 
   <h2>Information We Collect</h2>
   <div class="card">
@@ -55,6 +60,9 @@
   </div>
   <div class="card">
     <p><strong>Install source statistics.</strong> When the Android app is launched for the first time, it records once to Supabase how the app was installed (e.g., Instagram, a blog, Google Play search): the source name, app version, and date. It contains no information that can identify your device or account and is used only to count installs per source.</p>
+  </div>
+  <div class="card">
+    <p><strong>Technical diagnostics.</strong> To find and fix problems such as slow or failed saves, the app keeps a small daily diagnostic record under your account: the platform and browser type, app version, how long saving and loading took, and short error codes. It never contains the text of your records or any student information.</p>
   </div>
   <div class="card">
     <p><strong>Notification preference.</strong> If you turn on weekday reminders, the on/off setting and reminder time are stored locally on your device only. They are not sent to our servers.</p>
@@ -81,7 +89,17 @@
 
   <h2>Where Your Data Is Stored</h2>
   <div class="card">
-    <p class="muted">Your account and content are stored using Google Firebase (Authentication and Cloud Firestore). Data is scoped per account — only you, signed into your own account, can read or write your records. We do not manually access individual users' counseling records except as needed to investigate a reported problem or as required by law.</p>
+    <p class="muted">Your student roster, counseling records, settings, technical diagnostics, and anonymous usage records are stored in Google Cloud Firestore in <strong>South Korea (Google Cloud Seoul region)</strong>. Sign-in is handled by Firebase Authentication, and usage statistics and advertising by Google Analytics for Firebase and Google AdMob; Google may process that information in the United States and other countries where it operates. Install source totals (Android) are stored with Supabase in South Korea (Seoul). Data is scoped per account — only you, signed into your own account, can read or write your records. We do not manually access individual users' counseling records except as needed to investigate a reported problem or as required by law.</p>
+  </div>
+
+  <h2>International Transfers</h2>
+  <div class="card">
+    <p class="muted">The app is operated from South Korea. If you use it from another country, the information described above is transferred to and stored in South Korea, and some of it (sign-in, usage statistics, advertising) is processed by Google in the United States and other countries. These countries' privacy laws may differ from those where you live. Our service providers (Google and Supabase) store and process this information on our behalf under their own data processing terms and security programs. Please consider this, together with your school's policy, before entering information about students.</p>
+  </div>
+
+  <h2>Security and Data Breaches</h2>
+  <div class="card">
+    <p class="muted">Data is sent over encrypted connections and protected by account-based access rules so that one account cannot read another's records. You can also turn on the app lock (Face ID or fingerprint). No system is perfectly secure; if we become aware of a breach involving your personal information that is likely to cause serious harm, we will notify affected users and, where required, the relevant privacy regulator, as required by applicable law.</p>
   </div>
 
   <h2>Third-Party Services</h2>
@@ -106,7 +124,16 @@
       <li>Confirm your identity (re-sign-in may be required).</li>
       <li>Your account and all student/counseling records are <strong>permanently deleted</strong>.</li>
     </ol>
-    <p class="muted">This is processed immediately and cannot be undone — no separate email request is needed. You can also email us to request deletion.</p>
+    <p class="muted">This is processed immediately and cannot be undone — no separate email request is needed. You can also email us to request deletion. If your school requires counseling notes to be kept for a period of time, export them before deleting your account.</p>
+    <p style="margin-top:10px"><strong>Access and correction.</strong> You can view, edit, and delete your own records in the app at any time. To ask what personal information we hold about you, or to have it corrected, email us at the address below.</p>
+  </div>
+
+  <h2>Information for Users in Canada, Australia, and New Zealand</h2>
+  <div class="card">
+    <p><strong>Canada.</strong> Where Canadian privacy law applies to us (for example the Personal Information Protection and Electronic Documents Act, or a provincial law such as Québec's Act respecting the protection of personal information in the private sector), you may ask to access or correct your personal information and withdraw consent, subject to legal limits. Your information is stored outside Canada as described above and may be accessible to courts and authorities of those countries under their laws. Privacy questions can be sent to our privacy contact below. If you are not satisfied with our response, you may contact the Office of the Privacy Commissioner of Canada or your provincial privacy commissioner.</p>
+    <p style="margin-top:10px"><strong>Australia.</strong> Where the Privacy Act 1988 and the Australian Privacy Principles apply to us, you may request access to and correction of your personal information. Your information is disclosed to and stored with overseas recipients — our service providers in South Korea and the United States — as described above. If you have a complaint, please contact us first; if you are not satisfied with our response, you may complain to the Office of the Australian Information Commissioner (OAIC).</p>
+    <p style="margin-top:10px"><strong>New Zealand.</strong> Under the Privacy Act 2020 you may request access to and correction of your personal information. Your information is stored by our service providers in South Korea and the United States on our behalf, as described above. If you have a complaint, please contact us first; you may also contact the Office of the Privacy Commissioner (New Zealand).</p>
+    <p class="muted" style="margin-top:10px">Schools and education authorities in these countries often have their own rules on recording student information in third-party apps. This app does not replace those rules — please follow your school's policy.</p>
   </div>
 
   <h2>Children's Privacy</h2>
@@ -116,7 +143,7 @@
 
   <h2>Data Retention</h2>
   <div class="card">
-    <p class="muted">Your content is retained until you delete it or delete your account. Deleting your account removes your account information and all associated records permanently. Anonymous usage records are not linked to your account and are deleted automatically after 13 months; Google Analytics data is kept for up to 14 months.</p>
+    <p class="muted">Your content is retained until you delete it or delete your account. Deleting your account removes your account information and all associated records permanently. Anonymous usage records are not linked to your account and are deleted automatically after 13 months; Google Analytics data is kept for up to 14 months. Technical diagnostics are deleted together with your account.</p>
   </div>
 
   <h2>Changes to This Policy</h2>
@@ -127,7 +154,7 @@
   <h2>Contact</h2>
   <div class="card">
     <p class="contact">📧 <a href="mailto:tjddlf0224@gmail.com">tjddlf0224@gmail.com</a></p>
-    <p class="muted">Questions about this policy or your data? Email us — we typically reply within 1–2 business days.</p>
+    <p class="muted">Questions about this policy or your data, requests for access or correction, and privacy complaints: email us — we typically reply within 1–2 business days. This address is also our privacy contact.</p>
   </div>
 
   <footer>
